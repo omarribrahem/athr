@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فك شفرة المدين والدائن</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f9;
+            --text-color: #34495e;
+            --primary-accent: #2c3e50;
+            --secondary-accent: #1abc9c;
+            --warning-accent: #f1c40f;
+            --white: #ffffff;
+            --font-family: Arial, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-family); background-color: var(--bg-color); color: var(--text-color); line-height: 1.8; font-size: 16px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+        header { background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent)); color: var(--white); padding: 40px 20px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; margin-bottom: 30px; }
+        header h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 10px; font-weight: bold; }
+        section { background-color: var(--white); padding: 25px; margin-bottom: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); }
+        h2 { color: var(--primary-accent); font-size: 1.6rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid var(--secondary-accent); }
+        h3 { color: var(--primary-accent); font-size: 1.3rem; margin-top: 25px; margin-bottom: 15px; }
+        h4 { color: var(--primary-accent); font-size: 1.15rem; margin-top: 20px; margin-bottom: 10px; font-weight: bold; }
+        p, li { margin-bottom: 15px; font-size: 1.1rem; }
+        strong, .eng-term { color: var(--primary-accent); font-weight: bold; }
+        ul { list-style-position: inside; padding-right: 20px; }
+        .equation {
+            background-color: var(--bg-color);
+            border: 2px dashed var(--secondary-accent);
+            padding: 20px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .table-container { overflow-x: auto; margin: 25px 0; border: 1px solid #ddd; border-radius: 8px;}
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: right; border-bottom: 1px solid #ddd; }
+        th { background-color: var(--primary-accent); color: var(--white); font-weight: bold; }
+        tbody tr:nth-child(even) { background-color: var(--bg-color); }
+        tbody tr:last-child td { border-bottom: none; }
+        .journal-entry { margin-top: 15px; }
+        footer { text-align: center; padding: 30px 20px; font-size: 1rem; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <h1>دليل المبتدئين الشامل: فك شفرة المدين والدائن</h1>
+        </header>
+
+        <main>
+            <section>
+                <h2>مقدمة: رحلتك الأولى في عالم المحاسبة</h2>
+                <p>أهلاً بك في عالم المحاسبة، لغة الأعمال التي تمكّنك من فهم ما يدور خلف كواليس أي شركة. قد تبدو المصطلحات الجديدة مثل "مدين" و"دائن" مربكة في البداية، لكن هذا الدليل صُمم ليكون "مفتاح الشفرة" الخاص بك. سننطلق في رحلة من ثلاثة أجزاء: فهم المعادلة المحاسبية، تعلم القاعدة الذهبية، ثم التطبيق العملي.</p>
+            </section>
+
+            <section>
+                <h2>الجزء الأول: حجر الأساس - فهم المعادلة المحاسبية</h2>
+                <h3>1.1 المفهوم الأساسي</h3>
+                <p>في قلب عالم المحاسبة توجد معادلة واحدة بسيطة وقوية، وهي حجر الأساس الذي تُبنى عليه جميع السجلات المالية.</p>
+                <div class="equation">الأصول (Assets) = الخصوم (Liabilities) + حقوق الملكية (Equity)</div>
+                <p>هذه المعادلة تعبر عن حقيقة جوهرية: كل ما تملكه الشركة (أصولها) تم تمويله إما عن طريق الاقتراض (خصوم)، أو عن طريق استثمارات المالكين (حقوق الملكية).</p>
+                <h3>1.2 تشبيه بسيط: "شراء منزل أحلامك"</h3>
+                <p>لجعل المعادلة ملموسة، تخيل أنك اشتريت منزلاً <span class="eng-term">(Asset)</span> بقيمة 1,000,000 ريال. حصلت على قرض من البنك <span class="eng-term">(Liability)</span> بقيمة 800,000 ريال، ودفعت من مدخراتك <span class="eng-term">(Equity)</span> مبلغ 200,000 ريال.</p>
+                <div class="equation">1,000,000 (Asset) = 800,000 (Liability) + 200,000 (Equity)</div>
+                <h3>1.3 تشريح المعادلة</h3>
+                <h4>الأصول (Assets): موارد الشركة</h4>
+                <p>هي الموارد الاقتصادية التي تملكها الشركة ولها قيمة مستقبلية.</p>
+                <ul>
+                    <li><strong>أصول ملموسة:</strong> النقدية <span class="eng-term">(Cash)</span>، المخزون <span class="eng-term">(Inventory)</span>، المعدات <span class="eng-term">(Equipment)</span>.</li>
+                    <li><strong>أصول غير ملموسة:</strong> براءات الاختراع <span class="eng-term">(Patents)</span>، العلامات التجارية <span class="eng-term">(Trademarks)</span>.</li>
+                </ul>
+                <h4>الخصوم (Liabilities): التزامات الشركة</h4>
+                <p>هي ديون الشركة وواجباتها المالية تجاه أطراف خارجية.</p>
+                <ul>
+                    <li><strong>الدائنون (Accounts Payable):</strong> المبالغ المستحقة للموردين مقابل شراء بضائع على الحساب.</li>
+                    <li><strong>القروض (Loans Payable):</strong> المبالغ التي اقترضتها الشركة من البنوك.</li>
+                </ul>
+                <h4>حقوق الملكية (Equity): حصة المالكين</h4>
+                <p>هي القيمة المتبقية في أصول الشركة بعد خصم جميع خصومها.</p>
+                <ul>
+                    <li><strong>رأس المال (Capital):</strong> الأموال التي استثمرها المالك في الشركة.</li>
+                    <li><strong>الأرباح المحتجزة (Retained Earnings):</strong> أرباح الشركة التي أعيد استثمارها.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>الجزء الثاني: القاعدة الذهبية - إتقان المدين والدائن</h2>
+                <h3>2.1 مبدأ القيد المزدوج</h3>
+                <p>لكي تظل المعادلة متوازنة، يجب أن يكون لكل معاملة تأثير مزدوج. لتسجيل هذا التأثير، نستخدم: <strong>مدين (Debit)</strong> و<strong>دائن (Credit)</strong>. ببساطة، "مدين" تشير إلى الجانب الأيمن من القيد، و"دائن" تشير إلى الجانب الأيسر. القاعدة تعتمد على نوع الحساب.</p>
+                <h3>2.2 القاعدة السحرية للتذكر (شفرة عربي وإنجليزي)</h3>
+                <p>لتحديد أين تضع "المدين" و"الدائن"، استخدم الشفرة التي تناسبك:</p>
+                <ul>
+                    <li><strong>الشفرة العربية: م.أ.م = خ.ح.إ</strong>
+                        <ul>
+                            <li><strong>تزيد بالمدين:</strong> <strong>مـ</strong>صروفات، <strong>أ</strong>صول، <strong>مـ</strong>سحوبات.</li>
+                            <li><strong>تزيد بالدائن:</strong> <strong>خـ</strong>صوم، <strong>حـ</strong>قوق ملكية، <strong>إ</strong>يرادات.</li>
+                        </ul>
+                    </li>
+                    <li><strong>الشفرة الإنجليزية (العالمية): DEA-LER</strong>
+                        <ul>
+                            <li><strong>Debit increases:</strong> <strong>D</strong>ividends, <strong>E</strong>xpenses, <strong>A</strong>ssets.</li>
+                            <li><strong>Credit increases:</strong> <strong>L</strong>iabilities, <strong>E</strong>quity, <strong>R</strong>evenue.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>2.3 جدول القواعد الأساسية</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>نوع الحساب (Account Type)</th>
+                                <th>طبيعته (Normal Balance)</th>
+                                <th>للزيادة (To Increase)</th>
+                                <th>للنقصان (To Decrease)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>الأصول (Assets)</td><td>مدين (Debit)</td><td>مدين (Debit)</td><td>دائن (Credit)</td></tr>
+                            <tr><td>المصروفات (Expenses)</td><td>مدين (Debit)</td><td>مدين (Debit)</td><td>دائن (Credit)</td></tr>
+                            <tr><td>المسحوبات (Draws)</td><td>مدين (Debit)</td><td>مدين (Debit)</td><td>دائن (Credit)</td></tr>
+                            <tr><td>الخصوم (Liabilities)</td><td>دائن (Credit)</td><td>دائن (Credit)</td><td>مدين (Debit)</td></tr>
+                            <tr><td>حقوق الملكية (Equity)</td><td>دائن (Credit)</td><td>دائن (Credit)</td><td>مدين (Debit)</td></tr>
+                            <tr><td>الإيرادات (Revenue)</td><td>دائن (Credit)</td><td>دائن (Credit)</td><td>مدين (Debit)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section>
+                <h2>الجزء الثالث: التطبيق العملي</h2>
+                <p>سنأخذ معاملات تجارية شائعة ونحللها خطوة بخطوة.</p>
+
+                <h4>المثال 1: استثمار المالك</h4>
+                <p><strong>العملية:</strong> أودع أحمد 50,000 ريال في الحساب البنكي للشركة كاستثمار.</p>
+                <p><strong>التحليل:</strong> زادت <strong>النقدية (Cash)</strong> وهي من <strong>الأصول (Assets)</strong>، فتُسجل <strong>مدين (Debit)</strong>. زاد <strong>رأس المال (Capital)</strong> وهو من <strong>حقوق الملكية (Equity)</strong>، فيُسجل <strong>دائن (Credit)</strong>.</p>
+                <div class="table-container journal-entry"><table><thead><tr><th>مدين (Debit)</th><th>دائن (Credit)</th><th>البيان (Description)</th></tr></thead><tbody><tr><td>50,000</td><td></td><td>من حـ/ النقدية (Cash)</td></tr><tr><td></td><td>50,000</td><td>إلى حـ/ رأس المال (Capital)</td></tr></tbody></table></div>
+                
+                <h4>المثال 2: دفع إيجار نقداً</h4>
+                <p><strong>العملية:</strong> دفعت الشركة إيجار المكتب 5,000 ريال نقداً.</p>
+                <p><strong>التحليل:</strong> زاد <strong>مصروف الإيجار (Rent Expense)</strong>، فيُسجل <strong>مدين (Debit)</strong>. نقصت <strong>النقدية (Cash)</strong> وهي أصل، فتُسجل <strong>دائن (Credit)</strong>.</p>
+                <div class="table-container journal-entry"><table><thead><tr><th>مدين (Debit)</th><th>دائن (Credit)</th><th>البيان (Description)</th></tr></thead><tbody><tr><td>5,000</td><td></td><td>من حـ/ مصروف الإيجار (Rent Expense)</td></tr><tr><td></td><td>5,000</td><td>إلى حـ/ النقدية (Cash)</td></tr></tbody></table></div>
+
+                <h4>المثال 3: شراء لوازم على الحساب</h4>
+                <p><strong>العملية:</strong> اشترت الشركة لوازم مكتبية بقيمة 2,000 ريال على الحساب.</p>
+                <p><strong>التحليل:</strong> زادت <strong>اللوازم المكتبية (Office Supplies)</strong> وهي أصل، فتُسجل <strong>مدين (Debit)</strong>. زادت الديون على الشركة <strong>للدائنين (Accounts Payable)</strong> وهو خصم، فتُسجل <strong>دائن (Credit)</strong>.</p>
+                <div class="table-container journal-entry"><table><thead><tr><th>مدين (Debit)</th><th>دائن (Credit)</th><th>البيان (Description)</th></tr></thead><tbody><tr><td>2,000</td><td></td><td>من حـ/ لوازم مكتبية (Office Supplies)</td></tr><tr><td></td><td>2,000</td><td>إلى حـ/ الدائنون (Accounts Payable)</td></tr></tbody></table></div>
+
+                <h4>المثال 4: تقديم خدمة نقدًا</h4>
+                <p><strong>العملية:</strong> قدمت الشركة خدمات وحصلت على 10,000 ريال نقداً.</p>
+                <p><strong>التحليل:</strong> زادت <strong>النقدية (Cash)</strong> وهي أصل، فتُسجل <strong>مدين (Debit)</strong>. زادت <strong>إيرادات الخدمات (Service Revenue)</strong>، فتُسجل <strong>دائن (Credit)</strong>.</p>
+                <div class="table-container journal-entry"><table><thead><tr><th>مدين (Debit)</th><th>دائن (Credit)</th><th>البيان (Description)</th></tr></thead><tbody><tr><td>10,000</td><td></td><td>من حـ/ النقدية (Cash)</td></tr><tr><td></td><td>10,000</td><td>إلى حـ/ إيرادات الخدمات (Service Revenue)</td></tr></tbody></table></div>
+
+                 <h4>المثال 5: تقديم خدمة على الحساب</h4>
+                <p><strong>العملية:</strong> قدمت الشركة خدمات بقيمة 7,000 ريال لعميل على أن يسددها لاحقاً.</p>
+                <p><strong>التحليل:</strong> زاد حق الشركة في تحصيل النقد <strong>"المدينون" (Accounts Receivable)</strong> وهو أصل، فيُسجل <strong>مدين (Debit)</strong>. زادت <strong>إيرادات الخدمات (Service Revenue)</strong>، فتُسجل <strong>دائن (Credit)</strong>.</p>
+                <div class="table-container journal-entry"><table><thead><tr><th>مدين (Debit)</th><th>دائن (Credit)</th><th>البيان (Description)</th></tr></thead><tbody><tr><td>7,000</td><td></td><td>من حـ/ المدينون (Accounts Receivable)</td></tr><tr><td></td><td>7,000</td><td>إلى حـ/ إيرادات الخدمات (Service Revenue)</td></tr></tbody></table></div>
+
+                <h4>المثال 6: تحصيل مبلغ من عميل</h4>
+                <p><strong>العملية:</strong> سدد العميل من المثال السابق 7,000 ريال نقداً.</p>
+                <p><strong>التحليل:</strong> زادت <strong>النقدية (Cash)</strong> وهي أصل، فتُسجل <strong>مدين (Debit)</strong>. نقص أصل <strong>"المدينون" (Accounts Receivable)</strong>، فيُسجل <strong>دائن (Credit)</strong>.</p>
+                <div class="table-container journal-entry"><table><thead><tr><th>مدين (Debit)</th><th>دائن (Credit)</th><th>البيان (Description)</th></tr></thead><tbody><tr><td>7,000</td><td></td><td>من حـ/ النقدية (Cash)</td></tr><tr><td></td><td>7,000</td><td>إلى حـ/ المدينون (Accounts Receivable)</td></tr></tbody></table></div>
+            </section>
+
+            <section>
+                <h2>خاتمة: انطلاقتك نحو التميز</h2>
+                <p>تهانينا! لقد قمت بفك شفرة المفاهيم الأساسية التي تشكل العمود الفقري للمحاسبة. أنت الآن تمتلك الأدوات اللازمة لمواصلة رحلتك بثقة، مدعوماً بفهم عميق ومنطقي للغة التي يتحدث بها عالم الأعمال. استمر في الممارسة، فالمستقبل يبدأ من هنا.</p>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 - مشروع أثر (Athr)</p>
+        </footer>
+
+    </div>
+</body>
+</html>
