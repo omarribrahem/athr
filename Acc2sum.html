@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موجز عملي متكامل: أساسيات المعادلة المحاسبية وتحليل المعاملات</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255,255,255,0.18);
+            --glass-border: rgba(255,255,255,0.4);
+            --text-color: #1e293b;
+            --highlight-color: #0ea5e9;
+            --practice-color: #16a34a;
+            --translation-color: #8b5cf6;
+            --border-radius: 24px;
+        }
+        
+        @keyframes gradientAnimation { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes floatSphere1 { 0%,100%{transform:translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateY(-30px) rotate(180deg) scale(1.05)} }
+        @keyframes floatSphere2 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95)} }
+        @keyframes floatSphere3 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(-20px) translateY(35px) rotate(120deg) scale(1.08)} }
+        @keyframes translate-glow { 0%,100%{box-shadow:0 0 15px -5px rgba(139,92,246,0.4),inset 0 2px 0 rgba(255,255,255,0.4);} 50%{box-shadow:0 0 25px 0px rgba(139,92,246,0.6),inset 0 2px 0 rgba(255,255,255,0.6);} }
+
+        * { box-sizing:border-box; margin:0; padding:0; }
+        html { font-size:16px; scroll-behavior:smooth; }
+        body {
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            background-color:#e0f2fe; color:var(--text-color); line-height:1.8;
+            overflow-x:hidden; position:relative; direction:rtl;
+            font-size:clamp(0.9rem,2.5vw,1.05rem); padding:20px clamp(10px,3vw,20px);
+        }
+        body[dir="ltr"] { direction:ltr; }
+        
+        .background-gradient, .floating-spheres { position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2; }
+        .background-gradient { background:linear-gradient(135deg,#e0f2fe 0%,#bae6fd 25%,#fce7f3 75%,#fdf2f8 100%);background-size:400% 400%;animation:gradientAnimation 40s ease infinite;}
+        .floating-spheres {z-index:-1;pointer-events:none;}
+        .sphere {position:absolute;border-radius:50%;backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.3);box-shadow:0 20px 60px rgba(14,165,233,0.3),inset 0 4px 0 rgba(255,255,255,0.4);}
+        .sphere.large {width:clamp(120px,20vw,220px);height:clamp(120px,20vw,220px);top:8%;right:12%;background:radial-gradient(circle,#3b82f6,#1e3a8a);animation:floatSphere1 12s ease-in-out infinite;}
+        .sphere.medium {width:clamp(80px,15vw,140px);height:clamp(80px,15vw,140px);bottom:20%;left:8%;background:radial-gradient(circle,#0ea5e9,#0369a1);animation:floatSphere2 9s ease-in-out infinite;}
+        .sphere.small-1 {width:clamp(60px,12vw,95px);height:clamp(60px,12vw,95px);top:50%;right:8%;background:radial-gradient(circle,#06b6d4,#0e7490);animation:floatSphere3 6s ease-in-out infinite;}
+
+        .translation-button {
+            position:fixed;top:clamp(20px,5vw,30px);right:clamp(20px,5vw,30px);
+            background:rgba(255,255,255,0.1);backdrop-filter:blur(25px);
+            border:2px solid var(--glass-border);border-radius:50px;
+            padding:clamp(8px,2vw,12px);cursor:pointer;z-index:1000;display:flex;align-items:center;justify-content:center;
+            width:clamp(50px,12vw,60px);height:clamp(50px,12vw,60px);
+            transition:all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+            box-shadow:0 8px 25px -10px rgba(0,0,0,0.2),inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        body[dir="ltr"] .translation-button {right:auto;left:clamp(20px,5vw,30px);}
+        .translation-button:hover {
+            width:auto;padding:clamp(8px,2vw,12px) clamp(16px,4vw,22px);
+            border-color:var(--translation-color);background:rgba(139,92,246,0.1);transform:translateY(-3px);
+            animation:translate-glow 2.5s infinite alternate;
+        }
+        .translation-button .icon-translate {width:28px;height:28px;flex-shrink:0;transition:transform 0.3s ease;}
+        .translation-button:hover .icon-translate {transform:scale(0.9);}
+        .translation-text {font-size:clamp(0.85rem,2.2vw,1rem);font-weight:600;color:var(--translation-color);white-space:nowrap;display:none;margin-left:10px;}
+        body[dir="ltr"] .translation-text {margin-left:0;margin-right:10px;}
+        .translation-button:hover .translation-text {display:block;}
+
+        .main-content {max-width:1200px;margin:90px auto 0;padding:clamp(20px,5vw,40px);}
+        .glassy-card {
+            background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:var(--border-radius);
+            padding:clamp(20px,5vw,30px);margin-bottom:clamp(25px,5vw,35px);backdrop-filter:blur(25px);
+            transition:all 0.4s ease;box-shadow:0 20px 50px rgba(0,0,0,0.1),inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        .glassy-card:hover {transform:translateY(-5px) scale(1.01);border-color:rgba(255,255,255,0.7);}
+        
+        h1,h2,h3,h4,h5 { color:#0f172a;text-shadow:0 2px 8px rgba(255,255,255,0.8);font-weight:700;}
+        h1 { font-size:clamp(2rem,6vw,3.2rem);text-align:center;margin-bottom:clamp(20px,4vw,30px);color:#0c4a6e; }
+        h2 { font-size:clamp(1.5rem,5vw,2.5rem);border-bottom:3px solid rgba(14,165,233,0.3);padding-bottom:clamp(10px,2vw,15px);margin-bottom:clamp(20px,4vw,30px);}
+        h3 { font-size:clamp(1.2rem,4vw,1.8rem);margin-bottom:clamp(15px,3vw,20px);}
+        h4 { font-size:clamp(1.1rem,3.5vw,1.4rem);color:var(--highlight-color);margin-bottom:clamp(12px,2vw,15px);}
+        h5 { font-size:clamp(1rem,3vw,1.2rem);color:var(--practice-color);margin-bottom:clamp(10px,2vw,12px);}
+        p,li { color:#475569;margin-bottom:clamp(10px,2vw,12px);}
+        strong {color:#1e3a8a;}
+        
+        .formula { background:rgba(255,255,255,0.4); padding:clamp(15px,3vw,20px);border-radius:14px;font-family:monospace;border:1px solid rgba(255,255,255,0.3);backdrop-filter:blur(10px);margin:20px 0;text-align:center;font-size:clamp(1rem,3vw,1.3rem);}
+        ul,ol { padding-right:clamp(20px,4vw,25px);margin-bottom:20px;}
+        body[dir="ltr"] ul,body[dir="ltr"] ol {padding-right:0;padding-left:clamp(20px,4vw,25px);}
+        
+        .case-study { border-right:4px solid var(--highlight-color);padding-right:20px;margin:25px 0;}
+        body[dir="ltr"] .case-study {border-right:none;border-left:4px solid var(--highlight-color);padding-right:0;padding-left:20px;}
+        
+        .practice-question {
+            background:rgba(22,163,74,0.08); border:2px solid rgba(22,163,74,0.2);
+            border-radius:18px; padding:25px; margin-top:20px;
+            cursor:pointer; position:relative;
+            transition:all 0.4s ease;
+        }
+        .practice-question:hover {transform: translateY(-3px);border-color: var(--practice-color);background:rgba(22,163,74,0.12);}
+        .practice-question.open {border-color: var(--practice-color);background:rgba(22,163,74,0.15);}
+        .practice-question::after {content:'⏷';position:absolute;top:25px;left:25px;font-size:1.2rem;color:var(--practice-color);transition:transform 0.4s ease;}
+        body[dir="ltr"] .practice-question::after {left:auto;right:25px;}
+        .practice-question.open::after {transform: rotate(180deg);}
+        
+        .solution-card { max-height:0; overflow:hidden; transition:max-height 1.2s ease-in-out,margin-top 0.5s ease;}
+        .solution-card.show { max-height:3000px;margin-top:20px;}
+        .solution-content { background:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.4); padding:20px; border-radius:14px; }
+        .solution-content strong { color:#15803d;}
+
+        /* Accounting Table Styles */
+        .accounting-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .accounting-table th,
+        .accounting-table td {
+            padding: clamp(6px, 1.5vw, 10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+        }
+        .accounting-table th {
+            background: rgba(14,165,233,0.2);
+            font-weight: 700;
+            color: #0c4a6e;
+        }
+        .accounting-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.1);
+        }
+        .accounting-table .transaction-row {
+            font-weight: 600;
+        }
+        .accounting-table .balance-row {
+            background: rgba(22,163,74,0.15);
+            font-weight: 700;
+        }
+        .accounting-table .total-row {
+            background: rgba(139,92,246,0.15);
+            font-weight: 700;
+            border-top: 2px solid var(--highlight-color);
+        }
+        .positive { color: #16a34a; }
+        .negative { color: #dc2626; }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .hidden { display:none !important; }
+    </style>
+</head>
+<body>
+    <div class="background-gradient"></div>
+    <div class="floating-spheres">
+        <div class="sphere large"></div>
+        <div class="sphere medium"></div>
+        <div class="sphere small-1"></div>
+    </div>
+    
+    <button class="translation-button" id="translationButton">
+        <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="translation-text">ترجمة</span>
+    </button>
+
+    <main class="main-content">
+        <!-- Arabic Content -->
+        <div id="arabicContent">
+            <section class="glassy-card">
+                <h1>موجز عملي متكامل: أساسيات المعادلة المحاسبية وتحليل المعاملات</h1>
+            </section>
+
+            <section class="glassy-card">
+                <h2>1. الخلاصة التنفيذية</h2>
+                <p>يقدم هذا الموجز شرحاً تفصيلياً للمبادئ الأساسية في المحاسبة، بدءاً من المعادلة المحاسبية الأساسية التي تشكل حجر الزاوية لكل العمليات المحاسبية. نستعرض مكونات المعادلة الثلاثة: الأصول (Assets)، الخصوم (Liabilities)، وحقوق الملكية (Owner's Equity)، مع تصنيفاتها المختلفة. كما يوضح الملخص كيفية تأثير المعاملات التجارية المختلفة — مثل الاستثمار، الشراء، البيع، سداد الديون، وتحصيل الإيرادات — على توازن هذه المعادلة. وأخيراً، يتم تطبيق هذه المفاهيم بشكل عملي من خلال تحليل حالات دراسية متعددة تظهر الأثر الرقمي لكل معاملة على بنود المعادلة.</p>
+            </section>
+
+            <section class="glassy-card">
+                <h2>2. أهم القواعد والمفاهيم</h2>
+                <ul>
+                    <li><strong>المعادلة المحاسبية الأساسية:</strong> هي القاعدة الجوهرية التي تنص على أن أصول المنشأة يجب أن تساوي دائماً مجموع التزاماتها وحقوق أصحابها.</li>
+                </ul>
+                <div class="formula">الأصول = الخصوم + حقوق الملكية</div>
+                
+                <h3>الأصول (Assets)</h3>
+                <p>هي موارد اقتصادية تمتلكها المنشأة ويتوقع أن تحقق منافع مستقبلية. وتنقسم إلى:</p>
+                <ul>
+                    <li><strong>الأصول المتداولة (Current Assets):</strong> أصول تتحول إلى نقدية أو تُستخدم خلال سنة واحدة (مثل: النقدية، حسابات القبض، المخزون، والمهمات).</li>
+                    <li><strong>الأصول الثابتة (Fixed Assets):</strong> أصول تُقتنى للاستخدام في العمليات وليس لإعادة البيع، وتخدم الشركة لأكثر من سنة (مثل: الأراضي، المباني، والمعدات).</li>
+                </ul>
+
+                <h3>الخصوم (Liabilities)</h3>
+                <p>هي التزامات وديون حالية على المنشأة تجاه الغير. وتنقسم إلى:</p>
+                <ul>
+                    <li><strong>الخصوم المتداولة (Current Liabilities):</strong> التزامات يجب سدادها خلال الفترة الحالية أو سنة (مثل: حسابات الدفع، أوراق الدفع، والمصروفات المستحقة).</li>
+                    <li><strong>الخصوم طويلة الأجل (Long-term Liabilities):</strong> التزامات يستمر سدادها لأكثر من سنة (مثل: القروض البنكية والسندات).</li>
+                </ul>
+
+                <h3>حقوق الملكية (Owner's Equity)</h3>
+                <p>هي مطالب أصحاب المنشأة على أصولها بعد سداد كافة الخصوم.</p>
+                <ul>
+                    <li><strong>تزيد حقوق الملكية عن طريق:</strong> استثمارات المالك (Investment by owner) والإيرادات (Revenues).</li>
+                    <li><strong>تنقص حقوق الملكية عن طريق:</strong> المسحوبات الشخصية للمالك (Drawings) والمصروفات (Expenses).</li>
+                </ul>
+
+                <h3>المفاهيم الأخرى</h3>
+                <ul>
+                    <li><strong>الإيرادات (Revenues):</strong> هي الدخل الناتج عن أنشطة الشركة التجارية، مثل إيرادات المبيعات أو تقديم الخدمات.</li>
+                    <li><strong>المصروفات (Expenses):</strong> هي تكلفة الأصول المستهلكة أو الخدمات المستخدمة في سبيل تحقيق الإيرادات، مثل الرواتب والإيجارات.</li>
+                    <li><strong>صافي الدخل أو الخسارة:</strong> هو الفرق بين إجمالي الإيرادات وإجمالي المصروفات خلال فترة محاسبية معينة (صافي الدخل = الإيرادات > المصروفات، صافي الخسارة = الإيرادات < المصروفات).</li>
+                </ul>
+            </section>
+
+            <section class="glassy-card">
+                <h2>3. مكتبة الحالات العملية وساحة التدريب</h2>
+
+                <div class="case-study">
+                    <h3>الحالة العملية (1): حساب حقوق الملكية والخصوم</h3>
+                    <h4>تشريح المثال:</h4>
+                    <p><strong>المسألة الأصلية:</strong></p>
+                    <p>(أ) إجمالي أصول شركة (E.H) هو 800,000$ وإجمالي خصومها 300,000$. ما هو مقدار حقوق الملكية؟</p>
+                    <p>(ب) إجمالي أصول شركة (E.H) هو 900,000$ وحقوق الملكية تمثل 2/3 من الأصول. ما هو مقدار إجمالي الخصوم؟</p>
+                    
+                    <h5>تفكيك الحل:</h5>
+                    <ul>
+                        <li><strong>البيانات:</strong> (أ) الأصول = 800,000$، الخصوم = 300,000$. (ب) الأصول = 900,000$، حقوق الملكية = 2/3 * الأصول.</li>
+                        <li><strong>القاعدة المطبقة:</strong> الأصول = الخصوم + حقوق الملكية.</li>
+                        <li><strong>الخطوات المنطقية:</strong>
+                            <ul>
+                                <li>(أ) حساب حقوق الملكية: حقوق الملكية = الأصول - الخصوم = 800,000$ - 300,000$ = 500,000$.</li>
+                                <li>(ب) حساب الخصوم: أولاً، نحسب حقوق الملكية: 900,000$ * (2/3) = 600,000$. ثانياً، نطبق المعادلة لإيجاد الخصوم: الخصوم = الأصول - حقوق الملكية = 900,000$ - 600,000$ = 300,000$.</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="practice-question">
+                        <h4>ساحة التدريب:</h4>
+                        <p><strong>تمرين محاكاة:</strong> إذا كانت أصول شركة "القمة" تبلغ 2,500,000 ريال وحقوق الملكية فيها 1,800,000 ريال، فما هو مقدار خصومها؟</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>الحل:</strong></p>
+                            <p>باستخدام المعادلة المحاسبية: الأصول = الخصوم + حقوق الملكية</p>
+                            <ul>
+                                <li>الأصول = 2,500,000 ريال</li>
+                                <li>حقوق الملكية = 1,800,000 ريال</li>
+                                <li>الخصوم = الأصول - حقوق الملكية</li>
+                                <li><strong>الخصوم = 2,500,000 - 1,800,000 = 700,000 ريال</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>الحالة العملية (2): تحليل التغير في حقوق الملكية</h3>
+                    <h4>تشريح المثال:</h4>
+                    <p><strong>المسألة الأصلية:</strong> بيانات شركة (E.H) كما يلي: في 1/1/2012 كانت الأصول 700,000 والخصوم 280,000. وفي 31/12/2012 أصبحت الأصول 780,000 والخصوم 240,000. المطلوب: حساب التغير في حقوق الملكية.</p>
+                    
+                    <h5>تفكيك الحل:</h5>
+                    <ul>
+                        <li><strong>البيانات:</strong> أصول وخصوم بداية ونهاية المدة.</li>
+                        <li><strong>القاعدة المطبقة:</strong> التغير في الأصول = التغير في الخصوم + التغير في حقوق الملكية (∆A = ∆L + ∆OE).</li>
+                        <li><strong>الخطوات المنطقية:</strong>
+                            <ul>
+                                <li>حساب التغير في الأصول (∆A): رصيد نهاية المدة - رصيد بداية المدة = 780,000 - 700,000 = +80,000 (زيادة).</li>
+                                <li>حساب التغير في الخصوم (∆L): رصيد نهاية المدة - رصيد بداية المدة = 240,000 - 280,000 = -40,000 (نقص).</li>
+                                <li>تطبيق المعادلة: +80,000 = -40,000 + ∆OE</li>
+                                <li>إيجاد التغير في حقوق الملكية (∆OE): ∆OE = 80,000 + 40,000 = 120,000 (زيادة).</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="practice-question">
+                        <h4>ساحة التدريب:</h4>
+                        <p><strong>تمرين محاكاة:</strong> بدأت شركة استشارات عامها المالي بأصول قيمتها 450,000 وخصوم قيمتها 100,000. أنهت العام بأصول قيمتها 430,000 وخصوم قيمتها 60,000. ما هو صافي التغير في حقوق الملكية خلال العام؟</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>الحل:</strong></p>
+                            <p><strong>بداية العام:</strong></p>
+                            <ul>
+                                <li>حقوق الملكية = 450,000 - 100,000 = 350,000</li>
+                            </ul>
+                            <p><strong>نهاية العام:</strong></p>
+                            <ul>
+                                <li>حقوق الملكية = 430,000 - 60,000 = 370,000</li>
+                            </ul>
+                            <p><strong>التغير في حقوق الملكية = 370,000 - 350,000 = +20,000 (زيادة)</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>الحالة العملية (3): تحليل معاملات مركز E.H للكمبيوتر</h3>
+                    <h4>تشريح المثال:</h4>
+                    <p><strong>المسألة الأصلية:</strong> قام مركز E.H بسلسلة من المعاملات. المطلوب هو بيان أثر كل معاملة على المعادلة المحاسبية.</p>
+                    
+                    <h5>تفكيك الحل:</h5>
+                    <p><strong>القاعدة المطبقة:</strong> يجب أن تظل المعادلة (الأصول = الخصوم + حقوق الملكية) متوازنة بعد كل معاملة.</p>
+                    
+                    <h5>الخطوات المنطقية وتحليل المعاملات:</h5>
+                    <ul>
+                        <li><strong>المعاملة (1):</strong> "قرر E.H بدء مركز كمبيوتر". هذا ليس حدثاً اقتصادياً يمكن قياسه مالياً، لذا لا يوجد أثر محاسبي.</li>
+                        <li><strong>المعاملة (2):</strong> "استثمار 15,000$ نقداً في العمل". الأثر: زيادة أصل (النقدية) بـ 15,000$، وزيادة حقوق الملكية (رأس المال) بـ 15,000$.</li>
+                        <li><strong>المعاملة (3):</strong> "شراء معدات كمبيوتر بـ 7,000$ نقداً". الأثر: زيادة أصل (المعدات) بـ 7,000$، ونقص أصل آخر (النقدية) بـ 7,000$.</li>
+                        <li><strong>المعاملة (4):</strong> "شراء لوازم ومهمات مكتبية بـ 1,600$ على الحساب". الأثر: زيادة أصل (اللوازم) بـ 1,600$، وزيادة خصم (حسابات الدفع) بـ 1,600$.</li>
+                        <li><strong>المعاملة (5):</strong> "استلام 1,200$ نقداً من العملاء مقابل خدمات برمجة". الأثر: زيادة أصل (النقدية) بـ 1,200$، وزيادة حقوق الملكية (إيرادات) بـ 1,200$.</li>
+                        <li><strong>المعاملة (6):</strong> "استلام فاتورة إعلان بقيمة 250$ سيتم دفعها لاحقاً". الأثر: زيادة خصم (حسابات الدفع) بـ 250$، ونقص حقوق الملكية (زيادة المصروفات) بـ 250$.</li>
+                        <li><strong>المعاملة (7):</strong> "تقديم خدمات برمجة بقيمة 3,500$، تم استلام 1,500$ نقداً والباقي 2,000$ على الحساب". الأثر: زيادة أصل (النقدية) بـ 1,500$، وزيادة أصل (حسابات القبض) بـ 2,000$، وزيادة حقوق الملكية (إيرادات) بمجموع 3,500$.</li>
+                        <li><strong>المعاملة (8):</strong> "دفع مصاريف نقدية: إيجار 600$، رواتب 900$، خدمات عامة 200$". الأثر: نقص أصل (النقدية) بإجمالي 1,700$ (600+900+200)، ونقص حقوق الملكية (زيادة المصروفات) بـ 1,700$.</li>
+                        <li><strong>المعاملة (9):</strong> "دفع فاتورة الإعلان البالغة 250$ نقداً". الأثر: نقص أصل (النقدية) بـ 250$، ونقص خصم (حسابات الدفع) بـ 250$.</li>
+                        <li><strong>المعاملة (10):</strong> "استلام 600$ نقداً من عملاء كانوا مدينين (من المعاملة 7)". الأثر: زيادة أصل (النقدية) بـ 600$، ونقص أصل آخر (حسابات القبض) بـ 600$.</li>
+                        <li><strong>المعاملة (11):</strong> "سحب المالك 1,300$ نقداً للاستخدام الشخصي". الأثر: نقص أصل (النقدية) بـ 1,300$، ونقص حقوق الملكية (زيادة المسحوبات) بـ 1,300$.</li>
+                    </ul>
+
+                    <h5>الجدول النهائي لتتبع الأثر على المعادلة المحاسبية:</h5>
+                    <div class="table-container">
+                        <table class="accounting-table">
+                            <thead>
+                                <tr>
+                                    <th>المعاملة</th>
+                                    <th colspan="4">الأصول</th>
+                                    <th>=</th>
+                                    <th>الخصوم</th>
+                                    <th colspan="4">حقوق الملكية</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>النقدية</th>
+                                    <th>ح. القبض</th>
+                                    <th>اللوازم</th>
+                                    <th>المعدات</th>
+                                    <th>=</th>
+                                    <th>ح. الدفع</th>
+                                    <th>رأس المال</th>
+                                    <th>المسحوبات</th>
+                                    <th>الإيرادات</th>
+                                    <th>المصروفات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="transaction-row">
+                                    <td>(2)</td>
+                                    <td class="positive">+15,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td class="positive">+15,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(3)</td>
+                                    <td class="negative">-7,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+7,000</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(4)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+1,600</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="positive">+1,600</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(5)</td>
+                                    <td class="positive">+1,200</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+1,200</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(6)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="positive">+250</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-250</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(7)</td>
+                                    <td class="positive">+1,500</td>
+                                    <td class="positive">+2,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+3,500</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(8)</td>
+                                    <td class="negative">-1,700</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-1,700</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(9)</td>
+                                    <td class="negative">-250</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="negative">-250</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(10)</td>
+                                    <td class="positive">+600</td>
+                                    <td class="negative">-600</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(11)</td>
+                                    <td class="negative">-1,300</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-1,300</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="balance-row">
+                                    <td><strong>الرصيد</strong></td>
+                                    <td><strong>8,050</strong></td>
+                                    <td><strong>1,400</strong></td>
+                                    <td><strong>1,600</strong></td>
+                                    <td><strong>7,000</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td><strong>1,600</strong></td>
+                                    <td><strong>15,000</strong></td>
+                                    <td><strong>-1,300</strong></td>
+                                    <td><strong>4,700</strong></td>
+                                    <td><strong>-1,950</strong></td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>الإجمالي</strong></td>
+                                    <td colspan="4"><strong>18,050</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td colspan="5"><strong>18,050</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="practice-question">
+                        <h4>ساحة التدريب:</h4>
+                        <p><strong>تمرين محاكاة:</strong> افتتحت "نورة" عيادة استشارات تغذية. قامت باستثمار 30,000 ريال نقداً. ثم اشترت أجهزة تحليل بـ 15,000 ريال، دفعت منها 5,000 ريال نقداً والباقي على الحساب. حلل أثر هاتين العمليتين على المعادلة المحاسبية.</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>الحل:</strong></p>
+                            <div class="table-container">
+                                <table class="accounting-table">
+                                    <thead>
+                                        <tr>
+                                            <th>المعاملة</th>
+                                            <th colspan="3">الأصول</th>
+                                            <th>=</th>
+                                            <th>الخصوم</th>
+                                            <th>حقوق الملكية</th>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>النقدية</th>
+                                            <th>المعدات</th>
+                                            <th>المجموع</th>
+                                            <th>=</th>
+                                            <th>ح. الدفع</th>
+                                            <th>رأس المال</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="transaction-row">
+                                            <td>(1)</td>
+                                            <td class="positive">+30,000</td>
+                                            <td>-</td>
+                                            <td>30,000</td>
+                                            <td>=</td>
+                                            <td>-</td>
+                                            <td class="positive">+30,000</td>
+                                        </tr>
+                                        <tr class="transaction-row">
+                                            <td>(2)</td>
+                                            <td class="negative">-5,000</td>
+                                            <td class="positive">+15,000</td>
+                                            <td>+10,000</td>
+                                            <td>=</td>
+                                            <td class="positive">+10,000</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr class="balance-row">
+                                            <td><strong>الرصيد</strong></td>
+                                            <td><strong>25,000</strong></td>
+                                            <td><strong>15,000</strong></td>
+                                            <td><strong>40,000</strong></td>
+                                            <td>=</td>
+                                            <td><strong>10,000</strong></td>
+                                            <td><strong>30,000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p><strong>التفسير:</strong> المعادلة متوازنة بعد كل معاملة (40,000 = 10,000 + 30,000)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>الحالة العملية (4): تحليل معاملات شركة Microsoft لخدمات البرمجة</h3>
+                    <h4>تشريح المثال:</h4>
+                    <p><strong>المسألة الأصلية:</strong> قام "إياد" بتأسيس شركة "Microsoft" لخدمات البرمجة وقام بسلسلة من المعاملات. المطلوب هو بيان أثر كل معاملة على المعادلة المحاسبية.</p>
+                    
+                    <h5>تفكيك الحل:</h5>
+                    <p><strong>القاعدة المطبقة:</strong> الأصول = الخصوم + حقوق الملكية.</p>
+                    
+                    <h5>الخطوات المنطقية وتحليل المعاملات:</h5>
+                    <ul>
+                        <li><strong>المعاملة (1):</strong> "استثمار 50,000 نقداً". الأثر: زيادة (النقدية) +50,000، وزيادة (رأس المال) +50,000.</li>
+                        <li><strong>المعاملة (2):</strong> "شراء معدات كمبيوتر بـ 30,000 على الحساب". الأثر: زيادة (المعدات) +30,000، وزيادة (ح. الدفع) +30,000.</li>
+                        <li><strong>المعاملة (3):</strong> "دفع 10,000 للموردين (الدائنين)". الأثر: نقص (النقدية) -10,000، ونقص (ح. الدفع) -10,000.</li>
+                        <li><strong>المعاملة (4):</strong> "شراء لوازم بـ 5,000 نقداً". الأثر: زيادة (اللوازم) +5,000، ونقص (النقدية) -5,000.</li>
+                        <li><strong>المعاملة (5):</strong> "تقديم خدمات بـ 2,000 واستلام المبلغ نقداً". الأثر: زيادة (النقدية) +2,000، وزيادة (الإيرادات) +2,000.</li>
+                        <li><strong>المعاملة (6):</strong> "تقديم خدمات بـ 3,000 على الحساب". الأثر: زيادة (ح. القبض) +3,000، وزيادة (الإيرادات) +3,000.</li>
+                        <li><strong>المعاملة (7):</strong> "استلام 1,000 نقداً من عملاء مدينين". الأثر: زيادة (النقدية) +1,000، ونقص (ح. القبض) -1,000.</li>
+                        <li><strong>المعاملة (8):</strong> "دفع رواتب 2,000 وإيجار 1,000 نقداً". الأثر: نقص (النقدية) -3,000، وزيادة (المصروفات) +3,000.</li>
+                        <li><strong>المعاملة (9):</strong> "تحمل مصروف إعلان بـ 500 على الحساب". الأثر: زيادة (ح. الدفع) +500، وزيادة (المصروفات) +500.</li>
+                        <li><strong>المعاملة (10):</strong> "شراء معدات أخرى بـ 10,000، تم دفع 4,000 نقداً وتوقيع ورقة دفع بالباقي". الأثر: زيادة (المعدات) +10,000، نقص (النقدية) -4,000، وزيادة (أوراق الدفع) +6,000.</li>
+                        <li><strong>المعاملة (11):</strong> "سحب المالك 1,000 نقداً للاستخدام الشخصي". الأثر: نقص (النقدية) -1,000، وزيادة (المسحوبات) +1,000.</li>
+                    </ul>
+
+                    <h5>الجدول النهائي لتتبع الأثر:</h5>
+                    <div class="table-container">
+                        <table class="accounting-table">
+                            <thead>
+                                <tr>
+                                    <th>المعاملة</th>
+                                    <th colspan="4">الأصول</th>
+                                    <th>=</th>
+                                    <th colspan="2">الخصوم</th>
+                                    <th colspan="4">حقوق الملكية</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>النقدية</th>
+                                    <th>ح. القبض</th>
+                                    <th>اللوازم</th>
+                                    <th>المعدات</th>
+                                    <th>=</th>
+                                    <th>ح. الدفع</th>
+                                    <th>أوراق الدفع</th>
+                                    <th>رأس المال</th>
+                                    <th>المسحوبات</th>
+                                    <th>الإيرادات</th>
+                                    <th>المصروفات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="transaction-row">
+                                    <td>(1)</td>
+                                    <td class="positive">+50,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+50,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(2)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+30,000</td>
+                                    <td>=</td>
+                                    <td class="positive">+30,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(3)</td>
+                                    <td class="negative">-10,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="negative">-10,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(4)</td>
+                                    <td class="negative">-5,000</td>
+                                    <td>-</td>
+                                    <td class="positive">+5,000</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(5)</td>
+                                    <td class="positive">+2,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+2,000</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(6)</td>
+                                    <td>-</td>
+                                    <td class="positive">+3,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+3,000</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(7)</td>
+                                    <td class="positive">+1,000</td>
+                                    <td class="negative">-1,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(8)</td>
+                                    <td class="negative">-3,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-3,000</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(9)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="positive">+500</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-500</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(10)</td>
+                                    <td class="negative">-4,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+10,000</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td class="positive">+6,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(11)</td>
+                                    <td class="negative">-1,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-1,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="balance-row">
+                                    <td><strong>الرصيد</strong></td>
+                                    <td><strong>30,000</strong></td>
+                                    <td><strong>2,000</strong></td>
+                                    <td><strong>5,000</strong></td>
+                                    <td><strong>40,000</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td><strong>20,500</strong></td>
+                                    <td><strong>6,000</strong></td>
+                                    <td><strong>50,000</strong></td>
+                                    <td><strong>-1,000</strong></td>
+                                    <td><strong>5,000</strong></td>
+                                    <td><strong>-3,500</strong></td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>الإجمالي</strong></td>
+                                    <td colspan="4"><strong>77,000</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td colspan="6"><strong>77,000</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="practice-question">
+                        <h4>ساحة التدريب:</h4>
+                        <p><strong>تمرين محاكاة:</strong> شركة "إياد" من المثال السابق قررت دفع نصف مبلغ أوراق الدفع المستحقة عليها نقداً. حلل أثر هذه العملية على أرصدة المعادلة المحاسبية النهائية.</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>الحل:</strong></p>
+                            <p><strong>الأرصدة قبل العملية:</strong> أوراق الدفع = 6,000 ريال، النقدية = 30,000 ريال</p>
+                            <p><strong>المطلوب دفعه:</strong> نصف أوراق الدفع = 6,000 ÷ 2 = 3,000 ريال</p>
+                            
+                            <div class="table-container">
+                                <table class="accounting-table">
+                                    <thead>
+                                        <tr>
+                                            <th>البيان</th>
+                                            <th>النقدية</th>
+                                            <th>أوراق الدفع</th>
+                                            <th>الأثر على المعادلة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>الرصيد السابق</td>
+                                            <td>30,000</td>
+                                            <td>6,000</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr class="transaction-row">
+                                            <td>دفع نصف أوراق الدفع</td>
+                                            <td class="negative">-3,000</td>
+                                            <td class="negative">-3,000</td>
+                                            <td>متوازنة (نقص في جانبي المعادلة)</td>
+                                        </tr>
+                                        <tr class="balance-row">
+                                            <td><strong>الرصيد الجديد</strong></td>
+                                            <td><strong>27,000</strong></td>
+                                            <td><strong>3,000</strong></td>
+                                            <td><strong>المعادلة متوازنة</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- English Content -->
+        <div id="englishContent" class="hidden">
+            <section class="glassy-card">
+                <h1>Comprehensive Practical Summary: Accounting Equation Basics & Transaction Analysis</h1>
+            </section>
+
+            <section class="glassy-card">
+                <h2>1. Executive Summary</h2>
+                <p>This summary provides a detailed explanation of fundamental accounting principles, starting with the basic accounting equation that forms the cornerstone of all accounting operations. We review the three components of the equation: Assets, Liabilities, and Owner's Equity, along with their various classifications. The summary also illustrates how different business transactions—such as investments, purchases, sales, debt payments, and revenue collections—affect the balance of this equation. Finally, these concepts are practically applied through analyzing multiple case studies that show the numerical impact of each transaction on the equation's components.</p>
+            </section>
+
+            <section class="glassy-card">
+                <h2>2. Key Rules & Concepts</h2>
+                <ul>
+                    <li><strong>Basic Accounting Equation:</strong> The fundamental rule stating that a company's assets must always equal the sum of its liabilities and owner's equity.</li>
+                </ul>
+                <div class="formula">Assets = Liabilities + Owner's Equity</div>
+                
+                <h3>Assets</h3>
+                <p>Economic resources owned by the entity, expected to provide future benefits. They are divided into:</p>
+                <ul>
+                    <li><strong>Current Assets:</strong> Assets that convert to cash or are used within one year (such as: cash, accounts receivable, inventory, and supplies).</li>
+                    <li><strong>Fixed Assets:</strong> Assets acquired for use in operations (not for resale), serving the company for more than one year (such as: land, buildings, and equipment).</li>
+                </ul>
+
+                <h3>Liabilities</h3>
+                <p>Current debts and obligations of the entity to others. They are divided into:</p>
+                <ul>
+                    <li><strong>Current Liabilities:</strong> Obligations that must be paid within the current period or year (such as: accounts payable, notes payable, and accrued expenses).</li>
+                    <li><strong>Long-term Liabilities:</strong> Obligations whose payment continues for more than one year (such as: bank loans and bonds).</li>
+                </ul>
+
+                <h3>Owner's Equity</h3>
+                <p>The owners' claims on the entity's assets after paying all liabilities.</p>
+                <ul>
+                    <li><strong>Owner's equity increases through:</strong> Owner investments and revenues.</li>
+                    <li><strong>Owner's equity decreases through:</strong> Owner drawings and expenses.</li>
+                </ul>
+
+                <h3>Other Concepts</h3>
+                <ul>
+                    <li><strong>Revenues:</strong> Income from the company's business activities, such as sales revenue or service provision.</li>
+                    <li><strong>Expenses:</strong> Cost of consumed assets or services used to earn revenues, such as salaries and rent.</li>
+                    <li><strong>Net Income or Loss:</strong> The difference between total revenues and total expenses during an accounting period (net income = revenues > expenses, net loss = revenues < expenses).</li>
+                </ul>
+            </section>
+
+            <section class="glassy-card">
+                <h2>3. Case Library & Practice Arena</h2>
+
+                <div class="case-study">
+                    <h3>Practical Case (1): Calculating Equity and Liabilities</h3>
+                    <h4>Case Analysis:</h4>
+                    <p><strong>Original Problem:</strong></p>
+                    <p>(a) Total assets of Company E.H are $800,000 and total liabilities are $300,000. What is the owner's equity amount?</p>
+                    <p>(b) Total assets of Company E.H are $900,000 and owner's equity equals 2/3 of assets. What is the total liabilities amount?</p>
+                    
+                    <h5>Solution Breakdown:</h5>
+                    <ul>
+                        <li><strong>Data:</strong> (a) Assets = $800,000, Liabilities = $300,000. (b) Assets = $900,000, Owner's equity = 2/3 * Assets.</li>
+                        <li><strong>Applied Rule:</strong> Assets = Liabilities + Owner's Equity.</li>
+                        <li><strong>Logical Steps:</strong>
+                            <ul>
+                                <li>(a) Calculate owner's equity: Owner's equity = Assets - Liabilities = $800,000 - $300,000 = $500,000.</li>
+                                <li>(b) Calculate liabilities: First, calculate owner's equity: $900,000 * (2/3) = $600,000. Second, apply equation to find liabilities: Liabilities = Assets - Owner's equity = $900,000 - $600,000 = $300,000.</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="practice-question">
+                        <h4>Practice Arena:</h4>
+                        <p><strong>Simulation Exercise:</strong> If "Al-Qimmah" Company has assets of 2,500,000 SAR and owner's equity of 1,800,000 SAR, what is the amount of its liabilities?</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>Solution:</strong></p>
+                            <p>Using the accounting equation: Assets = Liabilities + Owner's Equity</p>
+                            <ul>
+                                <li>Assets = 2,500,000 SAR</li>
+                                <li>Owner's Equity = 1,800,000 SAR</li>
+                                <li>Liabilities = Assets - Owner's Equity</li>
+                                <li><strong>Liabilities = 2,500,000 - 1,800,000 = 700,000 SAR</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Practical Case (2): Analyzing Change in Owner's Equity</h3>
+                    <h4>Case Analysis:</h4>
+                    <p><strong>Original Problem:</strong> Company E.H data as follows: On 1/1/2012 assets were 700,000 and liabilities 280,000. On 31/12/2012 assets became 780,000 and liabilities 240,000. Required: Calculate the change in owner's equity.</p>
+                    
+                    <h5>Solution Breakdown:</h5>
+                    <ul>
+                        <li><strong>Data:</strong> Beginning and ending assets and liabilities.</li>
+                        <li><strong>Applied Rule:</strong> Change in assets = Change in liabilities + Change in owner's equity (∆A = ∆L + ∆OE).</li>
+                        <li><strong>Logical Steps:</strong>
+                            <ul>
+                                <li>Calculate change in assets (∆A): Ending balance - Beginning balance = 780,000 - 700,000 = +80,000 (increase).</li>
+                                <li>Calculate change in liabilities (∆L): Ending balance - Beginning balance = 240,000 - 280,000 = -40,000 (decrease).</li>
+                                <li>Apply equation: +80,000 = -40,000 + ∆OE</li>
+                                <li>Find change in owner's equity (∆OE): ∆OE = 80,000 + 40,000 = 120,000 (increase).</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="practice-question">
+                        <h4>Practice Arena:</h4>
+                        <p><strong>Simulation Exercise:</strong> A consulting company started its fiscal year with assets of 450,000 and liabilities of 100,000. It ended the year with assets of 430,000 and liabilities of 60,000. What is the net change in owner's equity during the year?</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>Solution:</strong></p>
+                            <p><strong>Beginning of year:</strong></p>
+                            <ul>
+                                <li>Owner's Equity = 450,000 - 100,000 = 350,000</li>
+                            </ul>
+                            <p><strong>End of year:</strong></p>
+                            <ul>
+                                <li>Owner's Equity = 430,000 - 60,000 = 370,000</li>
+                            </ul>
+                            <p><strong>Change in Owner's Equity = 370,000 - 350,000 = +20,000 (increase)</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Practical Case (3): E.H Computer Center Transaction Analysis</h3>
+                    <h4>Case Analysis:</h4>
+                    <p><strong>Original Problem:</strong> E.H Computer Center conducted a series of transactions. Required: Show the effect of each transaction on the accounting equation.</p>
+                    
+                    <h5>Solution Breakdown:</h5>
+                    <p><strong>Applied Rule:</strong> The equation (Assets = Liabilities + Owner's Equity) must remain balanced after each transaction.</p>
+                    
+                    <h5>Logical Steps and Transaction Analysis:</h5>
+                    <ul>
+                        <li><strong>Transaction (1):</strong> "E.H decided to start a computer center". This is not an economic event that can be measured financially, so there's no accounting effect.</li>
+                        <li><strong>Transaction (2):</strong> "Investment of $15,000 cash in the business". Effect: Increase asset (Cash) by +$15,000, and increase owner's equity (Capital) by +$15,000.</li>
+                        <li><strong>Transaction (3):</strong> "Purchase computer equipment for $7,000 cash". Effect: Increase asset (Equipment) by +$7,000, and decrease another asset (Cash) by -$7,000.</li>
+                        <li><strong>Transaction (4):</strong> "Purchase office supplies for $1,600 on account". Effect: Increase asset (Supplies) by +$1,600, and increase liability (Accounts Payable) by +$1,600.</li>
+                        <li><strong>Transaction (5):</strong> "Receive $1,200 cash from customers for programming services". Effect: Increase asset (Cash) by +$1,200, and increase owner's equity (Revenues) by +$1,200.</li>
+                        <li><strong>Transaction (6):</strong> "Receive advertising bill of $250 to be paid later". Effect: Increase liability (Accounts Payable) by +$250, and decrease owner's equity (increase Expenses) by -$250.</li>
+                        <li><strong>Transaction (7):</strong> "Provide programming services for $3,500, receive $1,500 cash and bill the remaining $2,000". Effect: Increase asset (Cash) by +$1,500, increase asset (Accounts Receivable) by +$2,000, and increase owner's equity (Revenues) by total $3,500.</li>
+                        <li><strong>Transaction (8):</strong> "Pay cash expenses: rent $600, salaries $900, utilities $200". Effect: Decrease asset (Cash) by total -$1,700 (600+900+200), and decrease owner's equity (increase Expenses) by -$1,700.</li>
+                        <li><strong>Transaction (9):</strong> "Pay advertising bill of $250 in cash". Effect: Decrease asset (Cash) by -$250, and decrease liability (Accounts Payable) by -$250.</li>
+                        <li><strong>Transaction (10):</strong> "Receive $600 cash from customers who were billed (from transaction 7)". Effect: Increase asset (Cash) by +$600, and decrease another asset (Accounts Receivable) by -$600.</li>
+                        <li><strong>Transaction (11):</strong> "Owner withdraws $1,300 cash for personal use". Effect: Decrease asset (Cash) by -$1,300, and decrease owner's equity (increase Drawings) by -$1,300.</li>
+                    </ul>
+
+                    <h5>Final Table Tracking Effects on Accounting Equation:</h5>
+                    <div class="table-container">
+                        <table class="accounting-table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction</th>
+                                    <th colspan="4">Assets</th>
+                                    <th>=</th>
+                                    <th>Liabilities</th>
+                                    <th colspan="4">Owner's Equity</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Cash</th>
+                                    <th>A/R</th>
+                                    <th>Supplies</th>
+                                    <th>Equipment</th>
+                                    <th>=</th>
+                                    <th>A/P</th>
+                                    <th>Capital</th>
+                                    <th>Drawings</th>
+                                    <th>Revenues</th>
+                                    <th>Expenses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="transaction-row">
+                                    <td>(2)</td>
+                                    <td class="positive">+15,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td class="positive">+15,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(3)</td>
+                                    <td class="negative">-7,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+7,000</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(4)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+1,600</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="positive">+1,600</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(5)</td>
+                                    <td class="positive">+1,200</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+1,200</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(6)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="positive">+250</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-250</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(7)</td>
+                                    <td class="positive">+1,500</td>
+                                    <td class="positive">+2,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+3,500</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(8)</td>
+                                    <td class="negative">-1,700</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-1,700</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(9)</td>
+                                    <td class="negative">-250</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="negative">-250</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(10)</td>
+                                    <td class="positive">+600</td>
+                                    <td class="negative">-600</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(11)</td>
+                                    <td class="negative">-1,300</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-1,300</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="balance-row">
+                                    <td><strong>Balance</strong></td>
+                                    <td><strong>8,050</strong></td>
+                                    <td><strong>1,400</strong></td>
+                                    <td><strong>1,600</strong></td>
+                                    <td><strong>7,000</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td><strong>1,600</strong></td>
+                                    <td><strong>15,000</strong></td>
+                                    <td><strong>-1,300</strong></td>
+                                    <td><strong>4,700</strong></td>
+                                    <td><strong>-1,950</strong></td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>Total</strong></td>
+                                    <td colspan="4"><strong>18,050</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td colspan="5"><strong>18,050</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="practice-question">
+                        <h4>Practice Arena:</h4>
+                        <p><strong>Simulation Exercise:</strong> "Norah" opened a nutrition consulting clinic. She invested 30,000 SAR in cash. Then she bought analysis equipment for 15,000 SAR, paying 5,000 SAR in cash and the rest on account. Analyze the effect of these two transactions on the accounting equation.</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>Solution:</strong></p>
+                            <div class="table-container">
+                                <table class="accounting-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Transaction</th>
+                                            <th colspan="3">Assets</th>
+                                            <th>=</th>
+                                            <th>Liabilities</th>
+                                            <th>Owner's Equity</th>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>Cash</th>
+                                            <th>Equipment</th>
+                                            <th>Total</th>
+                                            <th>=</th>
+                                            <th>A/P</th>
+                                            <th>Capital</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="transaction-row">
+                                            <td>(1)</td>
+                                            <td class="positive">+30,000</td>
+                                            <td>-</td>
+                                            <td>30,000</td>
+                                            <td>=</td>
+                                            <td>-</td>
+                                            <td class="positive">+30,000</td>
+                                        </tr>
+                                        <tr class="transaction-row">
+                                            <td>(2)</td>
+                                            <td class="negative">-5,000</td>
+                                            <td class="positive">+15,000</td>
+                                            <td>+10,000</td>
+                                            <td>=</td>
+                                            <td class="positive">+10,000</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr class="balance-row">
+                                            <td><strong>Balance</strong></td>
+                                            <td><strong>25,000</strong></td>
+                                            <td><strong>15,000</strong></td>
+                                            <td><strong>40,000</strong></td>
+                                            <td>=</td>
+                                            <td><strong>10,000</strong></td>
+                                            <td><strong>30,000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p><strong>Explanation:</strong> The equation remains balanced after each transaction (40,000 = 10,000 + 30,000)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Practical Case (4): Microsoft Programming Services Transaction Analysis</h3>
+                    <h4>Case Analysis:</h4>
+                    <p><strong>Original Problem:</strong> "Eyad" established "Microsoft" Programming Services company and conducted a series of transactions. Required: Show the effect of each transaction on the accounting equation.</p>
+                    
+                    <h5>Solution Breakdown:</h5>
+                    <p><strong>Applied Rule:</strong> Assets = Liabilities + Owner's Equity.</p>
+                    
+                    <h5>Logical Steps and Transaction Analysis:</h5>
+                    <ul>
+                        <li><strong>Transaction (1):</strong> "Investment of 50,000 cash". Effect: Increase (Cash) +50,000, and increase (Capital) +50,000.</li>
+                        <li><strong>Transaction (2):</strong> "Purchase computer equipment for 30,000 on account". Effect: Increase (Equipment) +30,000, and increase (A/P) +30,000.</li>
+                        <li><strong>Transaction (3):</strong> "Pay 10,000 to suppliers (creditors)". Effect: Decrease (Cash) -10,000, and decrease (A/P) -10,000.</li>
+                        <li><strong>Transaction (4):</strong> "Purchase supplies for 5,000 cash". Effect: Increase (Supplies) +5,000, and decrease (Cash) -5,000.</li>
+                        <li><strong>Transaction (5):</strong> "Provide services for 2,000 and receive cash". Effect: Increase (Cash) +2,000, and increase (Revenues) +2,000.</li>
+                        <li><strong>Transaction (6):</strong> "Provide services for 3,000 on account". Effect: Increase (A/R) +3,000, and increase (Revenues) +3,000.</li>
+                        <li><strong>Transaction (7):</strong> "Receive 1,000 cash from customers on account". Effect: Increase (Cash) +1,000, and decrease (A/R) -1,000.</li>
+                        <li><strong>Transaction (8):</strong> "Pay salaries 2,000 and rent 1,000 in cash". Effect: Decrease (Cash) -3,000, and increase (Expenses) +3,000.</li>
+                        <li><strong>Transaction (9):</strong> "Incur advertising expense of 500 on account". Effect: Increase (A/P) +500, and increase (Expenses) +500.</li>
+                        <li><strong>Transaction (10):</strong> "Purchase additional equipment for 10,000, paid 4,000 cash and signed note for remainder". Effect: Increase (Equipment) +10,000, decrease (Cash) -4,000, and increase (Notes Payable) +6,000.</li>
+                        <li><strong>Transaction (11):</strong> "Owner withdraws 1,000 cash for personal use". Effect: Decrease (Cash) -1,000, and increase (Drawings) +1,000.</li>
+                    </ul>
+
+                    <h5>Final Table Tracking Effects:</h5>
+                    <div class="table-container">
+                        <table class="accounting-table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction</th>
+                                    <th colspan="4">Assets</th>
+                                    <th>=</th>
+                                    <th colspan="2">Liabilities</th>
+                                    <th colspan="4">Owner's Equity</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Cash</th>
+                                    <th>A/R</th>
+                                    <th>Supplies</th>
+                                    <th>Equipment</th>
+                                    <th>=</th>
+                                    <th>A/P</th>
+                                    <th>Notes Payable</th>
+                                    <th>Capital</th>
+                                    <th>Drawings</th>
+                                    <th>Revenues</th>
+                                    <th>Expenses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="transaction-row">
+                                    <td>(1)</td>
+                                    <td class="positive">+50,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+50,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(2)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+30,000</td>
+                                    <td>=</td>
+                                    <td class="positive">+30,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(3)</td>
+                                    <td class="negative">-10,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="negative">-10,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(4)</td>
+                                    <td class="negative">-5,000</td>
+                                    <td>-</td>
+                                    <td class="positive">+5,000</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(5)</td>
+                                    <td class="positive">+2,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+2,000</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(6)</td>
+                                    <td>-</td>
+                                    <td class="positive">+3,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+3,000</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(7)</td>
+                                    <td class="positive">+1,000</td>
+                                    <td class="negative">-1,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(8)</td>
+                                    <td class="negative">-3,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-3,000</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(9)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td class="positive">+500</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-500</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(10)</td>
+                                    <td class="negative">-4,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="positive">+10,000</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td class="positive">+6,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="transaction-row">
+                                    <td>(11)</td>
+                                    <td class="negative">-1,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>=</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class="negative">-1,000</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="balance-row">
+                                    <td><strong>Balance</strong></td>
+                                    <td><strong>30,000</strong></td>
+                                    <td><strong>2,000</strong></td>
+                                    <td><strong>5,000</strong></td>
+                                    <td><strong>40,000</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td><strong>20,500</strong></td>
+                                    <td><strong>6,000</strong></td>
+                                    <td><strong>50,000</strong></td>
+                                    <td><strong>-1,000</strong></td>
+                                    <td><strong>5,000</strong></td>
+                                    <td><strong>-3,500</strong></td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>Total</strong></td>
+                                    <td colspan="4"><strong>77,000</strong></td>
+                                    <td><strong>=</strong></td>
+                                    <td colspan="6"><strong>77,000</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="practice-question">
+                        <h4>Practice Arena:</h4>
+                        <p><strong>Simulation Exercise:</strong> "Eyad's" company from the previous example decided to pay half of its outstanding notes payable in cash. Analyze the effect of this transaction on the final accounting equation balances.</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p><strong>Solution:</strong></p>
+                            <p><strong>Balances before transaction:</strong> Notes Payable = 6,000 SAR, Cash = 30,000 SAR</p>
+                            <p><strong>Amount to be paid:</strong> Half of notes payable = 6,000 ÷ 2 = 3,000 SAR</p>
+                            
+                            <div class="table-container">
+                                <table class="accounting-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Cash</th>
+                                            <th>Notes Payable</th>
+                                            <th>Effect on Equation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Previous Balance</td>
+                                            <td>30,000</td>
+                                            <td>6,000</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr class="transaction-row">
+                                            <td>Pay half notes payable</td>
+                                            <td class="negative">-3,000</td>
+                                            <td class="negative">-3,000</td>
+                                            <td>Balanced (decrease on both sides)</td>
+                                        </tr>
+                                        <tr class="balance-row">
+                                            <td><strong>New Balance</strong></td>
+                                            <td><strong>27,000</strong></td>
+                                            <td><strong>3,000</strong></td>
+                                            <td><strong>Equation Balanced</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Translation functionality
+            const translationButton = document.getElementById('translationButton');
+            const translationText = translationButton.querySelector('.translation-text');
+            const arabicContent = document.getElementById('arabicContent');
+            const englishContent = document.getElementById('englishContent');
+            const html = document.documentElement;
+            const body = document.body;
+            let isArabic = true;
+
+            function switchLanguage() {
+                isArabic = !isArabic;
+                
+                if (isArabic) {
+                    // Switch to Arabic
+                    html.setAttribute('lang', 'ar');
+                    html.setAttribute('dir', 'rtl');
+                    body.setAttribute('dir', 'rtl');
+                    arabicContent.classList.remove('hidden');
+                    englishContent.classList.add('hidden');
+                    translationText.textContent = 'ترجمة';
+                } else {
+                    // Switch to English
+                    html.setAttribute('lang', 'en');
+                    html.setAttribute('dir', 'ltr');
+                    body.setAttribute('dir', 'ltr');
+                    arabicContent.classList.add('hidden');
+                    englishContent.classList.remove('hidden');
+                    translationText.textContent = 'Translate';
+                }
+                
+                // Add visual feedback
+                translationButton.style.transform = 'translateY(-3px) scale(1.05)';
+                setTimeout(() => {
+                    translationButton.style.transform = '';
+                }, 300);
+                
+                console.log('Language switched to:', isArabic ? 'Arabic' : 'English');
+            }
+
+            translationButton.addEventListener('click', switchLanguage);
+
+            // Practice question functionality
+            function bindPracticeQuestions() {
+                const practiceQuestions = document.querySelectorAll('.practice-question');
+                
+                practiceQuestions.forEach(question => {
+                    // Remove any existing listeners
+                    question.removeEventListener('click', handleQuestionClick);
+                    
+                    // Add new listener
+                    question.addEventListener('click', handleQuestionClick);
+                });
+                
+                console.log('Bound', practiceQuestions.length, 'practice questions');
+            }
+
+            function handleQuestionClick(event) {
+                const question = event.currentTarget;
+                const solutionCard = question.nextElementSibling;
+                
+                if (solutionCard && solutionCard.classList.contains('solution-card')) {
+                    question.classList.toggle('open');
+                    solutionCard.classList.toggle('show');
+                    
+                    console.log('Question clicked, solution', solutionCard.classList.contains('show') ? 'shown' : 'hidden');
+                }
+            }
+
+            // Initialize practice questions
+            bindPracticeQuestions();
+            
+            // Re-bind after language switch to ensure functionality works in both languages
+            translationButton.addEventListener('click', () => {
+                setTimeout(bindPracticeQuestions, 100);
+            });
+            
+            console.log('Page initialized successfully');
+        });
+    </script>
+</body>
+</html>
+
