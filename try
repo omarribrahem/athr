@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشغل فيديو مع Timeline متقدم</title>
+    <title>Apple Vision Pro Video Player</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #1a1a1a;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,173 +18,132 @@
         }
 
         .video-player {
-            width: 100%;
-            max-width: 1000px;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
             position: relative;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
         #video {
             width: 100%;
+            height: auto;
             display: block;
+            border-radius: 20px;
         }
 
-        /* Timeline Container المتقدم */
-        .timeline-container {
-            padding: 20px;
-            background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
-            border-top: 1px solid #404040;
+        /* شريط التحكم السفلي */
+        .controls-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 16px 24px;
+            transform: translateY(100%);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 0 0 20px 20px;
         }
 
-        /* شريط Timeline الرئيسي */
-        .timeline {
+        .video-player:hover .controls-overlay {
+            transform: translateY(0);
+        }
+
+        /* شريط التقدم العلوي */
+        .progress-container {
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            margin-bottom: 16px;
             position: relative;
-            height: 8px;
-            background: #404040;
-            border-radius: 4px;
             cursor: pointer;
-            margin: 15px 0;
-            transition: height 0.2s ease;
         }
 
-        .timeline:hover {
-            height: 12px;
-        }
-
-        /* شريط التقدم */
-        .progress {
+        .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-            border-radius: 4px;
+            background: #fff;
+            border-radius: 2px;
             width: 0%;
-            transition: width 0.1s linear;
+            transition: width 0.1s ease;
             position: relative;
         }
 
-        /* نقطة التحكم (Scrubber) */
-        .scrubber {
+        .progress-thumb {
             position: absolute;
             top: 50%;
-            right: -8px;
-            width: 16px;
-            height: 16px;
+            right: -6px;
+            width: 12px;
+            height: 12px;
             background: #fff;
             border-radius: 50%;
-            transform: translateY(-50%);
-            cursor: grab;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
+            transform: translateY(-50%) scale(0);
+            transition: transform 0.2s ease;
         }
 
-        .scrubber:active {
-            cursor: grabbing;
-            transform: translateY(-50%) scale(1.2);
-        }
-
-        /* مؤشر الوقت المتحرك */
-        .time-tooltip {
-            position: absolute;
-            top: -40px;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.2s;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        .timeline:hover .time-tooltip {
-            opacity: 1;
-        }
-
-        /* معاينة الفيديو عند التحويم */
-        .preview-container {
-            position: absolute;
-            top: -120px;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.2s;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .timeline:hover .preview-container {
-            opacity: 1;
-        }
-
-        .video-preview {
-            width: 160px;
-            height: 90px;
-            background: #000;
-            border-radius: 6px;
-            border: 2px solid #fff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
-        /* نقاط المحتوى المهمة (Chapters) */
-        .chapter-markers {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .chapter-marker {
-            position: absolute;
-            top: 50%;
-            width: 3px;
-            height: 16px;
-            background: #ffeb3b;
-            transform: translateY(-50%);
-            border-radius: 2px;
-            cursor: pointer;
-            pointer-events: all;
-        }
-
-        .chapter-marker:hover {
-            background: #ffc107;
-            height: 20px;
+        .progress-container:hover .progress-thumb {
+            transform: translateY(-50%) scale(1);
         }
 
         /* أزرار التحكم */
         .controls {
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .main-controls {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .secondary-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .control-btn {
             background: transparent;
             border: none;
-            color: #fff;
             cursor: pointer;
             padding: 8px;
-            border-radius: 6px;
-            transition: background 0.2s;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .control-btn:hover {
             background: rgba(255,255,255,0.1);
         }
 
-        .play-pause {
-            font-size: 24px;
+        .control-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: rgba(255,255,255,0.9);
         }
 
-        .time-display {
-            color: #ccc;
+        .play-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* التوقيت */
+        .time-info {
+            color: rgba(255,255,255,0.7);
             font-size: 14px;
-            min-width: 100px;
+            font-weight: 400;
+            min-width: 80px;
+            text-align: center;
         }
 
+        /* مؤشر الصوت */
         .volume-container {
             display: flex;
             align-items: center;
@@ -192,324 +151,296 @@
         }
 
         .volume-slider {
-            width: 80px;
+            width: 60px;
             height: 4px;
-            background: #404040;
+            background: rgba(255,255,255,0.2);
             border-radius: 2px;
             outline: none;
             cursor: pointer;
+            -webkit-appearance: none;
         }
 
-        /* شريط التقدم الثانوي (Buffer) */
-        .buffer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: #666;
-            border-radius: 4px;
-            width: 0%;
-        }
-
-        /* Speed Control */
-        .speed-control {
-            color: #fff;
-            background: transparent;
-            border: 1px solid #666;
-            padding: 4px 8px;
-            border-radius: 4px;
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
             cursor: pointer;
         }
 
-        /* Timeline المصغر للفيديوهات الطويلة */
-        .mini-timeline {
+        /* عنوان الفيديو (اختياري) */
+        .video-title {
             position: absolute;
-            bottom: 80px;
-            left: 20px;
-            right: 20px;
-            height: 3px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
+            top: 24px;
+            left: 24px;
+            right: 24px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
             opacity: 0;
-            transition: opacity 0.3s;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
         }
 
-        .video-player:hover .mini-timeline {
+        .video-player:hover .video-title {
             opacity: 1;
+            transform: translateY(0);
         }
 
-        .mini-progress {
-            height: 100%;
-            background: #fff;
-            border-radius: 2px;
-            width: 0%;
+        /* حالة التشغيل */
+        .playing .play-btn svg.play-icon { display: none; }
+        .playing .play-btn svg.pause-icon { display: block; }
+        .paused .play-btn svg.play-icon { display: block; }
+        .paused .play-btn svg.pause-icon { display: none; }
+
+        /* استجابة للأجهزة المحمولة */
+        @media (max-width: 768px) {
+            .controls {
+                gap: 16px;
+            }
+            .main-controls {
+                gap: 16px;
+            }
+            .secondary-controls {
+                gap: 12px;
+            }
+            .time-info {
+                font-size: 12px;
+                min-width: 60px;
+            }
+            .volume-slider {
+                width: 40px;
+            }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="video-player">
-        <video id="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4"></video>
+    <div class="video-player paused" id="videoPlayer">
+        <!-- عنوان الفيديو (اختياري) -->
+        <div class="video-title">مبادئ المحاسبة - المحاضرة الأولى</div>
+        
+        <!-- عنصر الفيديو -->
+        <video id="video" src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4"></video>
 
-        <!-- Timeline مصغر -->
-        <div class="mini-timeline">
-            <div class="mini-progress" id="miniProgress"></div>
-        </div>
-
-        <div class="timeline-container">
-            <!-- Timeline الرئيسي المتقدم -->
-            <div class="timeline" id="timeline">
-                <!-- شريط Buffer -->
-                <div class="buffer" id="buffer"></div>
-                
-                <!-- شريط التقدم -->
-                <div class="progress" id="progress">
-                    <div class="scrubber" id="scrubber"></div>
-                </div>
-
-                <!-- نقاط المحتوى -->
-                <div class="chapter-markers" id="chapterMarkers">
-                    <!-- سيتم إضافة النقاط هنا بـ JavaScript -->
-                </div>
-
-                <!-- معاينة الفيديو -->
-                <div class="preview-container" id="previewContainer">
-                    <canvas class="video-preview" id="previewCanvas" width="160" height="90"></canvas>
-                    <div class="time-tooltip" id="timeTooltip">00:00</div>
+        <!-- شريط التحكم -->
+        <div class="controls-overlay">
+            <!-- شريط التقدم -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-thumb"></div>
                 </div>
             </div>
 
             <!-- أزرار التحكم -->
             <div class="controls">
-                <button class="control-btn play-pause" id="playPause">▶</button>
-                
-                <div class="time-display" id="timeDisplay">
-                    <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
+                <!-- التحكم الرئيسي -->
+                <div class="main-controls">
+                    <!-- السابق -->
+                    <button class="control-btn" id="prevBtn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                        </svg>
+                    </button>
+
+                    <!-- تشغيل/إيقاف -->
+                    <button class="control-btn play-btn" id="playBtn">
+                        <svg class="play-icon" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                    </button>
+
+                    <!-- التالي -->
+                    <button class="control-btn" id="nextBtn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                        </svg>
+                    </button>
+
+                    <!-- التوقيت -->
+                    <div class="time-info">
+                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                    </div>
                 </div>
 
-                <div class="volume-container">
-                    <button class="control-btn" id="muteBtn">🔊</button>
-                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+                <!-- التحكم الثانوي -->
+                <div class="secondary-controls">
+                    <!-- الصوت -->
+                    <div class="volume-container">
+                        <button class="control-btn" id="volumeBtn">
+                            <svg class="volume-on" viewBox="0 0 24 24">
+                                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                            </svg>
+                            <svg class="volume-off" viewBox="0 0 24 24" style="display: none;">
+                                <path d="M16.5 12A4.5 4.5 0 0014 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0021 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                            </svg>
+                        </button>
+                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+                    </div>
+
+                    <!-- القائمة -->
+                    <button class="control-btn" id="playlistBtn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                        </svg>
+                    </button>
+
+                    <!-- الشاشة الكاملة -->
+                    <button class="control-btn" id="fullscreenBtn">
+                        <svg class="expand" viewBox="0 0 24 24">
+                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                        </svg>
+                        <svg class="compress" viewBox="0 0 24 24" style="display: none;">
+                            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+                        </svg>
+                    </button>
                 </div>
-
-                <select class="speed-control" id="speedControl">
-                    <option value="0.5">0.5x</option>
-                    <option value="0.75">0.75x</option>
-                    <option value="1" selected>1x</option>
-                    <option value="1.25">1.25x</option>
-                    <option value="1.5">1.5x</option>
-                    <option value="2">2x</option>
-                </select>
-
-                <button class="control-btn" id="fullscreenBtn">⛶</button>
             </div>
         </div>
     </div>
 
     <script>
         const video = document.getElementById('video');
-        const timeline = document.getElementById('timeline');
-        const progress = document.getElementById('progress');
-        const scrubber = document.getElementById('scrubber');
-        const playPause = document.getElementById('playPause');
-        const timeDisplay = document.getElementById('timeDisplay');
-        const currentTime = document.getElementById('currentTime');
-        const duration = document.getElementById('duration');
-        const previewContainer = document.getElementById('previewContainer');
-        const previewCanvas = document.getElementById('previewCanvas');
-        const timeTooltip = document.getElementById('timeTooltip');
-        const chapterMarkers = document.getElementById('chapterMarkers');
-        const miniProgress = document.getElementById('miniProgress');
-        const buffer = document.getElementById('buffer');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeSpan = document.getElementById('currentTime');
+        const durationSpan = document.getElementById('duration');
+        const volumeBtn = document.getElementById('volumeBtn');
         const volumeSlider = document.getElementById('volumeSlider');
-        const muteBtn = document.getElementById('muteBtn');
-        const speedControl = document.getElementById('speedControl');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-        let isDragging = false;
-
-        // نقاط المحتوى المهمة (يمكنك تعديلها حسب محتوى الفيديو)
-        const chapters = [
-            { time: 30, title: "المقدمة" },
-            { time: 120, title: "التعريفات" },
-            { time: 300, title: "الأمثلة العملية" },
-            { time: 480, title: "الخلاصة" }
-        ];
-
-        // إضافة نقاط المحتوى
-        function addChapterMarkers() {
-            chapters.forEach(chapter => {
-                const marker = document.createElement('div');
-                marker.className = 'chapter-marker';
-                marker.style.left = '0%';
-                marker.title = chapter.title;
-                marker.addEventListener('click', () => {
-                    video.currentTime = chapter.time;
-                });
-                chapterMarkers.appendChild(marker);
-            });
-        }
-
-        // تحديث موقع نقاط المحتوى
-        function updateChapterMarkers() {
-            const markers = chapterMarkers.querySelectorAll('.chapter-marker');
-            markers.forEach((marker, index) => {
-                const percentage = (chapters[index].time / video.duration) * 100;
-                marker.style.left = percentage + '%';
-            });
-        }
-
         // تشغيل/إيقاف
-        playPause.addEventListener('click', () => {
+        playBtn.addEventListener('click', togglePlay);
+        video.addEventListener('click', togglePlay);
+
+        function togglePlay() {
             if (video.paused) {
                 video.play();
-                playPause.textContent = '⏸';
+                videoPlayer.classList.remove('paused');
+                videoPlayer.classList.add('playing');
             } else {
                 video.pause();
-                playPause.textContent = '▶';
+                videoPlayer.classList.remove('playing');
+                videoPlayer.classList.add('paused');
             }
-        });
+        }
 
-        // تحديث Timeline
+        // تحديث شريط التقدم والوقت
         video.addEventListener('timeupdate', () => {
-            if (!isDragging) {
-                const percentage = (video.currentTime / video.duration) * 100;
-                progress.style.width = percentage + '%';
-                miniProgress.style.width = percentage + '%';
-            }
-            
-            currentTime.textContent = formatTime(video.currentTime);
-            
-            // تحديث شريط Buffer
-            if (video.buffered.length > 0) {
-                const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-                const bufferedPercentage = (bufferedEnd / video.duration) * 100;
-                buffer.style.width = bufferedPercentage + '%';
-            }
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = progress + '%';
+            currentTimeSpan.textContent = formatTime(video.currentTime);
         });
 
-        // عند تحميل metadata
+        // تحميل البيانات الأساسية
         video.addEventListener('loadedmetadata', () => {
-            duration.textContent = formatTime(video.duration);
-            addChapterMarkers();
-            updateChapterMarkers();
+            durationSpan.textContent = formatTime(video.duration);
         });
 
-        // التحكم في Timeline بالسحب
-        let timelineRect;
-        
-        timeline.addEventListener('mousedown', startDragging);
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('mouseup', stopDragging);
-
-        function startDragging(e) {
-            isDragging = true;
-            timelineRect = timeline.getBoundingClientRect();
-            updateVideoTime(e);
-        }
-
-        function drag(e) {
-            if (isDragging) {
-                updateVideoTime(e);
-            }
-        }
-
-        function stopDragging() {
-            isDragging = false;
-        }
-
-        function updateVideoTime(e) {
-            const clickX = e.clientX - timelineRect.left;
-            const percentage = Math.max(0, Math.min(100, (clickX / timelineRect.width) * 100));
-            const newTime = (percentage / 100) * video.duration;
-            
-            video.currentTime = newTime;
-            progress.style.width = percentage + '%';
-        }
-
-        // معاينة عند التحويم
-        timeline.addEventListener('mousemove', (e) => {
-            if (!isDragging) {
-                const rect = timeline.getBoundingClientRect();
-                const percentage = (e.clientX - rect.left) / rect.width;
-                const time = percentage * video.duration;
-                
-                timeTooltip.textContent = formatTime(time);
-                timeTooltip.style.left = (e.clientX - rect.left) + 'px';
-                previewContainer.style.left = (e.clientX - rect.left) + 'px';
-                
-                // رسم معاينة الفيديو (مبسط)
-                drawPreview(time);
-            }
+        // التحكم في التقدم
+        progressContainer.addEventListener('click', (e) => {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const percentage = (clickX / rect.width) * 100;
+            video.currentTime = (percentage / 100) * video.duration;
         });
 
-        // رسم معاينة مبسطة
-        function drawPreview(time) {
-            const ctx = previewCanvas.getContext('2d');
-            ctx.fillStyle = '#333';
-            ctx.fillRect(0, 0, 160, 90);
-            ctx.fillStyle = '#fff';
-            ctx.font = '12px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(formatTime(time), 80, 50);
-        }
+        // التحكم في الصوت
+        volumeBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            updateVolumeIcon();
+        });
 
-        // تحكم في مستوى الصوت
         volumeSlider.addEventListener('input', () => {
             video.volume = volumeSlider.value / 100;
+            video.muted = false;
+            updateVolumeIcon();
         });
 
-        muteBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
-            muteBtn.textContent = video.muted ? '🔇' : '🔊';
-        });
-
-        // تحكم في السرعة
-        speedControl.addEventListener('change', () => {
-            video.playbackRate = parseFloat(speedControl.value);
-        });
+        function updateVolumeIcon() {
+            const volumeOn = volumeBtn.querySelector('.volume-on');
+            const volumeOff = volumeBtn.querySelector('.volume-off');
+            
+            if (video.muted || video.volume === 0) {
+                volumeOn.style.display = 'none';
+                volumeOff.style.display = 'block';
+            } else {
+                volumeOn.style.display = 'block';
+                volumeOff.style.display = 'none';
+            }
+        }
 
         // شاشة كاملة
         fullscreenBtn.addEventListener('click', () => {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
+            if (!document.fullscreenElement) {
+                videoPlayer.requestFullscreen();
+                fullscreenBtn.querySelector('.expand').style.display = 'none';
+                fullscreenBtn.querySelector('.compress').style.display = 'block';
             } else {
-                video.parentElement.requestFullscreen();
+                document.exitFullscreen();
+                fullscreenBtn.querySelector('.expand').style.display = 'block';
+                fullscreenBtn.querySelector('.compress').style.display = 'none';
             }
         });
 
         // تنسيق الوقت
         function formatTime(seconds) {
-            if (isNaN(seconds)) return '00:00';
+            if (isNaN(seconds)) return '0:00';
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
+
+        // إخفاء المؤشر أثناء التشغيل
+        let mouseMoveTimeout;
+        videoPlayer.addEventListener('mousemove', () => {
+            videoPlayer.style.cursor = 'default';
+            clearTimeout(mouseMoveTimeout);
+            
+            if (videoPlayer.classList.contains('playing')) {
+                mouseMoveTimeout = setTimeout(() => {
+                    videoPlayer.style.cursor = 'none';
+                }, 3000);
+            }
+        });
 
         // اختصارات لوحة المفاتيح
         document.addEventListener('keydown', (e) => {
-            if (e.target.tagName !== 'INPUT') {
-                switch(e.key) {
-                    case ' ':
-                        e.preventDefault();
-                        playPause.click();
-                        break;
-                    case 'ArrowRight':
-                        video.currentTime += 10;
-                        break;
-                    case 'ArrowLeft':
-                        video.currentTime -= 10;
-                        break;
-                    case 'ArrowUp':
-                        video.volume = Math.min(1, video.volume + 0.1);
-                        volumeSlider.value = video.volume * 100;
-                        break;
-                    case 'ArrowDown':
-                        video.volume = Math.max(0, video.volume - 0.1);
-                        volumeSlider.value = video.volume * 100;
-                        break;
-                }
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                case 'ArrowRight':
+                    video.currentTime += 10;
+                    break;
+                case 'ArrowLeft':
+                    video.currentTime -= 10;
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    video.volume = Math.min(1, video.volume + 0.1);
+                    volumeSlider.value = video.volume * 100;
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    video.volume = Math.max(0, video.volume - 0.1);
+                    volumeSlider.value = video.volume * 100;
+                    break;
+                case 'f':
+                    fullscreenBtn.click();
+                    break;
+                case 'm':
+                    volumeBtn.click();
+                    break;
             }
         });
 
