@@ -3,76 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشغل فيديو مخصص</title>
+    <title>مشغل زجاجي بالكامل - مجاني</title>
 
-    <!-- 1. تحميل مكتبة Plyr -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <!-- 1. تحميل مكتبة الأيقونات Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.18);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --border-radius: 24px;
-            
-            /* 2. تخصيص ألوان مشغل الفيديو لتناسب تصميمك */
-            --plyr-color-main: #0ea5e9; /* لون شريط التقدم والأيقونات */
-            --plyr-video-background: transparent; /* خلفية شفافة للمشغل */
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #e0f2fe;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
         }
 
-        .video-container {
+        .player-wrapper {
+            position: relative;
             width: 100%;
             max-width: 900px;
-            background: var(--glass-bg);
-            border: 2px solid var(--glass-border);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            backdrop-filter: blur(25px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
 
-        /* 3. تخصيص شكل شريط التحكم ليكون زجاجيًا */
-        .plyr__controls {
-            background: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(10px);
-            border-radius: 0 0 18px 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        #custom-video {
+            width: 100%;
+            display: block;
+        }
+
+        .custom-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            
+            /* التأثير الزجاجي الرئيسي للحاوية */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        /* تعديل بسيط لحواف الفيديو الداخلية */
-        .plyr--video {
-            border-radius: 18px;
-            overflow: hidden;
+        .control-btn i {
+            font-size: 28px;
+            /* التأثير الزجاجي للأيقونة نفسها */
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover i {
+            color: white;
+            transform: scale(1.1);
         }
 
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <!-- 4. ضع عنصر الفيديو مع الرابط من Internet Archive -->
-        <video id="player" playsinline controls>
-            <source src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4" />
-        </video>
+    <div class="player-wrapper">
+        <!-- 2. ضع هنا الرابط من Internet Archive -->
+        <video id="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4"></video>
+
+        <!-- 3. أزرار التحكم المخصصة -->
+        <div class="custom-controls">
+            <button class="control-btn" id="play-pause-btn">
+                <i class="ph-fill ph-play"></i>
+            </button>
+            <button class="control-btn" id="mute-btn">
+                <i class="ph-fill ph-speaker-simple-high"></i>
+            </button>
+            <button class="control-btn" id="fullscreen-btn">
+                <i class="ph-fill ph-arrows-out"></i>
+            </button>
+        </div>
     </div>
 
     <script>
-        // 5. قم بتهيئة مشغل الفيديو
-        document.addEventListener('DOMContentLoaded', () => {
-          const player = new Plyr('#player');
+        const video = document.getElementById('custom-video');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const muteBtn = document.getElementById('mute-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const playIcon = '<i class="ph-fill ph-play"></i>';
+        const pauseIcon = '<i class="ph-fill ph-pause"></i>';
+        const muteIcon = '<i class="ph-fill ph-speaker-slash"></i>';
+        const unmuteIcon = '<i class="ph-fill ph-speaker-simple-high"></i>';
+
+        // 4. ربط الوظائف بالأزرار
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.innerHTML = pauseIcon;
+            } else {
+                video.pause();
+                playPauseBtn.innerHTML = playIcon;
+            }
+        });
+
+        muteBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            muteBtn.innerHTML = video.muted ? muteIcon : unmuteIcon;
+        });
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                video.parentElement.requestFullscreen();
+            }
+        });
+        
+        // إعادة أيقونة التشغيل عند انتهاء الفيديو
+        video.addEventListener('ended', () => {
+            playPauseBtn.innerHTML = playIcon;
         });
     </script>
 
 </body>
 </html>
-
