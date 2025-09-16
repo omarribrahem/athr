@@ -3,105 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Vision Pro Video Player</title>
+    <title>مشغل فيديو بسيط ونظيف</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #000;
+            background: #f5f5f7;
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px;
         }
 
-        .video-player {
-            position: relative;
+        .video-container {
             width: 100%;
             max-width: 900px;
+            background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         #video {
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 20px;
+            background: #000;
         }
 
-        /* شريط التحكم السفلي */
-        .controls-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(28, 28, 30, 0.85);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+        /* شريط التحكم البسيط */
+        .controls {
+            background: #2c2c2e;
             padding: 16px 24px;
-            transform: translateY(100%);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border-radius: 0 0 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        .video-player:hover .controls-overlay {
-            transform: translateY(0);
-        }
-
-        /* شريط التقدم العلوي */
-        .progress-container {
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-            margin-bottom: 16px;
-            position: relative;
-            cursor: pointer;
+        /* شريط التقدم */
+        .progress-area {
+            flex: 1;
+            margin: 0 20px;
         }
 
         .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .progress {
             height: 100%;
             background: #fff;
             border-radius: 2px;
             width: 0%;
             transition: width 0.1s ease;
-            position: relative;
         }
 
-        .progress-thumb {
-            position: absolute;
-            top: 50%;
-            right: -6px;
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            border-radius: 50%;
-            transform: translateY(-50%) scale(0);
-            transition: transform 0.2s ease;
-        }
-
-        .progress-container:hover .progress-thumb {
-            transform: translateY(-50%) scale(1);
+        .time {
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 400;
         }
 
         /* أزرار التحكم */
-        .controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .main-controls {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .secondary-controls {
+        .controls-left, .controls-right {
             display: flex;
             align-items: center;
             gap: 16px;
@@ -111,22 +85,19 @@
             background: transparent;
             border: none;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 6px;
+            border-radius: 4px;
+            transition: opacity 0.2s ease;
         }
 
         .control-btn:hover {
-            background: rgba(255,255,255,0.1);
+            opacity: 0.7;
         }
 
         .control-btn svg {
             width: 20px;
             height: 20px;
-            fill: rgba(255,255,255,0.9);
+            fill: #fff;
         }
 
         .play-btn svg {
@@ -134,30 +105,15 @@
             height: 24px;
         }
 
-        /* التوقيت */
-        .time-info {
-            color: rgba(255,255,255,0.7);
-            font-size: 14px;
-            font-weight: 400;
-            min-width: 80px;
-            text-align: center;
-        }
-
-        /* مؤشر الصوت */
-        .volume-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        /* أيقونات بسيطة */
         .volume-slider {
             width: 60px;
             height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
+            background: rgba(255,255,255,0.3);
             outline: none;
             cursor: pointer;
             -webkit-appearance: none;
+            border-radius: 2px;
         }
 
         .volume-slider::-webkit-slider-thumb {
@@ -169,225 +125,152 @@
             cursor: pointer;
         }
 
-        /* عنوان الفيديو (اختياري) */
-        .video-title {
-            position: absolute;
-            top: 24px;
-            left: 24px;
-            right: 24px;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-        }
-
-        .video-player:hover .video-title {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* حالة التشغيل */
-        .playing .play-btn svg.play-icon { display: none; }
-        .playing .play-btn svg.pause-icon { display: block; }
-        .paused .play-btn svg.play-icon { display: block; }
-        .paused .play-btn svg.pause-icon { display: none; }
-
-        /* استجابة للأجهزة المحمولة */
-        @media (max-width: 768px) {
-            .controls {
-                gap: 16px;
-            }
-            .main-controls {
-                gap: 16px;
-            }
-            .secondary-controls {
-                gap: 12px;
-            }
-            .time-info {
-                font-size: 12px;
-                min-width: 60px;
-            }
-            .volume-slider {
-                width: 40px;
-            }
-        }
+        /* حالة التشغيل/الإيقاف */
+        .playing .play-icon { display: none; }
+        .playing .pause-icon { display: block; }
+        .paused .play-icon { display: block; }
+        .paused .pause-icon { display: none; }
 
     </style>
 </head>
 <body>
 
-    <div class="video-player paused" id="videoPlayer">
-        <!-- عنوان الفيديو (اختياري) -->
-        <div class="video-title">مبادئ المحاسبة - المحاضرة الأولى</div>
+    <div class="video-container">
+        <video id="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4"></video>
         
-        <!-- عنصر الفيديو -->
-        <video id="video" src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4"></video>
+        <div class="controls">
+            <!-- التحكم الأيسر -->
+            <div class="controls-left">
+                <!-- شاشة كاملة -->
+                <button class="control-btn" id="fullscreenBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                    </svg>
+                </button>
 
-        <!-- شريط التحكم -->
-        <div class="controls-overlay">
-            <!-- شريط التقدم -->
-            <div class="progress-container" id="progressContainer">
-                <div class="progress-bar" id="progressBar">
-                    <div class="progress-thumb"></div>
-                </div>
+                <!-- قائمة -->
+                <button class="control-btn" id="playlistBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                    </svg>
+                </button>
+
+                <!-- الصوت -->
+                <button class="control-btn" id="volumeBtn">
+                    <svg class="volume-on" viewBox="0 0 24 24">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                    </svg>
+                    <svg class="volume-off" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M16.5 12A4.5 4.5 0 0014 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zM3 9v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                    </svg>
+                </button>
+
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
             </div>
 
-            <!-- أزرار التحكم -->
-            <div class="controls">
-                <!-- التحكم الرئيسي -->
-                <div class="main-controls">
-                    <!-- السابق -->
-                    <button class="control-btn" id="prevBtn">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-                        </svg>
-                    </button>
-
-                    <!-- تشغيل/إيقاف -->
-                    <button class="control-btn play-btn" id="playBtn">
-                        <svg class="play-icon" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
-                        </svg>
-                        <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
-                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                        </svg>
-                    </button>
-
-                    <!-- التالي -->
-                    <button class="control-btn" id="nextBtn">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-                        </svg>
-                    </button>
-
-                    <!-- التوقيت -->
-                    <div class="time-info">
-                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
-                    </div>
+            <!-- شريط التقدم والوقت -->
+            <div class="progress-area">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
                 </div>
+                <div class="time" id="timeDisplay">0:00 / 0:00</div>
+            </div>
 
-                <!-- التحكم الثانوي -->
-                <div class="secondary-controls">
-                    <!-- الصوت -->
-                    <div class="volume-container">
-                        <button class="control-btn" id="volumeBtn">
-                            <svg class="volume-on" viewBox="0 0 24 24">
-                                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                            </svg>
-                            <svg class="volume-off" viewBox="0 0 24 24" style="display: none;">
-                                <path d="M16.5 12A4.5 4.5 0 0014 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0021 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                            </svg>
-                        </button>
-                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
-                    </div>
+            <!-- التحكم الأيمن -->
+            <div class="controls-right">
+                <!-- السابق -->
+                <button class="control-btn" id="prevBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
 
-                    <!-- القائمة -->
-                    <button class="control-btn" id="playlistBtn">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
-                        </svg>
-                    </button>
+                <!-- تشغيل/إيقاف -->
+                <button class="control-btn play-btn paused" id="playBtn">
+                    <svg class="play-icon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
 
-                    <!-- الشاشة الكاملة -->
-                    <button class="control-btn" id="fullscreenBtn">
-                        <svg class="expand" viewBox="0 0 24 24">
-                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                        </svg>
-                        <svg class="compress" viewBox="0 0 24 24" style="display: none;">
-                            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-                        </svg>
-                    </button>
-                </div>
+                <!-- التالي -->
+                <button class="control-btn" id="nextBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 
     <script>
         const video = document.getElementById('video');
-        const videoPlayer = document.getElementById('videoPlayer');
         const playBtn = document.getElementById('playBtn');
-        const progressContainer = document.getElementById('progressContainer');
         const progressBar = document.getElementById('progressBar');
-        const currentTimeSpan = document.getElementById('currentTime');
-        const durationSpan = document.getElementById('duration');
+        const progress = document.getElementById('progress');
+        const timeDisplay = document.getElementById('timeDisplay');
         const volumeBtn = document.getElementById('volumeBtn');
         const volumeSlider = document.getElementById('volumeSlider');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
 
         // تشغيل/إيقاف
-        playBtn.addEventListener('click', togglePlay);
-        video.addEventListener('click', togglePlay);
-
-        function togglePlay() {
+        playBtn.addEventListener('click', () => {
             if (video.paused) {
                 video.play();
-                videoPlayer.classList.remove('paused');
-                videoPlayer.classList.add('playing');
+                playBtn.classList.remove('paused');
+                playBtn.classList.add('playing');
             } else {
                 video.pause();
-                videoPlayer.classList.remove('playing');
-                videoPlayer.classList.add('paused');
+                playBtn.classList.remove('playing');
+                playBtn.classList.add('paused');
             }
-        }
+        });
 
-        // تحديث شريط التقدم والوقت
+        // تحديث شريط التقدم
         video.addEventListener('timeupdate', () => {
-            const progress = (video.currentTime / video.duration) * 100;
-            progressBar.style.width = progress + '%';
-            currentTimeSpan.textContent = formatTime(video.currentTime);
+            const progressPercent = (video.currentTime / video.duration) * 100;
+            progress.style.width = progressPercent + '%';
+            
+            const current = formatTime(video.currentTime);
+            const duration = formatTime(video.duration);
+            timeDisplay.textContent = `${current} / ${duration}`;
         });
 
-        // تحميل البيانات الأساسية
-        video.addEventListener('loadedmetadata', () => {
-            durationSpan.textContent = formatTime(video.duration);
-        });
-
-        // التحكم في التقدم
-        progressContainer.addEventListener('click', (e) => {
-            const rect = progressContainer.getBoundingClientRect();
+        // التحكم في التقدم بالضغط
+        progressBar.addEventListener('click', (e) => {
+            const rect = progressBar.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
-            const percentage = (clickX / rect.width) * 100;
-            video.currentTime = (percentage / 100) * video.duration;
+            const progressPercent = (clickX / rect.width) * 100;
+            video.currentTime = (progressPercent / 100) * video.duration;
         });
 
         // التحكم في الصوت
         volumeBtn.addEventListener('click', () => {
             video.muted = !video.muted;
-            updateVolumeIcon();
-        });
-
-        volumeSlider.addEventListener('input', () => {
-            video.volume = volumeSlider.value / 100;
-            video.muted = false;
-            updateVolumeIcon();
-        });
-
-        function updateVolumeIcon() {
             const volumeOn = volumeBtn.querySelector('.volume-on');
             const volumeOff = volumeBtn.querySelector('.volume-off');
             
-            if (video.muted || video.volume === 0) {
+            if (video.muted) {
                 volumeOn.style.display = 'none';
                 volumeOff.style.display = 'block';
             } else {
                 volumeOn.style.display = 'block';
                 volumeOff.style.display = 'none';
             }
-        }
+        });
+
+        volumeSlider.addEventListener('input', () => {
+            video.volume = volumeSlider.value / 100;
+        });
 
         // شاشة كاملة
         fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                videoPlayer.requestFullscreen();
-                fullscreenBtn.querySelector('.expand').style.display = 'none';
-                fullscreenBtn.querySelector('.compress').style.display = 'block';
-            } else {
+            if (document.fullscreenElement) {
                 document.exitFullscreen();
-                fullscreenBtn.querySelector('.expand').style.display = 'block';
-                fullscreenBtn.querySelector('.compress').style.display = 'none';
+            } else {
+                video.parentElement.requestFullscreen();
             }
         });
 
@@ -399,25 +282,12 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // إخفاء المؤشر أثناء التشغيل
-        let mouseMoveTimeout;
-        videoPlayer.addEventListener('mousemove', () => {
-            videoPlayer.style.cursor = 'default';
-            clearTimeout(mouseMoveTimeout);
-            
-            if (videoPlayer.classList.contains('playing')) {
-                mouseMoveTimeout = setTimeout(() => {
-                    videoPlayer.style.cursor = 'none';
-                }, 3000);
-            }
-        });
-
-        // اختصارات لوحة المفاتيح
+        // اختصارات الكيبورد
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
                 case ' ':
                     e.preventDefault();
-                    togglePlay();
+                    playBtn.click();
                     break;
                 case 'ArrowRight':
                     video.currentTime += 10;
@@ -425,25 +295,8 @@
                 case 'ArrowLeft':
                     video.currentTime -= 10;
                     break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    video.volume = Math.min(1, video.volume + 0.1);
-                    volumeSlider.value = video.volume * 100;
-                    break;
-                case 'ArrowDown':
-                    e.preventDefault();
-                    video.volume = Math.max(0, video.volume - 0.1);
-                    volumeSlider.value = video.volume * 100;
-                    break;
-                case 'f':
-                    fullscreenBtn.click();
-                    break;
-                case 'm':
-                    volumeBtn.click();
-                    break;
             }
         });
-
     </script>
 
 </body>
