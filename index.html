@@ -22,6 +22,7 @@
         @keyframes floatSphere2 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95)} }
         @keyframes floatSphere3 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(-20px) translateY(35px) rotate(120deg) scale(1.08)} }
         @keyframes translate-glow { 0%,100%{box-shadow:0 0 15px -5px rgba(139,92,246,0.4),inset 0 2px 0 rgba(255,255,255,0.4);} 50%{box-shadow:0 0 25px 0px rgba(139,92,246,0.6),inset 0 2px 0 rgba(255,255,255,0.6);} }
+        @keyframes control-glow { 0%,100%{box-shadow:0 8px 25px rgba(0,0,0,0.2), 0 4px 12px rgba(255,255,255,0.1), inset 0 2px 4px rgba(255,255,255,0.3);} 50%{box-shadow:0 12px 30px rgba(0,0,0,0.3), 0 6px 16px rgba(255,255,255,0.2), inset 0 3px 6px rgba(255,255,255,0.4);} }
         
         * { box-sizing:border-box; margin:0; padding:0; }
         html { font-size:16px; scroll-behavior:smooth; }
@@ -111,13 +112,18 @@
             color: #0c4a6e;
         }
         
-        /* Video Player Styles */
+        /* Enhanced Video Player Styles - 2D Glassy Raised Effect */
         .video-container {
             position: relative;
             overflow: hidden;
             border-radius: 2.5rem;
             margin: 20px 0;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.15),
+                0 8px 20px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2);
         }
+        
         .seek-overlay {
             position: absolute;
             top: 0;
@@ -132,155 +138,322 @@
             transition: opacity 0.3s ease-out;
             color: white;
             font-size: 3rem;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            text-shadow: 
+                0 4px 8px rgba(0,0,0,0.6),
+                0 0 20px rgba(255,255,255,0.3);
         }
         .seek-overlay.active {
             opacity: 1;
         }
+        
         .controls-container {
             position: absolute;
             bottom: 1rem;
             left: 50%;
             transform: translateX(-50%);
             width: 95%;
-            padding: 0.75rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            transition: opacity 0.3s ease-in-out;
+            padding: 1rem 1.5rem;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.25) 0%, 
+                    rgba(255,255,255,0.15) 50%, 
+                    rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.2),
+                0 5px 15px rgba(0,0,0,0.1),
+                inset 0 2px 4px rgba(255,255,255,0.4),
+                inset 0 -1px 2px rgba(0,0,0,0.1);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease;
             opacity: 0;
             z-index: 21;
         }
+        
         .video-container:hover .controls-container,
         .video-container.paused .controls-container {
             opacity: 1;
+            transform: translateX(-50%) translateY(-2px);
         }
+        
         .progress-bar-container {
             width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
+            height: 10px;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.1) 0%, 
+                    rgba(255,255,255,0.3) 50%, 
+                    rgba(255,255,255,0.1) 100%);
+            border-radius: 8px;
             cursor: pointer;
             position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.2),
+                inset 0 -1px 2px rgba(255,255,255,0.1),
+                0 2px 8px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 1rem;
         }
+        
         .progress-bar {
             height: 100%;
-            background: #fff;
-            border-radius: 3px;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.9) 0%, 
+                    rgba(255,255,255,0.7) 50%, 
+                    rgba(255,255,255,0.9) 100%);
+            border-radius: 8px;
             width: 0%;
             position: relative;
             transition: width 0.1s linear;
+            box-shadow: 
+                0 2px 8px rgba(255,255,255,0.3),
+                inset 0 1px 2px rgba(255,255,255,0.5),
+                inset 0 -1px 1px rgba(0,0,0,0.1);
         }
+        
         .progress-bar::after {
             content: '';
             position: absolute;
-            right: -6px;
+            right: -8px;
             top: 50%;
             transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
-            background: #fff;
+            width: 16px;
+            height: 16px;
+            background: 
+                radial-gradient(circle, 
+                    rgba(255,255,255,0.95) 0%, 
+                    rgba(255,255,255,0.8) 70%, 
+                    rgba(255,255,255,0.6) 100%);
             border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.2),
+                0 2px 6px rgba(0,0,0,0.1),
+                inset 0 1px 3px rgba(255,255,255,0.6),
+                inset 0 -1px 2px rgba(0,0,0,0.1);
         }
+        
         .control-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.3) 0%, 
+                    rgba(255,255,255,0.2) 50%, 
+                    rgba(255,255,255,0.1) 100%);
+            border: 2px solid rgba(255,255,255,0.4);
             color: white;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 9999px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(15px);
+            position: relative;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.2),
+                0 4px 12px rgba(0,0,0,0.1),
+                inset 0 2px 4px rgba(255,255,255,0.3),
+                inset 0 -1px 2px rgba(0,0,0,0.1);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
+        
         .control-btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1) translateY(-2px);
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.4) 0%, 
+                    rgba(255,255,255,0.3) 50%, 
+                    rgba(255,255,255,0.2) 100%);
+            border-color: rgba(255,255,255,0.6);
+            box-shadow: 
+                0 12px 30px rgba(0,0,0,0.3),
+                0 6px 16px rgba(0,0,0,0.15),
+                inset 0 3px 6px rgba(255,255,255,0.4),
+                inset 0 -2px 3px rgba(0,0,0,0.15);
+            animation: control-glow 2s ease-in-out infinite alternate;
         }
+        
+        .control-btn:active {
+            transform: scale(1.05) translateY(-1px);
+            box-shadow: 
+                0 6px 20px rgba(0,0,0,0.2),
+                0 3px 10px rgba(0,0,0,0.1),
+                inset 0 1px 3px rgba(255,255,255,0.2),
+                inset 0 -1px 2px rgba(0,0,0,0.2);
+        }
+        
         .volume-slider-container {
             position: relative;
         }
+        
         .volume-slider {
             -webkit-appearance: none;
             appearance: none;
-            width: 80px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
+            width: 90px;
+            height: 10px;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.1) 0%, 
+                    rgba(255,255,255,0.3) 50%, 
+                    rgba(255,255,255,0.1) 100%);
+            border-radius: 8px;
             outline: none;
-            transition: opacity .2s;
+            transition: all 0.3s ease;
             cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.2),
+                inset 0 -1px 2px rgba(255,255,255,0.1),
+                0 2px 8px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
         }
+        
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
+            width: 18px;
+            height: 18px;
+            background: 
+                radial-gradient(circle, 
+                    rgba(255,255,255,0.95) 0%, 
+                    rgba(255,255,255,0.8) 70%, 
+                    rgba(255,255,255,0.6) 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.3),
+                0 2px 6px rgba(0,0,0,0.2),
+                inset 0 1px 3px rgba(255,255,255,0.6),
+                inset 0 -1px 2px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                0 6px 16px rgba(0,0,0,0.4),
+                0 3px 8px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(255,255,255,0.7),
+                inset 0 -1px 3px rgba(0,0,0,0.15);
+        }
+        
+        .volume-slider::-moz-range-thumb {
             width: 16px;
             height: 16px;
-            background: white;
+            background: 
+                radial-gradient(circle, 
+                    rgba(255,255,255,0.95) 0%, 
+                    rgba(255,255,255,0.8) 70%, 
+                    rgba(255,255,255,0.6) 100%);
             border-radius: 50%;
             cursor: pointer;
-            margin-top: -4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.3),
+                0 2px 6px rgba(0,0,0,0.2),
+                inset 0 1px 3px rgba(255,255,255,0.6),
+                inset 0 -1px 2px rgba(0,0,0,0.1);
         }
-        .volume-slider::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            background: white;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            border: none;
-        }
+        
         .settings-container {
             position: relative;
         }
+        
         .speed-controls {
             position: absolute;
-            bottom: 3.5rem;
+            bottom: 4rem;
             right: -1rem;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            border-radius: 1.25rem;
-            padding: 0.5rem;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(0,0,0,0.8) 0%, 
+                    rgba(0,0,0,0.6) 50%, 
+                    rgba(0,0,0,0.4) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 1.5rem;
+            padding: 0.75rem;
             display: none;
             flex-direction: column;
             gap: 0.5rem;
-            width: 100px;
+            width: 110px;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.4),
+                0 5px 15px rgba(0,0,0,0.2),
+                inset 0 1px 2px rgba(255,255,255,0.1);
         }
+        
         .speed-controls button {
             color: white;
-            background: none;
-            border: none;
-            padding: 0.5rem;
-            border-radius: 0.75rem;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.1) 0%, 
+                    rgba(255,255,255,0.05) 50%, 
+                    rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.6rem;
+            border-radius: 1rem;
             cursor: pointer;
             width: 100%;
             text-align: center;
-            transition: background-color 0.2s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 
+                0 2px 8px rgba(0,0,0,0.2),
+                inset 0 1px 2px rgba(255,255,255,0.1);
         }
-        .speed-controls button:hover, .speed-controls button.active {
-            background: rgba(255, 255, 255, 0.2);
+        
+        .speed-controls button:hover, 
+        .speed-controls button.active {
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,255,255,0.3) 0%, 
+                    rgba(255,255,255,0.2) 50%, 
+                    rgba(255,255,255,0.1) 100%);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-1px);
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(255,255,255,0.2);
         }
+        
         .thumbnail-container {
             position: absolute;
             bottom: 100%;
             left: 0;
             transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 0.25rem;
-            padding: 0.25rem;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(0,0,0,0.9) 0%, 
+                    rgba(0,0,0,0.7) 50%, 
+                    rgba(0,0,0,0.5) 100%);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
             display: none;
+            border: 2px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.4),
+                0 5px 15px rgba(0,0,0,0.2),
+                inset 0 1px 2px rgba(255,255,255,0.1);
         }
+        
         .thumbnail-container canvas {
             width: 160px;
             height: 90px;
-            border-radius: 0.125rem;
+            border-radius: 0.25rem;
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.3),
+                inset 0 1px 2px rgba(255,255,255,0.1);
         }
         
         .hidden { display:none !important; }
@@ -315,12 +488,12 @@
                 <h2>🎥 فيديو شرح تفاعلي</h2>
                 <div id="videoPlayer" class="video-container shadow-2xl">
                     <video id="video" class="w-full h-full object-cover" crossOrigin="anonymous">
-                        <source src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4" type="video/mp4">
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                         المتصفح الخاص بك لا يدعم تشغيل الفيديو.
                     </video>
                     <div id="seekOverlay" class="seek-overlay"></div>
                     <div class="controls-container">
-                        <div class="progress-bar-container mb-3" id="progressBarContainer">
+                        <div class="progress-bar-container" id="progressBarContainer">
                             <div class="thumbnail-container" id="thumbnailContainer">
                                 <canvas id="thumbnailCanvas"></canvas>
                             </div>
@@ -519,12 +692,12 @@
                 <h2>🎥 Interactive Educational Video</h2>
                 <div id="videoPlayerEn" class="video-container shadow-2xl">
                     <video id="videoEn" class="w-full h-full object-cover" crossOrigin="anonymous">
-                        <source src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4" type="video/mp4">
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <div id="seekOverlayEn" class="seek-overlay"></div>
                     <div class="controls-container">
-                        <div class="progress-bar-container mb-3" id="progressBarContainerEn">
+                        <div class="progress-bar-container" id="progressBarContainerEn">
                             <div class="thumbnail-container" id="thumbnailContainerEn">
                                 <canvas id="thumbnailCanvasEn"></canvas>
                             </div>
