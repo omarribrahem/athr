@@ -83,7 +83,6 @@
             border-color: rgba(255,255,255,0.7);
         }
         
-        /* Seek animation overlay */
         .seek-overlay {
             position: absolute;
             top: 0;
@@ -128,7 +127,6 @@
             opacity: 1;
         }
         
-        /* إصلاح مشكلة RTL للـ Progress Bar */
         .progress-bar-container {
             width: 100%;
             height: 6px;
@@ -136,7 +134,7 @@
             border-radius: 3px;
             cursor: pointer;
             position: relative;
-            direction: ltr !important; /* فرض LTR للتايم لاين */
+            direction: ltr !important;
         }
         
         .progress-bar {
@@ -146,7 +144,7 @@
             width: 0%;
             position: relative;
             transition: width 0.1s linear;
-            direction: ltr !important; /* فرض LTR للتقدم */
+            direction: ltr !important;
         }
         
         .progress-bar::after {
@@ -182,10 +180,9 @@
             box-shadow: 0 4px 15px rgba(14,165,233,0.3);
         }
         
-        /* إصلاح مشكلة RTL للـ Volume Slider */
         .volume-slider-container {
             position: relative;
-            direction: ltr !important; /* فرض LTR للصوت */
+            direction: ltr !important;
         }
         
         .volume-slider {
@@ -198,7 +195,7 @@
             outline: none;
             transition: opacity .2s;
             cursor: pointer;
-            direction: ltr !important; /* فرض LTR للصوت */
+            direction: ltr !important;
         }
         
         .volume-slider::-webkit-slider-thumb {
@@ -223,7 +220,6 @@
             border: none;
         }
         
-        /* Speed controls */
         .settings-container {
             position: relative;
         }
@@ -242,7 +238,6 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        /* تعديل موقع القائمة للـ LTR */
         body[dir="ltr"] .speed-controls {
             right: auto;
             left: -1rem;
@@ -263,7 +258,6 @@
             background: rgba(14,165,233,0.3);
         }
         
-        /* ترقيم عناصر التحكم للـ LTR/RTL */
         .controls-left {
             display: flex;
             align-items: center;
@@ -294,7 +288,6 @@
             justify-content: flex-end;
         }
         
-        /* Responsive Design */
         @media (max-width: 768px) {
             .controls-container {
                 width: 98%;
@@ -378,28 +371,27 @@
     
     <main class="main-content">
         <div id="arabicContent">
-            <section class="glassy-card"><h1>مبادئ المحاسبة - المحاضرة الأولى</h1></section>
+            <section class="glassy-card">
+                <h1>مبادئ المحاسبة - المحاضرة الأولى</h1>
+            </section>
             
-            <!-- فيديو بلاير مدمج في الديزاين -->
+            <!-- فيديو بلاير مع رابط Internet Archive -->
             <section class="glassy-card">
                 <h2>🎥 شرح المحاضرة بالفيديو</h2>
                 <div id="videoPlayer" class="video-container">
-                    <!-- Video element -->
-                    <video id="video" class="w-full h-full object-cover" style="width: 100%; height: auto; min-height: 300px;" crossOrigin="anonymous">
+                    <video id="video" style="width: 100%; height: auto; min-height: 300px;" crossOrigin="anonymous">
+                        <!-- رابط الفيديو من Internet Archive -->
                         <source src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4" type="video/mp4">
-                        المتصفح لا يدعم تشغيل الفيديو.
+                        المتصفح لا يدعم تشغيل الفيديو. 
+                        <a href="https://archive.org/details/20250916_20250916_0112" target="_blank">شاهد الفيديو على Internet Archive</a>
                     </video>
-                    <!-- Seek animation overlay -->
                     <div id="seekOverlay" class="seek-overlay"></div>
-                    <!-- Custom Controls -->
                     <div class="controls-container">
-                        <!-- Progress bar -->
                         <div class="progress-bar-container" id="progressBarContainer" style="margin-bottom: 0.75rem;">
                             <div class="progress-bar" id="progressBar"></div>
                         </div>
                         
                         <div style="display: flex; align-items: center; justify-content: space-between; color: white;">
-                            <!-- Left Controls -->
                             <div class="controls-left">
                                 <button id="playPauseBtn" class="control-btn" aria-label="تشغيل"><i class="fas fa-play"></i></button>
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -409,11 +401,9 @@
                                      </div>
                                 </div>
                             </div>
-                            <!-- Center: Time -->
                             <div class="controls-center">
                                 <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
                             </div>
-                            <!-- Right Controls -->
                             <div class="controls-right">
                                 <div class="settings-container">
                                     <button id="settingsBtn" class="control-btn" aria-label="الإعدادات"><i class="fas fa-cog"></i></button>
@@ -493,15 +483,17 @@
         
         <!-- English Content -->
         <div id="englishContent" class="hidden">
-            <section class="glassy-card"><h1>Accounting Principles - First Lecture</h1></section>
+            <section class="glassy-card">
+                <h1>Accounting Principles - First Lecture</h1>
+            </section>
             
-            <!-- English Video Player -->
             <section class="glassy-card">
                 <h2>🎥 Video Lecture</h2>
                 <div id="videoPlayerEn" class="video-container">
-                    <video id="videoEn" class="w-full h-full object-cover" style="width: 100%; height: auto; min-height: 300px;" crossOrigin="anonymous">
-                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                    <video id="videoEn" style="width: 100%; height: auto; min-height: 300px;" crossOrigin="anonymous">
+                        <source src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4" type="video/mp4">
                         Your browser does not support the video tag.
+                        <a href="https://archive.org/details/20250916_20250916_0112" target="_blank">Watch video on Internet Archive</a>
                     </video>
                     <div id="seekOverlayEn" class="seek-overlay"></div>
                     <div class="controls-container">
@@ -610,9 +602,7 @@
             const body = document.body;
             let isArabic = true;
             
-            // === VIDEO PLAYER ELEMENTS ===
-            
-            // Arabic Video Player
+            // Video Player Elements
             const videoPlayer = document.getElementById('videoPlayer');
             const video = document.getElementById('video');
             const playPauseBtn = document.getElementById('playPauseBtn');
@@ -627,7 +617,7 @@
             const speedControls = document.getElementById('speedControls');
             const seekOverlay = document.getElementById('seekOverlay');
             
-            // English Video Player
+            // English Video Player Elements
             const videoPlayerEn = document.getElementById('videoPlayerEn');
             const videoEn = document.getElementById('videoEn');
             const playPauseBtnEn = document.getElementById('playPauseBtnEn');
@@ -645,15 +635,12 @@
             let lastTap = 0;
             let timeout;
             
-            // === VIDEO PLAYER FUNCTIONALITY ===
-            
             function createVideoPlayer(videoEl, containerEl, controls) {
                 if (!videoEl || !containerEl || !controls) return;
 
                 const { playPauseBtn, progressBarContainer, progressBar, currentTimeEl, durationEl, 
                         volumeBtn, volumeSlider, fullscreenBtn, settingsBtn, speedControls, seekOverlay } = controls;
 
-                // Play/Pause functionality
                 function togglePlay() {
                     if (videoEl.paused) {
                         videoEl.play();
@@ -674,14 +661,12 @@
                     containerEl.classList.add('paused');
                 });
                 
-                // Update progress bar
                 videoEl.addEventListener('timeupdate', () => {
                     const progress = (videoEl.currentTime / videoEl.duration) * 100;
                     progressBar.style.width = `${progress}%`;
                     currentTimeEl.textContent = formatTime(videoEl.currentTime);
                 });
                 
-                // Set duration on metadata load
                 videoEl.addEventListener('loadedmetadata', () => {
                     durationEl.textContent = formatTime(videoEl.duration);
                     containerEl.classList.add('paused');
@@ -689,7 +674,6 @@
                 
                 playPauseBtn.addEventListener('click', togglePlay);
                 
-                // Seek functionality
                 progressBarContainer.addEventListener('click', (e) => {
                     const rect = progressBarContainer.getBoundingClientRect();
                     const clickX = e.clientX - rect.left;
@@ -698,7 +682,6 @@
                     videoEl.currentTime = seekPercent * videoEl.duration;
                 });
                 
-                // Volume control
                 function updateVolumeIcon() {
                     const volume = videoEl.volume;
                     if (videoEl.muted || volume === 0) {
@@ -717,7 +700,6 @@
                      videoEl.volume = volumeSlider.value;
                      videoEl.muted = volumeSlider.value == 0;
                      updateVolumeIcon();
-                     updateVolumeSliderVisual();
                 }
                 
                 volumeSlider.addEventListener('input', handleVolumeChange);
@@ -735,7 +717,6 @@
                 
                 volumeBtn.addEventListener('click', toggleMute);
                 
-                // Fullscreen functionality
                 function toggleFullscreen() {
                      if (!document.fullscreenElement) {
                         containerEl.requestFullscreen().catch(err => {
@@ -748,13 +729,6 @@
                 
                 fullscreenBtn.addEventListener('click', toggleFullscreen);
                 
-                function updateVolumeSliderVisual() {
-                    const value = volumeSlider.value;
-                    const percentage = value * 100;
-                    volumeSlider.style.background = `linear-gradient(to right, #0ea5e9 ${percentage}%, rgba(255, 255, 255, 0.3) ${percentage}%)`;
-                }
-                
-                // Playback Speed Controls
                 settingsBtn.addEventListener('click', () => {
                     speedControls.style.display = speedControls.style.display === 'flex' ? 'none' : 'flex';
                 });
@@ -769,7 +743,6 @@
                     }
                 });
                 
-                // Touch Gesture Support
                 videoEl.addEventListener('touchend', (e) => {
                     const currentTime = new Date().getTime();
                     const tapLength = currentTime - lastTap;
@@ -792,12 +765,9 @@
                     lastTap = currentTime;
                 });
                 
-                // Initialize
                 updateVolumeIcon();
-                updateVolumeSliderVisual();
             }
             
-            // Create Arabic video player
             if (video && videoPlayer) {
                 createVideoPlayer(video, videoPlayer, {
                     playPauseBtn, progressBarContainer, progressBar, currentTimeEl, durationEl,
@@ -805,7 +775,6 @@
                 });
             }
             
-            // Create English video player
             if (videoEn && videoPlayerEn) {
                 createVideoPlayer(videoEn, videoPlayerEn, {
                     playPauseBtn: playPauseBtnEn, progressBarContainer: progressBarContainerEn, 
@@ -815,7 +784,6 @@
                 });
             }
             
-            // Helper Functions
             function formatTime(seconds) {
                 const minutes = Math.floor(seconds / 60);
                 const secs = Math.floor(seconds % 60);
@@ -830,7 +798,6 @@
                 }, 500);
             }
             
-            // Fullscreen change handler
             document.addEventListener('fullscreenchange', () => {
                 const isFullscreen = document.fullscreenElement;
                 
@@ -845,7 +812,6 @@
                 }
             });
             
-            // Keyboard shortcuts
             document.addEventListener('keydown', e => {
                 const tagName = document.activeElement.tagName.toLowerCase();
                 if (tagName === 'input') return;
@@ -895,7 +861,6 @@
                 }
             });
             
-            // === LANGUAGE TOGGLE ===
             translationButton.addEventListener('click', () => {
                 isArabic = !isArabic;
                 if (isArabic) {
@@ -912,7 +877,6 @@
                     document.title = 'Accounting Principles - First Lecture';
                 }
                 
-                // Pause current video when switching languages
                 if (video && !video.paused) {
                     video.pause();
                 }
@@ -921,7 +885,6 @@
                 }
             });
             
-            // === PRACTICE QUESTIONS ===
             document.querySelectorAll('.practice-question').forEach(question => {
                 question.addEventListener('click', () => {
                     const solutionCard = question.nextElementSibling;
@@ -933,4 +896,3 @@
     </script>
 </body>
 </html>
-
