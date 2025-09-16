@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل أساسيات المحاسبة - منصة أثر</title>
-    
+    <title>دليل شامل: أساسيات الأعمال التجارية - منصة أثر</title>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- marked.js for Markdown parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
     <style>
         :root {
             --glass-bg: rgba(255,255,255,0.18);
@@ -18,666 +14,91 @@
             --highlight-color: #0ea5e9;
             --practice-color: #16a34a;
             --translation-color: #8b5cf6;
-            --video-color: #dc2626;
             --border-radius: 24px;
         }
-
-        /* Animations */
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes floatSphere1 {
-            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-            50% { transform: translateY(-30px) rotate(180deg) scale(1.05); }
-        }
-
-        @keyframes floatSphere2 {
-            0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg) scale(1); }
-            50% { transform: translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95); }
-        }
-
-        @keyframes floatSphere3 {
-            0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg) scale(1); }
-            50% { transform: translateX(-20px) translateY(35px) rotate(120deg) scale(1.08); }
-        }
-
-        @keyframes translate-glow {
-            0%, 100% { box-shadow: 0 0 15px -5px rgba(139,92,246,0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
-            50% { box-shadow: 0 0 25px 0px rgba(139,92,246,0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
-        }
-
-        @keyframes video-glow {
-            0%, 100% { box-shadow: 0 0 15px -5px rgba(220,38,38,0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
-            50% { box-shadow: 0 0 25px 0px rgba(220,38,38,0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
-        }
-
-        @keyframes pulse-correct {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shake-wrong {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Reset and Base Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-
+        
+        @keyframes gradientAnimation { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes floatSphere1 { 0%,100%{transform:translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateY(-30px) rotate(180deg) scale(1.05)} }
+        @keyframes floatSphere2 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95)} }
+        @keyframes floatSphere3 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(-20px) translateY(35px) rotate(120deg) scale(1.08)} }
+        @keyframes translate-glow { 0%,100%{box-shadow:0 0 15px -5px rgba(139,92,246,0.4),inset 0 2px 0 rgba(255,255,255,0.4);} 50%{box-shadow:0 0 25px 0px rgba(139,92,246,0.6),inset 0 2px 0 rgba(255,255,255,0.6);} }
+        
+        * { box-sizing:border-box; margin:0; padding:0; }
+        html { font-size:16px; scroll-behavior:smooth; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #e0f2fe;
-            color: var(--text-color);
-            line-height: 1.8;
-            overflow-x: hidden;
-            position: relative;
-            direction: rtl;
-            font-size: clamp(0.9rem, 2.5vw, 1.05rem);
-            padding: 20px clamp(10px, 3vw, 20px);
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            background-color:#e0f2fe; color:var(--text-color); line-height:1.8;
+            overflow-x:hidden; position:relative; direction:rtl;
+            font-size:clamp(0.9rem,2.5vw,1.05rem); padding:20px clamp(10px,3vw,20px);
         }
-
-        body[dir="ltr"] {
-            direction: ltr;
-        }
-
-        /* Background Elements */
-        .background-gradient, .floating-spheres {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-
-        .background-gradient {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 25%, #fce7f3 75%, #fdf2f8 100%);
-            background-size: 400% 400%;
-            animation: gradientAnimation 40s ease infinite;
-        }
-
-        .floating-spheres {
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .sphere {
-            position: absolute;
-            border-radius: 50%;
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255,255,255,0.3);
-            box-shadow: 0 20px 60px rgba(14,165,233,0.3), inset 0 4px 0 rgba(255,255,255,0.4);
-        }
-
-        .sphere.large {
-            width: clamp(120px, 20vw, 220px);
-            height: clamp(120px, 20vw, 220px);
-            top: 8%;
-            right: 12%;
-            background: radial-gradient(circle, #3b82f6, #1e3a8a);
-            animation: floatSphere1 12s ease-in-out infinite;
-        }
-
-        .sphere.medium {
-            width: clamp(80px, 15vw, 140px);
-            height: clamp(80px, 15vw, 140px);
-            bottom: 20%;
-            left: 8%;
-            background: radial-gradient(circle, #0ea5e9, #0369a1);
-            animation: floatSphere2 9s ease-in-out infinite;
-        }
-
-        .sphere.small-1 {
-            width: clamp(60px, 12vw, 95px);
-            height: clamp(60px, 12vw, 95px);
-            top: 50%;
-            right: 8%;
-            background: radial-gradient(circle, #06b6d4, #0e7490);
-            animation: floatSphere3 6s ease-in-out infinite;
-        }
-
-        /* FAB Button Styles */
+        body[dir="ltr"] { direction:ltr; }
+        
+        .background-gradient, .floating-spheres { position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2; }
+        .background-gradient { background:linear-gradient(135deg,#e0f2fe 0%,#bae6fd 25%,#fce7f3 75%,#fdf2f8 100%);background-size:400% 400%;animation:gradientAnimation 40s ease infinite;}
+        .floating-spheres {z-index:-1;pointer-events:none;}
+        .sphere {position:absolute;border-radius:50%;backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.3);box-shadow:0 20px 60px rgba(14,165,233,0.3),inset 0 4px 0 rgba(255,255,255,0.4);}
+        .sphere.large {width:clamp(120px,20vw,220px);height:clamp(120px,20vw,220px);top:8%;right:12%;background:radial-gradient(circle,#3b82f6,#1e3a8a);animation:floatSphere1 12s ease-in-out infinite;}
+        .sphere.medium {width:clamp(80px,15vw,140px);height:clamp(80px,15vw,140px);bottom:20%;left:8%;background:radial-gradient(circle,#0ea5e9,#0369a1);animation:floatSphere2 9s ease-in-out infinite;}
+        .sphere.small-1 {width:clamp(60px,12vw,95px);height:clamp(60px,12vw,95px);top:50%;right:8%;background:radial-gradient(circle,#06b6d4,#0e7490);animation:floatSphere3 6s ease-in-out infinite;}
+        
         .fab-button {
-            position: fixed;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(25px);
-            border: 2px solid var(--glass-border);
-            border-radius: 50px;
-            padding: clamp(8px, 2vw, 12px);
-            cursor: pointer;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: clamp(50px, 12vw, 60px);
-            height: clamp(50px, 12vw, 60px);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 8px 25px -10px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.5);
+            position:fixed;
+            background:rgba(255,255,255,0.1);backdrop-filter:blur(25px);
+            border:2px solid var(--glass-border);border-radius:50px;
+            padding:clamp(8px,2vw,12px);cursor:pointer;z-index:1000;display:flex;align-items:center;justify-content:center;
+            width:clamp(50px,12vw,60px);height:clamp(50px,12vw,60px);
+            transition:all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+            box-shadow:0 8px 25px -10px rgba(0,0,0,0.2),inset 0 2px 0 rgba(255,255,255,0.5);
         }
-
         .fab-button:hover {
-            width: auto;
-            padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
-            transform: translateY(-3px);
+            width:auto;padding:clamp(8px,2vw,12px) clamp(16px,4vw,22px);
+            transform:translateY(-3px);
         }
-
-        .fab-button .icon {
-            width: 28px;
-            height: 28px;
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
-        }
-
-        .fab-button:hover .icon {
-            transform: scale(0.9);
-        }
-
-        .fab-text {
-            font-size: clamp(0.85rem, 2.2vw, 1rem);
-            font-weight: 600;
-            white-space: nowrap;
-            display: none;
-            margin-left: 10px;
-        }
-
-        body[dir="ltr"] .fab-text {
-            margin-left: 0;
-            margin-right: 10px;
-        }
-
-        .fab-button:hover .fab-text {
-            display: block;
-        }
-
+        .fab-button .icon {width:28px;height:28px;flex-shrink:0;transition:transform 0.3s ease;}
+        .fab-button:hover .icon {transform:scale(0.9);}
+        .fab-text {font-size:clamp(0.85rem,2.2vw,1rem);font-weight:600;white-space:nowrap;display:none;margin-left:10px;}
+        body[dir="ltr"] .fab-text {margin-left:0;margin-right:10px;}
+        .fab-button:hover .fab-text {display:block;}
+        
         .translation-button {
-            top: clamp(20px, 5vw, 30px);
-            right: clamp(20px, 5vw, 30px);
+            top:clamp(20px,5vw,30px);right:clamp(20px,5vw,30px);
         }
-
-        body[dir="ltr"] .translation-button {
-            right: auto;
-            left: clamp(20px, 5vw, 30px);
-        }
-
-        .translation-button:hover {
-            border-color: var(--translation-color);
-            background: rgba(139,92,246,0.1);
-            animation: translate-glow 2.5s infinite alternate;
-        }
-
-        .translation-button .fab-text {
-            color: var(--translation-color);
-        }
-
-        .video-button {
-            top: clamp(90px, 12vw, 110px);
-            right: clamp(20px, 5vw, 30px);
-        }
-
-        body[dir="ltr"] .video-button {
-            right: auto;
-            left: clamp(20px, 5vw, 30px);
-        }
-
-        .video-button:hover {
-            border-color: var(--video-color);
-            background: rgba(220,38,38,0.1);
-            animation: video-glow 2.5s infinite alternate;
-        }
-
-        .video-button .fab-text {
-            color: var(--video-color);
-        }
-
-        /* Video Player Styles */
-        .video-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .video-modal.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .video-container {
-            position: relative;
-            width: 90%;
-            max-width: 900px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2.5rem;
-            overflow: hidden;
-            backdrop-filter: blur(25px);
-            border: 2px solid var(--glass-border);
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-
-        .video-modal.visible .video-container {
-            transform: scale(1);
-        }
-
-        .video-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            transition: background-color 0.2s;
-        }
-
-        .video-close-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        /* Video Loading States */
-        .video-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 1.2rem;
-            z-index: 5;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(0,0,0,0.7);
-            padding: 20px 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .video-loading .spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .video-error {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            text-align: center;
-            z-index: 5;
-            background: rgba(220,38,38,0.8);
-            padding: 20px 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            display: none;
-        }
-
-        .video-info {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Video Controls */
-        .controls-container {
-            position: absolute;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            padding: 0.75rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            transition: opacity 0.3s ease-in-out;
-            opacity: 0;
-            z-index: 2;
-        }
-
-        .video-container:hover .controls-container,
-        .video-container.paused .controls-container {
-            opacity: 1;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            cursor: pointer;
-            position: relative;
-            margin-bottom: 0.75rem;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: #fff;
-            border-radius: 3px;
-            width: 0%;
-            position: relative;
-            transition: width 0.1s linear;
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            right: -6px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            border-radius: 50%;
-        }
-
-        .buffer-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 3px;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        .control-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .control-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .video-controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: white;
-        }
-
-        .left-controls, .right-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .time-display {
-            font-size: 0.9rem;
-            color: white;
-            font-family: 'Courier New', monospace;
-        }
-
-        .quality-selector {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-
-        /* Interactive Quiz Styles */
-        .quiz-container {
-            margin: 20px 0;
-        }
-
-        .quiz-question {
-            background: rgba(255,255,255,0.15);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px 0;
-            backdrop-filter: blur(20px);
-            animation: fadeIn 0.6s ease;
-        }
-
-        .quiz-question h4 {
-            margin-bottom: 15px;
-            color: #0c4a6e;
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .quiz-option {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 12px;
-            padding: 12px 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .quiz-option:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateX(-3px);
-        }
-
-        body[dir="ltr"] .quiz-option:hover {
-            transform: translateX(3px);
-        }
-
-        .quiz-option.correct {
-            background: rgba(22,163,74,0.2);
-            border-color: #16a34a;
-            animation: pulse-correct 0.6s ease;
-        }
-
-        .quiz-option.wrong {
-            background: rgba(239,68,68,0.2);
-            border-color: #ef4444;
-            animation: shake-wrong 0.6s ease;
-        }
-
-        .quiz-option.disabled {
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .option-letter {
-            background: rgba(14,165,233,0.3);
-            color: #0c4a6e;
-            font-weight: bold;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        .quiz-result {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 500;
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .quiz-result.correct {
-            background: rgba(22,163,74,0.1);
-            color: #15803d;
-            display: block;
-        }
-
-        .quiz-result.wrong {
-            background: rgba(239,68,68,0.1);
-            color: #dc2626;
-            display: block;
-        }
-
-        /* Main Content */
-        .main-content {
-            max-width: 1200px;
-            margin: 90px auto 0;
-            padding: clamp(20px, 5vw, 40px);
-        }
-
+        body[dir="ltr"] .translation-button {right:auto;left:clamp(20px,5vw,30px);}
+        .translation-button:hover { border-color:var(--translation-color);background:rgba(139,92,246,0.1); animation:translate-glow 2.5s infinite alternate; }
+        .translation-button .fab-text { color:var(--translation-color); }
+        
+        .main-content {max-width:1200px;margin:90px auto 0;padding:clamp(20px,5vw,40px);}
         .glassy-card {
-            background: var(--glass-bg);
-            border: 2px solid var(--glass-border);
-            border-radius: var(--border-radius);
-            padding: clamp(20px, 5vw, 30px);
-            margin-bottom: clamp(25px, 5vw, 35px);
-            backdrop-filter: blur(25px);
-            transition: all 0.4s ease;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.5);
+            background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:var(--border-radius);
+            padding:clamp(20px,5vw,30px);margin-bottom:clamp(25px,5vw,35px);backdrop-filter:blur(25px);
+            transition:all 0.4s ease;box-shadow:0 20px 50px rgba(0,0,0,0.1),inset 0 2px 0 rgba(255,255,255,0.5);
         }
-
-        .glassy-card:hover {
-            transform: translateY(-5px) scale(1.01);
-            border-color: rgba(255,255,255,0.7);
-        }
-
-        /* Typography */
-        h1, h2, h3, h4, h5 {
-            color: #0f172a;
-            text-shadow: 0 2px 8px rgba(255,255,255,0.8);
-            font-weight: 700;
-        }
-
-        h1 {
-            font-size: clamp(2rem, 6vw, 3.2rem);
-            text-align: center;
-            margin-bottom: clamp(20px, 4vw, 30px);
-            color: #0c4a6e;
-        }
-
-        h2 {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            border-bottom: 3px solid rgba(14,165,233,0.3);
-            padding-bottom: clamp(10px, 2vw, 15px);
-            margin-bottom: clamp(20px, 4vw, 30px);
-        }
-
-        h3 {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            margin-bottom: clamp(15px, 3vw, 20px);
-        }
-
-        h4 {
-            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
-            margin-bottom: clamp(12px, 2.5vw, 18px);
-        }
-
-        p, li {
-            color: #475569;
-            margin-bottom: clamp(10px, 2vw, 12px);
-        }
-
-        strong {
-            color: #1e3a8a;
-        }
-
-        ul, ol {
-            padding-right: clamp(20px, 4vw, 25px);
-            margin-bottom: 20px;
-        }
-
-        body[dir="ltr"] ul, body[dir="ltr"] ol {
-            padding-right: 0;
-            padding-left: clamp(20px, 4vw, 25px);
-        }
-
-        /* Special Components */
-        .concept-card {
-            background: rgba(255,255,255,0.15);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px 0;
-            backdrop-filter: blur(20px);
-            transition: all 0.4s ease;
-        }
-
-        .concept-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255,255,255,0.4);
-            background: rgba(255,255,255,0.2);
-        }
-
+        .glassy-card:hover {transform:translateY(-5px) scale(1.01);border-color:rgba(255,255,255,0.7);}
+        
+        h1,h2,h3,h4,h5 { color:#0f172a;text-shadow:0 2px 8px rgba(255,255,255,0.8);font-weight:700;}
+        h1 { font-size:clamp(2rem,6vw,3.2rem);text-align:center;margin-bottom:clamp(20px,4vw,30px);color:#0c4a6e; }
+        h2 { font-size:clamp(1.5rem,5vw,2.5rem);border-bottom:3px solid rgba(14,165,233,0.3);padding-bottom:clamp(10px,2vw,15px);margin-bottom:clamp(20px,4vw,30px);}
+        h3 { font-size:clamp(1.2rem,4vw,1.8rem);margin-bottom:clamp(15px,3vw,20px);}
+        h4 { font-size:clamp(1.1rem,3.5vw,1.5rem);margin-bottom:clamp(12px,2.5vw,18px);}
+        
+        p,li { color:#475569;margin-bottom:clamp(10px,2vw,12px);}
+        strong {color:#1e3a8a;}
+        
+        ul,ol { padding-right:clamp(20px,4vw,25px);margin-bottom:20px;}
+        body[dir="ltr"] ul,body[dir="ltr"] ol {padding-right:0;padding-left:clamp(20px,4vw,25px);}
+        
+        .case-study { border-right:4px solid var(--highlight-color);padding-right:20px;margin:25px 0;}
+        body[dir="ltr"] .case-study {border-right:none;border-left:4px solid var(--highlight-color);padding-right:0;padding-left:20px;}
+        
+        .table-container { overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .business-table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.2); border-radius: 12px; overflow: hidden; backdrop-filter: blur(15px); }
+        .business-table th, .business-table td { padding: clamp(8px, 2vw, 12px); border: 1px solid rgba(255,255,255,0.3); text-align: right; font-size: clamp(0.8rem, 2vw, 1rem); vertical-align: top; }
+        body[dir="ltr"] .business-table th, body[dir="ltr"] .business-table td { text-align: left; }
+        .business-table th { background: rgba(14,165,233,0.2); font-weight: 700; color: #0c4a6e; text-align: center; }
+        
+        .concept-card { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 25px; margin: 20px 0; backdrop-filter: blur(20px); transition: all 0.4s ease; }
+        .concept-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.2); }
+        
         .equation-box {
             background: linear-gradient(135deg, rgba(14,165,233,0.1), rgba(59,130,246,0.1));
             border: 2px solid rgba(14,165,233,0.3);
@@ -689,91 +110,190 @@
             font-weight: bold;
             color: #0c4a6e;
         }
-
-        /* Tables */
-        .table-container {
-            overflow-x: auto;
-            margin: 20px 0;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .business-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(255,255,255,0.2);
-            border-radius: 12px;
+        
+        /* Video Player Styles */
+        .video-container {
+            position: relative;
             overflow: hidden;
-            backdrop-filter: blur(15px);
+            border-radius: 2.5rem;
+            margin: 20px 0;
         }
-
-        .business-table th, .business-table td {
-            padding: clamp(8px, 2vw, 12px);
-            border: 1px solid rgba(255,255,255,0.3);
-            text-align: right;
-            font-size: clamp(0.8rem, 2vw, 1rem);
-            vertical-align: top;
+        .seek-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+            color: white;
+            font-size: 3rem;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-
-        body[dir="ltr"] .business-table th, body[dir="ltr"] .business-table td {
-            text-align: left;
+        .seek-overlay.active {
+            opacity: 1;
         }
-
-        .business-table th {
-            background: rgba(14,165,233,0.2);
-            font-weight: 700;
-            color: #0c4a6e;
+        .controls-container {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            z-index: 21;
+        }
+        .video-container:hover .controls-container,
+        .video-container.paused .controls-container {
+            opacity: 1;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #fff;
+            border-radius: 3px;
+            width: 0%;
+            position: relative;
+            transition: width 0.1s linear;
+        }
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .volume-slider-container {
+            position: relative;
+        }
+        .volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            outline: none;
+            transition: opacity .2s;
+            cursor: pointer;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .volume-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            border: none;
+        }
+        .settings-container {
+            position: relative;
+        }
+        .speed-controls {
+            position: absolute;
+            bottom: 3.5rem;
+            right: -1rem;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 1.25rem;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100px;
+        }
+        .speed-controls button {
+            color: white;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            width: 100%;
             text-align: center;
+            transition: background-color 0.2s ease;
         }
-
-        .case-study {
-            border-right: 4px solid var(--highlight-color);
-            padding-right: 20px;
-            margin: 25px 0;
+        .speed-controls button:hover, .speed-controls button.active {
+            background: rgba(255, 255, 255, 0.2);
         }
-
-        body[dir="ltr"] .case-study {
-            border-right: none;
-            border-left: 4px solid var(--highlight-color);
-            padding-right: 0;
-            padding-left: 20px;
+        .thumbnail-container {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 0.25rem;
+            padding: 0.25rem;
+            display: none;
         }
-
-        .hidden {
-            display: none !important;
+        .thumbnail-container canvas {
+            width: 160px;
+            height: 90px;
+            border-radius: 0.125rem;
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .video-container {
-                width: 95%;
-                border-radius: 1.5rem;
-            }
-            
-            .controls-container {
-                padding: 0.5rem 1rem;
-            }
-            
-            .video-controls {
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .time-display {
-                font-size: 0.8rem;
-            }
-        }
+        
+        .hidden { display:none !important; }
     </style>
 </head>
 <body>
-    <!-- Background Elements -->
     <div class="background-gradient"></div>
     <div class="floating-spheres">
         <div class="sphere large"></div>
         <div class="sphere medium"></div>
         <div class="sphere small-1"></div>
     </div>
-
+    
     <!-- Translation Button -->
     <button class="fab-button translation-button" id="translationButton">
         <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -782,206 +302,185 @@
         <span class="fab-text">ترجمة</span>
     </button>
 
-    <!-- Video Button -->
-    <button class="fab-button video-button" id="videoButton">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.7348 14.7348L19.2614 19.2614M16.4982 11.2491C16.4982 14.5623 13.8114 17.2491 10.4982 17.2491C7.18497 17.2491 4.49817 14.5623 4.49817 11.2491C4.49817 7.93588 7.18497 5.24908 10.4982 5.24908C13.8114 5.24908 16.4982 7.93588 16.4982 11.2491Z" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M10 8.5V15.5L15 12L10 8.5Z" fill="#dc2626"/>
-        </svg>
-        <span class="fab-text">فيديو</span>
-    </button>
-
-    <!-- Video Modal -->
-    <div class="video-modal" id="videoModal">
-        <div class="video-container" id="videoPlayer">
-            <button class="video-close-btn" id="videoCloseBtn">×</button>
-            
-            <!-- Video Info -->
-            <div class="video-info" id="videoInfo">
-                <div>لغة الأعمال: مقدمة للمحاسبة</div>
-                <div style="font-size: 0.7rem; opacity: 0.8;">Internet Archive</div>
-            </div>
-            
-            <!-- Loading State -->
-            <div class="video-loading" id="videoLoading">
-                <div class="spinner"></div>
-                <span id="loadingText">جاري تحميل الفيديو...</span>
-            </div>
-            
-            <!-- Error State -->
-            <div class="video-error" id="videoError">
-                <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                <div id="errorText">خطأ في تحميل الفيديو</div>
-                <button onclick="retryVideo()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 8px; margin-top: 10px; cursor: pointer;">إعادة المحاولة</button>
-            </div>
-            
-            <!-- Video element -->
-            <video id="video" style="width: 100%; height: auto; object-fit: cover;" crossorigin="anonymous" preload="metadata">
-                <source src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            
-            <!-- Custom Controls -->
-            <div class="controls-container">
-                <!-- Progress bar -->
-                <div class="progress-bar-container" id="progressBarContainer">
-                    <div class="buffer-bar" id="bufferBar"></div>
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                
-                <div class="video-controls">
-                    <!-- Left Controls -->
-                    <div class="left-controls">
-                        <button id="playPauseBtn" class="control-btn" aria-label="Play">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button id="volumeBtn" class="control-btn" aria-label="Mute">
-                            <i class="fas fa-volume-up"></i>
-                        </button>
-                        <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1" style="width: 80px; margin: 0 10px;">
-                    </div>
-                    
-                    <!-- Center Time -->
-                    <div class="time-display">
-                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
-                    </div>
-                    
-                    <!-- Right Controls -->
-                    <div class="right-controls">
-                        <select class="quality-selector" id="qualitySelector">
-                            <option value="auto">تلقائي</option>
-                            <option value="720p">720p</option>
-                            <option value="480p">480p</option>
-                            <option value="360p">360p</option>
-                        </select>
-                        <button id="fullscreenBtn" class="control-btn" aria-label="Enter Fullscreen">
-                            <i class="fas fa-expand"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <main class="main-content">
         <!-- Arabic Content -->
         <div id="arabicContent">
             <section class="glassy-card">
-                <h1>دليل أساسيات المحاسبة - منصة أثر</h1>
-                <p style="text-align: center; font-size: 1.1rem; color: #475569;">مرحباً أحمد، أنا مساعدك التعليمي من منصة أثر</p>
+                <h1>دليل شامل: أساسيات الأعمال التجارية</h1>
+                <p style="text-align: center; font-size: 1.1rem; color: #475569;">أهلاً بك يا أحمد، هذا دليلك الشامل لفهم عالم الأعمال من منصة "أثر"</p>
             </section>
 
+            <!-- Video Section -->
             <section class="glassy-card">
-                <h2>خريطة أثر للتركيز الذكي</h2>
-                <div class="concept-card">
-                    <p><strong>زبدة المحاضرة:</strong> الهدف الأساسي للمحاسبة هو توفير معلومات مالية مفيدة عن منظمة معينة للمستخدمين المهتمين لاتخاذ قرارات مدروسة، وذلك عبر نظام معلومات يحدد ويسجل ويُوصّل الأحداث الاقتصادية الخاصة بالمنشأة.</p>
-                </div>
-            </section>
-
-            <section class="glassy-card">
-                <h2>مفاهيم/أساليب أساسية (80% تركيز)</h2>
-                <div class="concept-card">
-                    <h4>تعريف المحاسبة وأنشطتها الثلاثة</h4>
-                    <p><strong>النشاط الأول - التحديد:</strong> تحديد الأحداث الاقتصادية المهمة وفصلها عن الأحداث غير الاقتصادية.</p>
-                    <p><strong>النشاط الثاني - التسجيل:</strong> تسجيل وتصنيف وتلخيص الأحداث الاقتصادية بطريقة منهجية ومنطقية.</p>
-                    <p><strong>النشاط الثالث - التوصيل:</strong> توصيل المعلومات المحاسبية للمستخدمين المهتمين من خلال التقارير المحاسبية.</p>
-                </div>
-
-                <div class="concept-card">
-                    <h4>المعادلة المحاسبية الأساسية</h4>
-                    <div class="equation-box">
-                        الأصول = الالتزامات + حقوق الملكية
+                <h2>🎥 فيديو شرح تفاعلي</h2>
+                <div id="videoPlayer" class="video-container shadow-2xl">
+                    <video id="video" class="w-full h-full object-cover" crossOrigin="anonymous">
+                        <source src="https://archive.org/download/20250916_20250916_0112/%D9%84%D8%BA%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84__%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9.mp4" type="video/mp4">
+                        المتصفح الخاص بك لا يدعم تشغيل الفيديو.
+                    </video>
+                    <div id="seekOverlay" class="seek-overlay"></div>
+                    <div class="controls-container">
+                        <div class="progress-bar-container mb-3" id="progressBarContainer">
+                            <div class="thumbnail-container" id="thumbnailContainer">
+                                <canvas id="thumbnailCanvas"></canvas>
+                            </div>
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; color: white;">
+                            <div style="width: 33.333%; display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+                                <button id="playPauseBtn" class="control-btn" aria-label="تشغيل"><i class="fas fa-play"></i></button>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                     <button id="volumeBtn" class="control-btn" aria-label="كتم الصوت"><i class="fas fa-volume-up"></i></button>
+                                     <div class="volume-slider-container">
+                                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" aria-label="مستوى الصوت">
+                                     </div>
+                                </div>
+                            </div>
+                            <div style="width: 33.333%; display: flex; justify-content: center;">
+                                <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
+                            </div>
+                            <div style="width: 33.333%; display: flex; align-items: center; justify-content: flex-end; gap: 1rem;">
+                                <div class="settings-container">
+                                    <button id="settingsBtn" class="control-btn" aria-label="الإعدادات"><i class="fas fa-cog"></i></button>
+                                    <div id="speedControls" class="speed-controls">
+                                        <button data-speed="0.5">0.5x</button>
+                                        <button data-speed="0.75">0.75x</button>
+                                        <button data-speed="1" class="active">عادي</button>
+                                        <button data-speed="1.5">1.5x</button>
+                                        <button data-speed="2">2x</button>
+                                    </div>
+                                </div>
+                                <button id="fullscreenBtn" class="control-btn" aria-label="ملء الشاشة"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
                     </div>
-                    <p><strong>الشرح:</strong> تموَّل الأصول إما بالديون (التزامات) أو باستثمارات الملاك (حقوق ملكية)، ويجب أن تبقى هذه المعادلة متوازنة بعد كل عملية.</p>
-                    <p><strong>مثال عملي:</strong> إذا كانت الأصول 100,000 وحقوق الملكية 70,000، فإن الالتزامات = 30,000</p>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>🎯 زبدة المحاضرة</h2>
+                <div class="concept-card">
+                    <p><strong>الهدف الأساسي للأعمال التجارية</strong> هو تقديم السلع والخدمات للعملاء مع السعي لتحقيق الربح. الأعمال التجارية هي المحرك الأساسي للاقتصاد وتلعب دوراً حيوياً في تحسين مستوى المعيشة وجودة الحياة في المجتمع.</p>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>📚 المفاهيم الأساسية (80% تركيز)</h2>
+                
+                <div class="concept-card">
+                    <h4>شرح مفهوم: الأعمال التجارية</h4>
+                    <p><strong>أصل الفكرة (كأن صاحبك بيشرحهالك):</strong></p>
+                    <p>ببساطة، تخيل أي محل أو شركة حولك. الفكرة الأساسية هي أنهم يقدمون لك شيئاً تحتاجه (سلعة أو خدمة) وبالمقابل، هدفهم الأساسي هو كسب المال من وراء هذه العملية، أو ما يسمى "تحقيق الربح".</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>مكونات تعريف المحاسبة الخمسة</h4>
+                    <h4>شرح مفهوم: الربح</h4>
+                    <p><strong>أصل الفكرة (كأن صاحبك بيشرحهالك):</strong></p>
+                    <p>الربح هو المال المتبقي للشركة بعد أن تدفع كل فواتيرها ومصاريفها، من رواتب الموظفين والإيجار إلى تكلفة المواد الخام. إنه صافي المكسب النهائي.</p>
+                    <div class="equation-box">
+                        الربح = الإيرادات - المصاريف
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <h4>شرح مفهوم: رائد الأعمال</h4>
+                    <p><strong>أصل الفكرة (كأن صاحبك بيشرحهالك):</strong></p>
+                    <p>رائد الأعمال هو الشخص المغامر الذي لديه فكرة ويقرر أن يحولها لمشروع حقيقي. هو من يضع وقته وماله في خطر على أمل أن تنجح فكرته، وهو من يتحمل كل المخاطر في البداية.</p>
+                </div>
+
+                <div class="concept-card">
+                    <h4>شرح مفهوم: الإيرادات</h4>
+                    <p><strong>أصل الفكرة (كأن صاحبك بيشرحهالك):</strong></p>
+                    <p>الإيرادات هي إجمالي الأموال التي تدخل للشركة من بيع منتجاتها أو خدماتها، وذلك قبل خصم أي مصاريف. إنه الرقم الإجمالي للدخل، وليس صافي الربح.</p>
+                </div>
+
+                <div class="concept-card">
+                    <h4>شرح مفهوم: المخاطرة</h4>
+                    <p><strong>أصل الفكرة (كأن صاحبك بيشرحهالك):</strong></p>
+                    <p>المخاطرة هي احتمالية عدم تحقيق الربح، أو حتى خسارة الوقت والمال. أي رائد أعمال يفتح مشروعاً جديداً، فهو يراهن على نجاحه في مواجهة عدم اليقين. القاعدة العامة تقول: كلما زادت المخاطرة، زاد الربح المحتمل.</p>
+                </div>
+
+                <div class="concept-card">
+                    <h4>شرح مفهوم: أصحاب المصلحة (Stakeholders)</h4>
+                    <p><strong>أصل الفكرة (كأن صاحبك بيشرحهالك):</strong></p>
+                    <p>هم أي شخص أو جهة تتأثر بقرارات وأنشطة الشركة، سواء بالكسب أو الخسارة. يشمل ذلك الموظفين، والعملاء، والموردين، والبنوك، والمجتمع المحيط، والحكومة.</p>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>💡 تفاصيل داعمة وتنبيهات (20% تركيز)</h2>
+                
+                <div class="concept-card">
+                    <h4>أهداف الأعمال الأربعة</h4>
+                    <p><strong>أصل الفكرة:</strong> أي شركة لديها أربعة أهداف رئيسية يجب أن توازن بينها:</p>
                     <ol>
-                        <li><strong>الوحدة الاقتصادية:</strong> الشركة منفصلة عن أصحابها</li>
-                        <li><strong>المعاملات التجارية:</strong> أحداث قابلة للقياس بالنقود</li>
-                        <li><strong>الأنشطة المحاسبية:</strong> التحديد والتسجيل والتوصيل</li>
-                        <li><strong>نظام المعلومات:</strong> معالجة البيانات وإنتاج التقارير</li>
-                        <li><strong>المستخدمون المهتمون:</strong> من يحتاجون المعلومات المالية</li>
+                        <li><strong>البقاء:</strong> الاستمرار في العمل وعدم الإفلاس</li>
+                        <li><strong>الربح:</strong> تحقيق مكاسب مالية للتشغيل والنمو</li>
+                        <li><strong>النمو:</strong> التوسع وزيادة حجم الأعمال</li>
+                        <li><strong>المسؤولية الاجتماعية:</strong> المساهمة بشكل إيجابي في المجتمع</li>
                     </ol>
                 </div>
-            </section>
 
-            <section class="glassy-card">
-                <h2>تفاصيل داعمة وتنبيهات (20% تركيز)</h2>
                 <div class="concept-card">
-                    <h4>شروط تسجيل المعاملات</h4>
-                    <ul>
-                        <li>أن تؤثر على الوحدة الاقتصادية</li>
-                        <li>أن يكون أثرها قابلاً للقياس بالنقود</li>
-                    </ul>
-                    <p><strong>مثال:</strong> في متجر قهوة، شراء مخزون بقيمة 500 يعتبر حدثاً اقتصادياً يُسجل كمخزون مقابل نقد، بينما محادثة غير مالية لا تُسجل.</p>
+                    <h4>الدور الإيجابي والسلبي للشركات</h4>
+                    <p><strong>الإيجابيات:</strong> توفير السلع والوظائف، دفع الضرائب، دعم النمو الاقتصادي</p>
+                    <p><strong>السلبيات:</strong> التلوث البيئي، المخاطر الصحية، التأثير على الاستقرار المالي</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>المحاسبة كنظام معلومات</h4>
-                    <ul>
-                        <li><strong>مدخلات:</strong> أحداث اقتصادية</li>
-                        <li><strong>معالجة:</strong> تسجيل وتلخيص</li>
-                        <li><strong>مخرجات:</strong> قوائم مالية</li>
-                    </ul>
-                </div>
-
-                <div class="concept-card">
-                    <h4>المستخدمون الداخليون والخارجيون</h4>
-                    <p><strong>داخلياً:</strong> الإدارة والإنتاج والتسويق والمالية</p>
-                    <p><strong>خارجياً:</strong> المستثمرون والدائنون والضرائب والعملاء وجهات السوق</p>
+                    <h4>مستوى المعيشة مقابل جودة الحياة</h4>
+                    <p><strong>مستوى المعيشة:</strong> القدرة الشرائية (مقياس مادي)</p>
+                    <p><strong>جودة الحياة:</strong> الرفاهية الشاملة (الأمان، التعليم، الصحة، البيئة)</p>
                 </div>
             </section>
 
             <section class="glassy-card">
-                <h3>جدول المصطلحات</h3>
+                <h3>جدول المفاهيم الأساسية</h3>
                 <div class="table-container">
                     <table class="business-table">
                         <thead>
                             <tr>
-                                <th>المصطلح العربي</th>
-                                <th>المقابل الإنجليزي</th>
-                                <th>التعريف</th>
+                                <th>المفهوم</th>
+                                <th>التعريف الرسمي</th>
+                                <th>الخلاصة بكلمتين</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>المحاسبة</strong></td>
-                                <td>Accounting</td>
-                                <td>نظام معلومات لتحديد وتسجيل وتوصيل الأحداث الاقتصادية</td>
+                                <td><strong>الأعمال التجارية</strong></td>
+                                <td>أي نشاط يسعى لتقديم سلع وخدمات للآخرين، مع العمل على تحقيق الربح</td>
+                                <td>بيع وشراء للربح</td>
                             </tr>
                             <tr>
-                                <td><strong>الأصول</strong></td>
-                                <td>Assets</td>
-                                <td>الموارد الاقتصادية التي تمتلكها الشركة ويتوقع أن تفيدها مستقبلاً</td>
+                                <td><strong>الربح</strong></td>
+                                <td>مقدار المال الذي تكسبه الشركة بما يتجاوز ما تنفقه على الرواتب والنفقات الأخرى</td>
+                                <td>المكسب الصافي</td>
                             </tr>
                             <tr>
-                                <td><strong>الالتزامات</strong></td>
-                                <td>Liabilities</td>
-                                <td>الديون أو الالتزامات تجاه الأطراف الأخرى (الدائنون)</td>
+                                <td><strong>رائد الأعمال</strong></td>
+                                <td>الشخص الذي يخاطر بوقته وماله لبدء وإدارة عمل تجاري</td>
+                                <td>مغامر صاحب فكرة</td>
                             </tr>
                             <tr>
-                                <td><strong>حقوق الملكية</strong></td>
-                                <td>Owner's Equity</td>
-                                <td>حق المالكين في الأصول بعد سداد الالتزامات</td>
+                                <td><strong>الإيرادات</strong></td>
+                                <td>المبلغ الإجمالي للأموال التي تحصل عليها الشركة خلال فترة معينة</td>
+                                <td>إجمالي الدخل</td>
                             </tr>
                             <tr>
-                                <td><strong>الوحدة الاقتصادية</strong></td>
-                                <td>Economic Entity</td>
-                                <td>وحدة عمل تُفصل معاملاتها عن المالكين</td>
+                                <td><strong>المخاطرة</strong></td>
+                                <td>فرصة خسارة رائد الأعمال للوقت والمال في عمل قد لا يثبت ربحيته</td>
+                                <td>احتمالية الفشل</td>
                             </tr>
                             <tr>
-                                <td><strong>المعاملات التجارية</strong></td>
-                                <td>Business Transactions</td>
-                                <td>أحداث اقتصادية قابلة للقياس النقدي تؤثر على المركز المالي</td>
+                                <td><strong>أصحاب المصلحة</strong></td>
+                                <td>جميع الأشخاص الذين يمكن أن يربحوا أو يخسروا من سياسات وأنشطة الشركة</td>
+                                <td>كل من يتأثر</td>
                             </tr>
                             <tr>
-                                <td><strong>القوائم المالية</strong></td>
-                                <td>Financial Statements</td>
-                                <td>تقارير تُلخّص الأداء والوضع المالي</td>
+                                <td><strong>المنظمات غير الربحية</strong></td>
+                                <td>منظمة لا تهدف إلى تحقيق ربح شخصي لمؤسسيها، بل تخدم أهدافاً اجتماعية</td>
+                                <td>هدفها خدمة المجتمع</td>
                             </tr>
                         </tbody>
                     </table>
@@ -989,104 +488,21 @@
             </section>
 
             <section class="glassy-card">
-                <h2>أسئلة محتملة للامتحان</h2>
+                <h2>🌉 جسور معرفية</h2>
+                
                 <div class="concept-card">
-                    <h4>أسئلة مقالية</h4>
-                    <ol>
-                        <li>عرّف المحاسبة واشرح أنشطتها الثلاثة الرئيسية بإيجاز</li>
-                        <li>ما هي المعادلة المحاسبية الأساسية؟ عرّف كل عنصر فيها</li>
-                        <li>فرّق بين المستخدمين الداخليين والخارجيين مع مثال لكل فئة</li>
-                        <li>اذكر شرطي تسجيل المعاملة في الدفاتر المحاسبية</li>
-                    </ol>
-                </div>
-
-                <div class="quiz-container">
-                    <div class="quiz-question">
-                        <h4>1. أي مما يلي يُعد مستخدماً خارجياً للمعلومات المحاسبية؟</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" data-question="1" data-correct="false">
-                                <span class="option-letter">أ</span>
-                                <span>مدير التسويق</span>
-                            </div>
-                            <div class="quiz-option" data-question="1" data-correct="false">
-                                <span class="option-letter">ب</span>
-                                <span>قسم الإنتاج</span>
-                            </div>
-                            <div class="quiz-option" data-question="1" data-correct="true">
-                                <span class="option-letter">ج</span>
-                                <span>مصلحة الضرائب</span>
-                            </div>
-                            <div class="quiz-option" data-question="1" data-correct="false">
-                                <span class="option-letter">د</span>
-                                <span>مدير الموارد البشرية</span>
-                            </div>
-                        </div>
-                        <div class="quiz-result" id="result1"></div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>2. المعادلة المحاسبية الأساسية هي:</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" data-question="2" data-correct="false">
-                                <span class="option-letter">أ</span>
-                                <span>الأصول = الالتزامات − حقوق الملكية</span>
-                            </div>
-                            <div class="quiz-option" data-question="2" data-correct="true">
-                                <span class="option-letter">ب</span>
-                                <span>الأصول = الالتزامات + حقوق الملكية</span>
-                            </div>
-                            <div class="quiz-option" data-question="2" data-correct="false">
-                                <span class="option-letter">ج</span>
-                                <span>الأصول + الالتزامات = حقوق الملكية</span>
-                            </div>
-                            <div class="quiz-option" data-question="2" data-correct="false">
-                                <span class="option-letter">د</span>
-                                <span>الأصول + حقوق الملكية = الالتزامات</span>
-                            </div>
-                        </div>
-                        <div class="quiz-result" id="result2"></div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>3. شراء أثاث مكتبي على الحساب يؤدي إلى:</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" data-question="3" data-correct="false">
-                                <span class="option-letter">أ</span>
-                                <span>زيادة في الأصول ونقص في الأصول</span>
-                            </div>
-                            <div class="quiz-option" data-question="3" data-correct="false">
-                                <span class="option-letter">ب</span>
-                                <span>زيادة في الأصول وزيادة في حقوق الملكية</span>
-                            </div>
-                            <div class="quiz-option" data-question="3" data-correct="true">
-                                <span class="option-letter">ج</span>
-                                <span>زيادة في الأصول وزيادة في الالتزامات</span>
-                            </div>
-                            <div class="quiz-option" data-question="3" data-correct="false">
-                                <span class="option-letter">د</span>
-                                <span>نقص في الأصول ونقص في الالتزامات</span>
-                            </div>
-                        </div>
-                        <div class="quiz-result" id="result3"></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="glassy-card">
-                <h2>جسور معرفية</h2>
-                <div class="concept-card">
-                    <h4>المحاسبة لغة الأعمال</h4>
-                    <p>قواعدها ومفاهيمها تُمكّن من تواصل مالي واضح لاتخاذ القرار في عالم الأعمال.</p>
+                    <h4>الأعمال محرك الاقتصاد</h4>
+                    <p>الشركات هي العمود الفقري لأي اقتصاد حديث، فهي تخلق الوظائف وتوفر السلع والخدمات وتدفع الضرائب.</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>الغاية هي اتخاذ القرار</h4>
-                    <p>التقارير ليست غاية بحد ذاتها بل وسيلة لقرارات أفضل للمستثمرين والإدارة.</p>
+                    <h4>التوازن بين الربح والمسؤولية</h4>
+                    <p>الشركات الناجحة تحقق التوازن بين تحقيق الأرباح والمساهمة الإيجابية في المجتمع.</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>الكيان الاقتصادي المستقل</h4>
-                    <p>فصل معاملات المنشأة عن الملاك لضمان موثوقية وشفافية التقارير المالية.</p>
+                    <h4>ريادة الأعمال والابتكار</h4>
+                    <p>رواد الأعمال هم قادة التغيير والابتكار في المجتمع، يحولون الأفكار إلى حلول واقعية.</p>
                 </div>
             </section>
         </div>
@@ -1094,120 +510,181 @@
         <!-- English Content -->
         <div id="englishContent" class="hidden">
             <section class="glassy-card">
-                <h1>Comprehensive Guide: Accounting Fundamentals</h1>
-                <p style="text-align: center; font-size: 1.1rem; color: #475569;">Welcome Ahmed, I am your educational assistant from Athr Platform</p>
+                <h1>Comprehensive Guide: Business Fundamentals</h1>
+                <p style="text-align: center; font-size: 1.1rem; color: #475569;">Welcome Ahmed, this is your comprehensive guide to understanding the business world from "Athr" platform</p>
             </section>
 
+            <!-- Video Section -->
             <section class="glassy-card">
-                <h2>Athr Map for Smart Focus</h2>
-                <div class="concept-card">
-                    <p><strong>Lecture Summary:</strong> The main objective of accounting is to provide useful financial information about a specific organization to interested users for making informed decisions, through an information system that identifies, records, and communicates the economic events of the entity.</p>
-                </div>
-            </section>
-
-            <section class="glassy-card">
-                <h2>Core Concepts (80% Focus)</h2>
-                <div class="concept-card">
-                    <h4>Definition of Accounting and Its Three Activities</h4>
-                    <p><strong>First Activity - Identifying:</strong> Identifying important economic events and separating them from non-economic events.</p>
-                    <p><strong>Second Activity - Recording:</strong> Recording, classifying, and summarizing economic events in a systematic and logical manner.</p>
-                    <p><strong>Third Activity - Communicating:</strong> Communicating accounting information to interested users through accounting reports.</p>
-                </div>
-
-                <div class="concept-card">
-                    <h4>Basic Accounting Equation</h4>
-                    <div class="equation-box">
-                        Assets = Liabilities + Owner's Equity
+                <h2>🎥 Interactive Educational Video</h2>
+                <div id="videoPlayerEn" class="video-container shadow-2xl">
+                    <video id="videoEn" class="w-full h-full object-cover" crossOrigin="anonymous">
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div id="seekOverlayEn" class="seek-overlay"></div>
+                    <div class="controls-container">
+                        <div class="progress-bar-container mb-3" id="progressBarContainerEn">
+                            <div class="thumbnail-container" id="thumbnailContainerEn">
+                                <canvas id="thumbnailCanvasEn"></canvas>
+                            </div>
+                            <div class="progress-bar" id="progressBarEn"></div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; color: white;">
+                            <div style="width: 33.333%; display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+                                <button id="playPauseBtnEn" class="control-btn" aria-label="Play"><i class="fas fa-play"></i></button>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                     <button id="volumeBtnEn" class="control-btn" aria-label="Mute"><i class="fas fa-volume-up"></i></button>
+                                     <div class="volume-slider-container">
+                                        <input type="range" id="volumeSliderEn" class="volume-slider" min="0" max="1" step="0.01" value="1" aria-label="Volume">
+                                     </div>
+                                </div>
+                            </div>
+                            <div style="width: 33.333%; display: flex; justify-content: center;">
+                                <span id="currentTimeEn">00:00</span> / <span id="durationEn">00:00</span>
+                            </div>
+                            <div style="width: 33.333%; display: flex; align-items: center; justify-content: flex-end; gap: 1rem;">
+                                <div class="settings-container">
+                                    <button id="settingsBtnEn" class="control-btn" aria-label="Settings"><i class="fas fa-cog"></i></button>
+                                    <div id="speedControlsEn" class="speed-controls">
+                                        <button data-speed="0.5">0.5x</button>
+                                        <button data-speed="0.75">0.75x</button>
+                                        <button data-speed="1" class="active">Normal</button>
+                                        <button data-speed="1.5">1.5x</button>
+                                        <button data-speed="2">2x</button>
+                                    </div>
+                                </div>
+                                <button id="fullscreenBtnEn" class="control-btn" aria-label="Fullscreen"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
                     </div>
-                    <p><strong>Explanation:</strong> Assets are financed either by debts (liabilities) or by owner investments (owner's equity), and this equation must remain balanced after every transaction.</p>
-                    <p><strong>Practical Example:</strong> If assets are 100,000 and owner's equity is 70,000, then liabilities = 30,000</p>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>🎯 Lecture Summary</h2>
+                <div class="concept-card">
+                    <p><strong>The main objective of business</strong> is to provide goods and services to customers while seeking to achieve profit. Business is the main driver of the economy and plays a vital role in improving the standard of living and quality of life in society.</p>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>📚 Core Concepts (80% Focus)</h2>
+                
+                <div class="concept-card">
+                    <h4>Concept Explanation: Business</h4>
+                    <p><strong>Core Idea (Like Your Friend Explaining):</strong></p>
+                    <p>Simply, imagine any shop or company around you. The basic idea is that they provide you with something you need (goods or services) and in return, their main goal is to make money from this process, or what is called "profit generation".</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>Five Components of Accounting Definition</h4>
+                    <h4>Concept Explanation: Profit</h4>
+                    <p><strong>Core Idea (Like Your Friend Explaining):</strong></p>
+                    <p>Profit is the money left over for the company after it pays all its bills and expenses, from employee salaries and rent to raw material costs. It's the final net gain.</p>
+                    <div class="equation-box">
+                        Profit = Revenue - Expenses
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <h4>Concept Explanation: Entrepreneur</h4>
+                    <p><strong>Core Idea (Like Your Friend Explaining):</strong></p>
+                    <p>An entrepreneur is the adventurous person who has an idea and decides to turn it into a real project. They are the ones who put their time and money at risk hoping their idea succeeds, and they bear all the risks initially.</p>
+                </div>
+
+                <div class="concept-card">
+                    <h4>Concept Explanation: Revenue</h4>
+                    <p><strong>Core Idea (Like Your Friend Explaining):</strong></p>
+                    <p>Revenue is the total money that enters the company from selling its products or services, before deducting any expenses. It's the gross income figure, not net profit.</p>
+                </div>
+
+                <div class="concept-card">
+                    <h4>Concept Explanation: Risk</h4>
+                    <p><strong>Core Idea (Like Your Friend Explaining):</strong></p>
+                    <p>Risk is the possibility of not achieving profit, or even losing time and money. Any entrepreneur starting a new project is betting on its success against uncertainty. The general rule says: the higher the risk, the higher the potential profit.</p>
+                </div>
+
+                <div class="concept-card">
+                    <h4>Concept Explanation: Stakeholders</h4>
+                    <p><strong>Core Idea (Like Your Friend Explaining):</strong></p>
+                    <p>They are any person or entity affected by the company's decisions and activities, whether by gain or loss. This includes employees, customers, suppliers, banks, the surrounding community, and government.</p>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>💡 Supporting Details and Alerts (20% Focus)</h2>
+                
+                <div class="concept-card">
+                    <h4>Four Business Objectives</h4>
+                    <p><strong>Core Idea:</strong> Any company has four main objectives it must balance:</p>
                     <ol>
-                        <li><strong>Economic Entity:</strong> The company is separate from its owners</li>
-                        <li><strong>Business Transactions:</strong> Events measurable in monetary terms</li>
-                        <li><strong>Accounting Activities:</strong> Identifying, recording, and communicating</li>
-                        <li><strong>Information System:</strong> Processing data and producing reports</li>
-                        <li><strong>Interested Users:</strong> Those who need financial information</li>
+                        <li><strong>Survival:</strong> Continue operating and avoid bankruptcy</li>
+                        <li><strong>Profit:</strong> Achieve financial gains for operation and growth</li>
+                        <li><strong>Growth:</strong> Expand and increase business size</li>
+                        <li><strong>Social Responsibility:</strong> Contribute positively to society</li>
                     </ol>
                 </div>
-            </section>
 
-            <section class="glassy-card">
-                <h2>Supporting Details and Alerts (20% Focus)</h2>
                 <div class="concept-card">
-                    <h4>Conditions for Recording Transactions</h4>
-                    <ul>
-                        <li>Must affect the economic entity</li>
-                        <li>Its impact must be measurable in monetary terms</li>
-                    </ul>
-                    <p><strong>Example:</strong> In a coffee shop, purchasing inventory worth 500 is recorded because it affects the shop and is measured in money, while non-financial conversation is not recorded.</p>
+                    <h4>Positive and Negative Role of Companies</h4>
+                    <p><strong>Positives:</strong> Providing goods and jobs, paying taxes, supporting economic growth</p>
+                    <p><strong>Negatives:</strong> Environmental pollution, health risks, impact on financial stability</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>Accounting as an Information System</h4>
-                    <ul>
-                        <li><strong>Inputs:</strong> Economic events</li>
-                        <li><strong>Processing:</strong> Recording and summarizing</li>
-                        <li><strong>Outputs:</strong> Financial statements</li>
-                    </ul>
-                </div>
-
-                <div class="concept-card">
-                    <h4>Internal and External Users</h4>
-                    <p><strong>Internal:</strong> Management, Production, Marketing, Finance</p>
-                    <p><strong>External:</strong> Investors, Creditors, Tax Authority, Customers, Market Entities</p>
+                    <h4>Standard of Living vs Quality of Life</h4>
+                    <p><strong>Standard of Living:</strong> Purchasing power (material measure)</p>
+                    <p><strong>Quality of Life:</strong> Comprehensive well-being (safety, education, health, environment)</p>
                 </div>
             </section>
 
             <section class="glassy-card">
-                <h3>Basic Terms Table</h3>
+                <h3>Basic Concepts Table</h3>
                 <div class="table-container">
                     <table class="business-table">
                         <thead>
                             <tr>
-                                <th>Arabic Term</th>
-                                <th>English Equivalent</th>
-                                <th>Definition</th>
+                                <th>Concept</th>
+                                <th>Formal Definition</th>
+                                <th>Summary in Two Words</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>المحاسبة</strong></td>
-                                <td>Accounting</td>
-                                <td>Information system for identifying, recording, and communicating economic events</td>
+                                <td><strong>Business</strong></td>
+                                <td>Any activity seeking to provide goods and services to others while working to achieve profit</td>
+                                <td>Buy and sell for profit</td>
                             </tr>
                             <tr>
-                                <td><strong>الأصول</strong></td>
-                                <td>Assets</td>
-                                <td>Economic resources owned by the company expected to benefit it in the future</td>
+                                <td><strong>Profit</strong></td>
+                                <td>Amount of money the company earns beyond what it spends on salaries and other expenses</td>
+                                <td>Net gain</td>
                             </tr>
                             <tr>
-                                <td><strong>الالتزامات</strong></td>
-                                <td>Liabilities</td>
-                                <td>Debts or obligations to other parties (creditors)</td>
+                                <td><strong>Entrepreneur</strong></td>
+                                <td>Person who risks their time and money to start and manage a business</td>
+                                <td>Adventurous idea owner</td>
                             </tr>
                             <tr>
-                                <td><strong>حقوق الملكية</strong></td>
-                                <td>Owner's Equity</td>
-                                <td>Owner's rights in assets after paying liabilities</td>
+                                <td><strong>Revenue</strong></td>
+                                <td>Total amount of money the company receives during a certain period</td>
+                                <td>Gross income</td>
                             </tr>
                             <tr>
-                                <td><strong>الوحدة الاقتصادية</strong></td>
-                                <td>Economic Entity</td>
-                                <td>Business unit whose transactions are separated from owners</td>
+                                <td><strong>Risk</strong></td>
+                                <td>Chance of entrepreneur losing time and money in a business that may not prove profitable</td>
+                                <td>Possibility of failure</td>
                             </tr>
                             <tr>
-                                <td><strong>المعاملات التجارية</strong></td>
-                                <td>Business Transactions</td>
-                                <td>Economic events measurable monetarily affecting financial position</td>
+                                <td><strong>Stakeholders</strong></td>
+                                <td>All people who can gain or lose from company policies and activities</td>
+                                <td>Everyone affected</td>
                             </tr>
                             <tr>
-                                <td><strong>القوائم المالية</strong></td>
-                                <td>Financial Statements</td>
-                                <td>Reports summarizing performance and financial position</td>
+                                <td><strong>Non-profit Organizations</strong></td>
+                                <td>Organization not aiming for personal profit for founders, but serving social goals</td>
+                                <td>Aims to serve society</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1215,111 +692,28 @@
             </section>
 
             <section class="glassy-card">
-                <h2>Potential Exam Questions</h2>
+                <h2>🌉 Knowledge Bridges</h2>
+                
                 <div class="concept-card">
-                    <h4>Essay Questions</h4>
-                    <ol>
-                        <li>Define accounting and briefly explain its three main activities</li>
-                        <li>What is the basic accounting equation? Define each element in it</li>
-                        <li>Differentiate between internal and external users with an example for each category</li>
-                        <li>State the two conditions for recording a transaction in accounting books</li>
-                    </ol>
-                </div>
-
-                <div class="quiz-container">
-                    <div class="quiz-question">
-                        <h4>1. Which of the following is considered an external user of accounting information?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" data-question="1-en" data-correct="false">
-                                <span class="option-letter">A</span>
-                                <span>Marketing Manager</span>
-                            </div>
-                            <div class="quiz-option" data-question="1-en" data-correct="false">
-                                <span class="option-letter">B</span>
-                                <span>Production Department</span>
-                            </div>
-                            <div class="quiz-option" data-question="1-en" data-correct="true">
-                                <span class="option-letter">C</span>
-                                <span>Tax Authority</span>
-                            </div>
-                            <div class="quiz-option" data-question="1-en" data-correct="false">
-                                <span class="option-letter">D</span>
-                                <span>HR Manager</span>
-                            </div>
-                        </div>
-                        <div class="quiz-result" id="result1-en"></div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>2. The basic accounting equation is:</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" data-question="2-en" data-correct="false">
-                                <span class="option-letter">A</span>
-                                <span>Assets = Liabilities − Owner's Equity</span>
-                            </div>
-                            <div class="quiz-option" data-question="2-en" data-correct="true">
-                                <span class="option-letter">B</span>
-                                <span>Assets = Liabilities + Owner's Equity</span>
-                            </div>
-                            <div class="quiz-option" data-question="2-en" data-correct="false">
-                                <span class="option-letter">C</span>
-                                <span>Assets + Liabilities = Owner's Equity</span>
-                            </div>
-                            <div class="quiz-option" data-question="2-en" data-correct="false">
-                                <span class="option-letter">D</span>
-                                <span>Assets + Owner's Equity = Liabilities</span>
-                            </div>
-                        </div>
-                        <div class="quiz-result" id="result2-en"></div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>3. Purchasing office furniture on account leads to:</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" data-question="3-en" data-correct="false">
-                                <span class="option-letter">A</span>
-                                <span>Increase in assets and decrease in assets</span>
-                            </div>
-                            <div class="quiz-option" data-question="3-en" data-correct="false">
-                                <span class="option-letter">B</span>
-                                <span>Increase in assets and increase in owner's equity</span>
-                            </div>
-                            <div class="quiz-option" data-question="3-en" data-correct="true">
-                                <span class="option-letter">C</span>
-                                <span>Increase in assets and increase in liabilities</span>
-                            </div>
-                            <div class="quiz-option" data-question="3-en" data-correct="false">
-                                <span class="option-letter">D</span>
-                                <span>Decrease in assets and decrease in liabilities</span>
-                            </div>
-                        </div>
-                        <div class="quiz-result" id="result3-en"></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="glassy-card">
-                <h2>Knowledge Bridges</h2>
-                <div class="concept-card">
-                    <h4>Accounting as the Language of Business</h4>
-                    <p>Accounting rules and concepts enable clear financial communication for decision-making in the business world.</p>
+                    <h4>Business as Economic Engine</h4>
+                    <p>Companies are the backbone of any modern economy, creating jobs, providing goods and services, and paying taxes.</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>The Goal is Decision Making</h4>
-                    <p>Financial reports are not an end in themselves but a means for better decisions by investors and management.</p>
+                    <h4>Balance Between Profit and Responsibility</h4>
+                    <p>Successful companies achieve balance between making profits and contributing positively to society.</p>
                 </div>
 
                 <div class="concept-card">
-                    <h4>Independent Economic Entity</h4>
-                    <p>Separating entity transactions from owners to ensure reliability and transparency of financial reports.</p>
+                    <h4>Entrepreneurship and Innovation</h4>
+                    <p>Entrepreneurs are leaders of change and innovation in society, turning ideas into practical solutions.</p>
                 </div>
             </section>
         </div>
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // --- Translation Logic ---
             const translationButton = document.getElementById('translationButton');
             const translationText = translationButton.querySelector('.fab-text');
@@ -1328,356 +722,277 @@
             const html = document.documentElement;
             const body = document.body;
             let isArabic = true;
-
-            // --- Video Elements ---
-            const videoButton = document.getElementById('videoButton');
-            const videoModal = document.getElementById('videoModal');
-            const videoCloseBtn = document.getElementById('videoCloseBtn');
-            const videoPlayer = document.getElementById('videoPlayer');
-            const video = document.getElementById('video');
-            const playPauseBtn = document.getElementById('playPauseBtn');
-            const progressBarContainer = document.getElementById('progressBarContainer');
-            const progressBar = document.getElementById('progressBar');
-            const bufferBar = document.getElementById('bufferBar');
-            const currentTimeEl = document.getElementById('currentTime');
-            const durationEl = document.getElementById('duration');
-            const volumeBtn = document.getElementById('volumeBtn');
-            const volumeSlider = document.getElementById('volumeSlider');
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
-            const qualitySelector = document.getElementById('qualitySelector');
-            const videoText = videoButton.querySelector('.fab-text');
-            const videoLoading = document.getElementById('videoLoading');
-            const videoError = document.getElementById('videoError');
-            const loadingText = document.getElementById('loadingText');
-            const errorText = document.getElementById('errorText');
-
+            
             function applyLanguage(arabic) {
                 isArabic = arabic;
                 const lang = isArabic ? 'ar' : 'en';
                 const dir = isArabic ? 'rtl' : 'ltr';
-
                 html.setAttribute('lang', lang);
                 html.setAttribute('dir', dir);
                 body.setAttribute('dir', dir);
-
                 arabicContent.classList.toggle('hidden', !isArabic);
                 englishContent.classList.toggle('hidden', isArabic);
-
-                translationText.textContent = isArabic ? 'Translate' : 'ترجمة';
-                videoText.textContent = isArabic ? 'Video' : 'فيديو';
-                loadingText.textContent = isArabic ? 'جاري تحميل الفيديو...' : 'Loading video...';
-                errorText.textContent = isArabic ? 'خطأ في تحميل الفيديو' : 'Error loading video';
-                document.title = isArabic ? 'دليل أساسيات المحاسبة - منصة أثر' : 'Comprehensive Guide: Accounting Fundamentals - Athr Platform';
                 
-                // Update quality selector
-                qualitySelector.innerHTML = isArabic ? 
-                    '<option value="auto">تلقائي</option><option value="720p">720p</option><option value="480p">480p</option><option value="360p">360p</option>' :
-                    '<option value="auto">Auto</option><option value="720p">720p</option><option value="480p">480p</option><option value="360p">360p</option>';
+                translationText.textContent = isArabic ? 'ترجمة' : 'Translate';
+                document.title = isArabic ? 'دليل شامل: أساسيات الأعمال التجارية - منصة أثر' : 'Comprehensive Guide: Business Fundamentals - Athr Platform';
             }
-
-            // --- Video Player Logic ---
-            function formatTime(seconds) {
-                if (isNaN(seconds)) return '0:00';
-                const minutes = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return minutes + ':' + secs.toString().padStart(2, '0');
-            }
-
-            function showLoading(show) {
-                videoLoading.style.display = show ? 'flex' : 'none';
-            }
-
-            function showError(show, message = '') {
-                videoError.style.display = show ? 'block' : 'none';
-                if (message) {
-                    errorText.textContent = message;
-                }
-            }
-
-            function togglePlay() {
-                if (video.paused) {
-                    const playPromise = video.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(error => {
-                            console.error('Error playing video:', error);
-                            showError(true, isArabic ? 'خطأ في تشغيل الفيديو' : 'Error playing video');
-                        });
-                    }
-                } else {
-                    video.pause();
-                }
-            }
-
-            function updateVolumeIcon() {
-                const volume = video.volume;
-                if (video.muted || volume === 0) {
-                    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                } else if (volume < 0.5) {
-                    volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
-                } else {
-                    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                }
-            }
-
-            function updateBuffer() {
-                if (video.buffered.length > 0) {
-                    const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-                    const duration = video.duration;
-                    if (duration > 0) {
-                        const bufferedPercent = (bufferedEnd / duration) * 100;
-                        bufferBar.style.width = bufferedPercent + '%';
-                    }
-                }
-            }
-
-            function toggleMute() {
-                video.muted = !video.muted;
-                updateVolumeIcon();
-            }
-
-            function toggleFullscreen() {
-                if (!document.fullscreenElement) {
-                    videoPlayer.requestFullscreen().catch(err => {
-                        console.error('Error entering fullscreen:', err);
-                    });
-                } else {
-                    document.exitFullscreen();
-                }
-            }
-
-            // Retry video function
-            window.retryVideo = function() {
-                showError(false);
-                showLoading(true);
-                video.load();
-            };
-
-            // Video event listeners
-            video.addEventListener('loadstart', () => {
-                showLoading(true);
-                showError(false);
-            });
-
-            video.addEventListener('loadedmetadata', () => {
-                durationEl.textContent = formatTime(video.duration);
-                videoPlayer.classList.add('paused');
-                showLoading(false);
-            });
-
-            video.addEventListener('canplay', () => {
-                showLoading(false);
-                playPauseBtn.disabled = false;
-            });
-
-            video.addEventListener('waiting', () => {
-                showLoading(true);
-            });
-
-            video.addEventListener('playing', () => {
-                showLoading(false);
-            });
-
-            video.addEventListener('play', () => {
-                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                videoPlayer.classList.remove('paused');
-            });
-
-            video.addEventListener('pause', () => {
-                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                videoPlayer.classList.add('paused');
-            });
-
-            video.addEventListener('timeupdate', () => {
-                const progress = (video.currentTime / video.duration) * 100;
-                progressBar.style.width = progress + '%';
-                currentTimeEl.textContent = formatTime(video.currentTime);
-                updateBuffer();
-            });
-
-            video.addEventListener('progress', updateBuffer);
-
-            video.addEventListener('error', (e) => {
-                console.error('Video error:', e);
-                showLoading(false);
-                let errorMessage = isArabic ? 'خطأ في تحميل الفيديو' : 'Error loading video';
-                
-                switch(video.error.code) {
-                    case 1:
-                        errorMessage = isArabic ? 'تم إلغاء التحميل' : 'Video loading aborted';
-                        break;
-                    case 2:
-                        errorMessage = isArabic ? 'خطأ في الشبكة' : 'Network error';
-                        break;
-                    case 3:
-                        errorMessage = isArabic ? 'خطأ في فك تشفير الفيديو' : 'Video decode error';
-                        break;
-                    case 4:
-                        errorMessage = isArabic ? 'تنسيق الفيديو غير مدعوم' : 'Video format not supported';
-                        break;
-                }
-                
-                showError(true, errorMessage);
-            });
-
-            video.addEventListener('stalled', () => {
-                console.warn('Video stalled');
-                showLoading(true);
-            });
-
-            // Control event listeners
-            playPauseBtn.addEventListener('click', togglePlay);
-            volumeBtn.addEventListener('click', toggleMute);
-            fullscreenBtn.addEventListener('click', toggleFullscreen);
-
-            volumeSlider.addEventListener('input', () => {
-                video.volume = volumeSlider.value;
-                video.muted = volumeSlider.value == 0;
-                updateVolumeIcon();
-            });
-
-            progressBarContainer.addEventListener('click', (e) => {
-                const rect = progressBarContainer.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const width = rect.width;
-                const newTime = (clickX / width) * video.duration;
-                if (!isNaN(newTime)) {
-                    video.currentTime = newTime;
-                }
-            });
-
-            qualitySelector.addEventListener('change', (e) => {
-                // Quality selector functionality would be implemented here
-                console.log('Quality changed to:', e.target.value);
-            });
-
-            // Fullscreen event listeners
-            document.addEventListener('fullscreenchange', () => {
-                if (document.fullscreenElement) {
-                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-                    fullscreenBtn.setAttribute('aria-label', 'Exit Fullscreen');
-                } else {
-                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-                    fullscreenBtn.setAttribute('aria-label', 'Enter Fullscreen');
-                }
-            });
-
-            // Modal controls
-            videoButton.addEventListener('click', () => {
-                videoModal.classList.add('visible');
-                // Auto-load video when modal opens
-                if (video.readyState === 0) {
-                    video.load();
-                }
-            });
-
-            videoCloseBtn.addEventListener('click', () => {
-                videoModal.classList.remove('visible');
-                video.pause();
-                showLoading(false);
-                showError(false);
-            });
-
-            videoModal.addEventListener('click', (e) => {
-                if (e.target === videoModal) {
-                    videoModal.classList.remove('visible');
-                    video.pause();
-                    showLoading(false);
-                    showError(false);
-                }
-            });
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                if (!videoModal.classList.contains('visible')) return;
-                
-                switch(e.code) {
-                    case 'Space':
-                        e.preventDefault();
-                        togglePlay();
-                        break;
-                    case 'KeyM':
-                        toggleMute();
-                        break;
-                    case 'KeyF':
-                        toggleFullscreen();
-                        break;
-                    case 'ArrowLeft':
-                        video.currentTime = Math.max(0, video.currentTime - 10);
-                        break;
-                    case 'ArrowRight':
-                        video.currentTime = Math.min(video.duration, video.currentTime + 10);
-                        break;
-                    case 'ArrowUp':
-                        e.preventDefault();
-                        volumeSlider.value = Math.min(1, parseFloat(volumeSlider.value) + 0.1);
-                        video.volume = volumeSlider.value;
-                        updateVolumeIcon();
-                        break;
-                    case 'ArrowDown':
-                        e.preventDefault();
-                        volumeSlider.value = Math.max(0, parseFloat(volumeSlider.value) - 0.1);
-                        video.volume = volumeSlider.value;
-                        updateVolumeIcon();
-                        break;
-                    case 'Escape':
-                        videoModal.classList.remove('visible');
-                        video.pause();
-                        break;
-                }
-            });
-
-            // --- Quiz Logic ---
-            function initializeQuiz() {
-                const quizOptions = document.querySelectorAll('.quiz-option');
-                
-                quizOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const question = this.getAttribute('data-question');
-                        const isCorrect = this.getAttribute('data-correct') === 'true';
-                        const questionOptions = document.querySelectorAll(`[data-question="${question}"]`);
-                        const resultDiv = document.getElementById(`result${question}`);
-                        
-                        // Disable all options for this question
-                        questionOptions.forEach(opt => {
-                            opt.classList.add('disabled');
-                            opt.style.pointerEvents = 'none';
-                        });
-                        
-                        // Show result
-                        if (isCorrect) {
-                            this.classList.add('correct');
-                            if (resultDiv) {
-                                resultDiv.className = 'quiz-result correct';
-                                resultDiv.textContent = isArabic ? '✓ إجابة صحيحة! أحسنت.' : '✓ Correct! Well done.';
-                            }
-                        } else {
-                            this.classList.add('wrong');
-                            // Show correct answer
-                            const correctOption = document.querySelector(`[data-question="${question}"][data-correct="true"]`);
-                            if (correctOption) {
-                                correctOption.classList.add('correct');
-                            }
-                            if (resultDiv) {
-                                resultDiv.className = 'quiz-result wrong';
-                                resultDiv.textContent = isArabic ? 
-                                    '✗ إجابة خاطئة. الإجابة الصحيحة موضحة أعلاه.' : 
-                                    '✗ Incorrect. The correct answer is highlighted above.';
-                            }
-                        }
-                    });
-                });
-            }
-
-            // Event listeners
+            
             translationButton.addEventListener('click', () => applyLanguage(!isArabic));
 
-            // Initialize
+            // --- Video Player Logic ---
+            function initVideoPlayer(videoId, suffix = '') {
+                const videoPlayer = document.getElementById('videoPlayer' + suffix);
+                const video = document.getElementById('video' + suffix);
+                const playPauseBtn = document.getElementById('playPauseBtn' + suffix);
+                const progressBarContainer = document.getElementById('progressBarContainer' + suffix);
+                const progressBar = document.getElementById('progressBar' + suffix);
+                const currentTimeEl = document.getElementById('currentTime' + suffix);
+                const durationEl = document.getElementById('duration' + suffix);
+                const volumeBtn = document.getElementById('volumeBtn' + suffix);
+                const volumeSlider = document.getElementById('volumeSlider' + suffix);
+                const fullscreenBtn = document.getElementById('fullscreenBtn' + suffix);
+                const settingsBtn = document.getElementById('settingsBtn' + suffix);
+                const speedControls = document.getElementById('speedControls' + suffix);
+                const seekOverlay = document.getElementById('seekOverlay' + suffix);
+                const thumbnailContainer = document.getElementById('thumbnailContainer' + suffix);
+                const thumbnailCanvas = document.getElementById('thumbnailCanvas' + suffix);
+                
+                if (!video) return;
+                
+                const thumbnailCtx = thumbnailCanvas.getContext('2d');
+                let lastTap = 0;
+                let timeout;
+                let scrubVideo;
+
+                function togglePlay() {
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+
+                video.addEventListener('play', () => {
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    playPauseBtn.setAttribute('aria-label', isArabic ? 'إيقاف مؤقت' : 'Pause');
+                    videoPlayer.classList.remove('paused');
+                });
+
+                video.addEventListener('pause', () => {
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    playPauseBtn.setAttribute('aria-label', isArabic ? 'تشغيل' : 'Play');
+                    videoPlayer.classList.add('paused');
+                });
+
+                playPauseBtn.addEventListener('click', togglePlay);
+
+                video.addEventListener('timeupdate', () => {
+                    const progress = (video.currentTime / video.duration) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    currentTimeEl.textContent = formatTime(video.currentTime);
+                });
+
+                progressBarContainer.addEventListener('click', (e) => {
+                    const rect = progressBarContainer.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const width = rect.width;
+                    video.currentTime = (clickX / width) * video.duration;
+                });
+
+                function updateVolumeIcon() {
+                    const volume = video.volume;
+                    if (video.muted || volume === 0) {
+                        volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                        volumeBtn.setAttribute('aria-label', isArabic ? 'إلغاء كتم' : 'Unmute');
+                    } else if (volume < 0.5) {
+                        volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+                        volumeBtn.setAttribute('aria-label', isArabic ? 'كتم الصوت' : 'Mute');
+                    } else {
+                        volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                        volumeBtn.setAttribute('aria-label', isArabic ? 'كتم الصوت' : 'Mute');
+                    }
+                }
+
+                function handleVolumeChange() {
+                    video.volume = volumeSlider.value;
+                    video.muted = volumeSlider.value == 0;
+                    updateVolumeIcon();
+                    updateVolumeSliderVisual();
+                }
+
+                volumeSlider.addEventListener('input', handleVolumeChange);
+
+                function toggleMute() {
+                    video.muted = !video.muted;
+                    if (video.muted) {
+                        volumeSlider.setAttribute('data-volume', volumeSlider.value);
+                        volumeSlider.value = 0;
+                    } else {
+                        volumeSlider.value = volumeSlider.getAttribute('data-volume') > 0 ? volumeSlider.getAttribute('data-volume') : 1;
+                    }
+                    handleVolumeChange();
+                }
+
+                volumeBtn.addEventListener('click', toggleMute);
+
+                function toggleFullscreen() {
+                    if (!document.fullscreenElement) {
+                        videoPlayer.requestFullscreen().catch(err => {
+                            console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                        });
+                    } else {
+                        document.exitFullscreen();
+                    }
+                }
+
+                fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+                document.addEventListener('fullscreenchange', () => {
+                    if (document.fullscreenElement) {
+                        fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                        fullscreenBtn.setAttribute('aria-label', isArabic ? 'إنهاء ملء الشاشة' : 'Exit Fullscreen');
+                    } else {
+                        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                        fullscreenBtn.setAttribute('aria-label', isArabic ? 'ملء الشاشة' : 'Enter Fullscreen');
+                    }
+                });
+
+                video.addEventListener('loadedmetadata', () => {
+                    durationEl.textContent = formatTime(video.duration);
+                    videoPlayer.classList.add('paused');
+                });
+
+                function formatTime(seconds) {
+                    const minutes = Math.floor(seconds / 60);
+                    const secs = Math.floor(seconds % 60);
+                    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                }
+
+                function updateVolumeSliderVisual() {
+                    const value = volumeSlider.value;
+                    const percentage = value * 100;
+                    volumeSlider.style.background = `linear-gradient(to right, white ${percentage}%, rgba(255, 255, 255, 0.3) ${percentage}%)`;
+                }
+
+                settingsBtn.addEventListener('click', () => {
+                    speedControls.style.display = speedControls.style.display === 'flex' ? 'none' : 'flex';
+                });
+
+                speedControls.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'BUTTON') {
+                        const speed = e.target.getAttribute('data-speed');
+                        video.playbackRate = speed;
+                        speedControls.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                        e.target.classList.add('active');
+                        speedControls.style.display = 'none';
+                    }
+                });
+
+                video.addEventListener('touchend', (e) => {
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTap;
+                    clearTimeout(timeout);
+                    if (tapLength < 500 && tapLength > 0) {
+                        const rect = video.getBoundingClientRect();
+                        const tapX = e.changedTouches[0].clientX - rect.left;
+                        if (tapX > rect.width / 2) {
+                            video.currentTime += 10;
+                            showSeekAnimation('<i class="fas fa-forward"></i>');
+                        } else {
+                            video.currentTime -= 10;
+                            showSeekAnimation('<i class="fas fa-backward"></i>');
+                        }
+                    } else {
+                        timeout = setTimeout(() => {
+                            togglePlay();
+                        }, 500);
+                    }
+                    lastTap = currentTime;
+                });
+
+                function showSeekAnimation(icon) {
+                    seekOverlay.innerHTML = icon;
+                    seekOverlay.classList.add('active');
+                    setTimeout(() => {
+                        seekOverlay.classList.remove('active');
+                    }, 500);
+                }
+
+                if (video.src) {
+                    scrubVideo = document.createElement('video');
+                    scrubVideo.src = video.src;
+                    scrubVideo.muted = true;
+                    scrubVideo.crossOrigin = "anonymous";
+                }
+
+                progressBarContainer.addEventListener('mousemove', handleTimelineUpdate);
+                progressBarContainer.addEventListener('mouseleave', () => {
+                    thumbnailContainer.style.display = 'none';
+                });
+
+                function handleTimelineUpdate(e) {
+                    const rect = progressBarContainer.getBoundingClientRect();
+                    const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
+                    const previewTime = percent * video.duration;
+                    
+                    thumbnailContainer.style.left = `${percent * 100}%`;
+                    thumbnailContainer.style.display = 'block';
+                    
+                    if (scrubVideo) {
+                        scrubVideo.onseeked = () => {
+                            thumbnailCanvas.width = scrubVideo.videoWidth;
+                            thumbnailCanvas.height = scrubVideo.videoHeight;
+                            thumbnailCtx.drawImage(scrubVideo, 0, 0, scrubVideo.videoWidth, scrubVideo.videoHeight);
+                        };
+                        scrubVideo.currentTime = previewTime;
+                    }
+                }
+
+                document.addEventListener('keydown', e => {
+                    const tagName = document.activeElement.tagName.toLowerCase();
+                    if (tagName === 'input') return;
+                    
+                    switch(e.key.toLowerCase()) {
+                        case ' ':
+                        case 'k':
+                            e.preventDefault();
+                            togglePlay();
+                            break;
+                        case 'm':
+                            toggleMute();
+                            break;
+                        case 'f':
+                            toggleFullscreen();
+                            break;
+                        case 'arrowleft':
+                            video.currentTime -= 5;
+                            break;
+                        case 'arrowright':
+                            video.currentTime += 5;
+                            break;
+                        case 'arrowup':
+                            e.preventDefault();
+                            volumeSlider.value = Math.min(1, parseFloat(volumeSlider.value) + 0.1);
+                            handleVolumeChange();
+                            break;
+                        case 'arrowdown':
+                            e.preventDefault();
+                            volumeSlider.value = Math.max(0, parseFloat(volumeSlider.value) - 0.1);
+                            handleVolumeChange();
+                            break;
+                    }
+                });
+
+                updateVolumeIcon();
+                updateVolumeSliderVisual();
+            }
+
+            // Initialize video players
+            initVideoPlayer('video');
+            initVideoPlayer('videoEn', 'En');
+            
+            // Initialize page language
             applyLanguage(true);
-            updateVolumeIcon();
-            initializeQuiz();
-            showLoading(false);
-            showError(false);
-            playPauseBtn.disabled = true; // Disable until video is ready
         });
     </script>
 </body>
