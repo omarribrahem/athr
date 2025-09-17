@@ -1,0 +1,2474 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إدارة الأعمال - دليل شامل</title>
+  <style>
+    :root {
+      --glass-bg: rgba(255,255,255,0.18);
+      --glass-border: rgba(255,255,255,0.4);
+      --text-color: #1e293b;
+      --highlight-color: #0ea5e9;
+      --practice-color: #16a34a;
+      --translation-color: #8b5cf6;
+      --border-radius: 24px;
+    }
+
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes floatSphere1 {
+      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateY(-30px) rotate(180deg) scale(1.05); }
+    }
+
+    @keyframes floatSphere2 {
+      0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95); }
+    }
+
+    @keyframes floatSphere3 {
+      0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateX(-20px) translateY(35px) rotate(120deg) scale(1.08); }
+    }
+
+    @keyframes translate-glow {
+      0%, 100% { box-shadow: 0 0 15px -5px rgba(139,92,246,0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 25px 0px rgba(139,92,246,0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #e0f2fe;
+      color: var(--text-color);
+      line-height: 1.8;
+      overflow-x: hidden;
+      position: relative;
+      direction: rtl;
+      padding: clamp(10px, 3vw, 20px);
+    }
+
+    body[dir="ltr"] {
+      direction: ltr;
+    }
+
+    .background-gradient,
+    .floating-spheres {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    .background-gradient {
+      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 25%, #fce7f3 75%, #fdf2f8 100%);
+      background-size: 400% 400%;
+      animation: gradientAnimation 40s ease infinite;
+    }
+
+    .floating-spheres {
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .sphere {
+      position: absolute;
+      border-radius: 50%;
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: 0 20px 60px rgba(14,165,233,0.3), inset 0 4px 0 rgba(255,255,255,0.4);
+    }
+
+    .sphere.large {
+      width: clamp(120px, 20vw, 220px);
+      height: clamp(120px, 20vw, 220px);
+      top: 8%;
+      right: 12%;
+      background: radial-gradient(circle, #3b82f6, #1e3a8a);
+      animation: floatSphere1 12s ease-in-out infinite;
+    }
+
+    .sphere.medium {
+      width: clamp(80px, 15vw, 140px);
+      height: clamp(80px, 15vw, 140px);
+      bottom: 20%;
+      left: 8%;
+      background: radial-gradient(circle, #0ea5e9, #0369a1);
+      animation: floatSphere2 9s ease-in-out infinite;
+    }
+
+    .sphere.small-1 {
+      width: clamp(60px, 12vw, 95px);
+      height: clamp(60px, 12vw, 95px);
+      top: 50%;
+      right: 8%;
+      background: radial-gradient(circle, #06b6d4, #0e7490);
+      animation: floatSphere3 6s ease-in-out infinite;
+    }
+
+    .translation-button {
+      position: fixed;
+      top: clamp(20px, 5vw, 30px);
+      right: clamp(20px, 5vw, 30px);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(25px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
+      padding: clamp(8px, 2vw, 12px);
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(50px, 12vw, 60px);
+      height: clamp(50px, 12vw, 60px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 25px -10px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+
+    body[dir="ltr"] .translation-button {
+      right: auto;
+      left: clamp(20px, 5vw, 30px);
+    }
+
+    .translation-button:hover {
+      width: auto;
+      padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
+      border-color: var(--translation-color);
+      background: rgba(139,92,246,0.1);
+      transform: translateY(-3px);
+      animation: translate-glow 2.5s infinite alternate;
+    }
+
+    .translation-button .icon-translate {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .translation-button:hover .icon-translate {
+      transform: scale(0.9);
+    }
+
+    .translation-text {
+      font-size: clamp(0.85rem, 2.2vw, 1rem);
+      font-weight: 600;
+      color: var(--translation-color);
+      white-space: nowrap;
+      display: none;
+      margin-left: 10px;
+    }
+
+    body[dir="ltr"] .translation-text {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+
+    .translation-button:hover .translation-text {
+      display: block;
+    }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 90px auto 0;
+      padding: clamp(20px, 5vw, 40px);
+    }
+
+    .glassy-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: clamp(20px, 5vw, 30px);
+      margin-bottom: clamp(25px, 5vw, 35px);
+      backdrop-filter: blur(25px);
+      transition: all 0.4s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+
+    .glassy-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: #0f172a;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      text-align: center;
+      margin-bottom: clamp(20px, 4vw, 30px);
+      color: #0c4a6e;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      border-bottom: 3px solid rgba(14,165,233,0.3);
+      padding-bottom: clamp(10px, 2vw, 15px);
+      margin-bottom: clamp(20px, 4vw, 30px);
+    }
+
+    h3 {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      margin-bottom: clamp(15px, 3vw, 20px);
+    }
+
+    h4 {
+      font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+      color: var(--highlight-color);
+      margin-bottom: clamp(12px, 2vw, 15px);
+    }
+
+    h5 {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: var(--practice-color);
+      margin-bottom: clamp(10px, 2vw, 12px);
+    }
+
+    p, li {
+      color: #475569;
+      margin-bottom: clamp(10px, 2vw, 12px);
+    }
+
+    strong {
+      color: #1e3a8a;
+    }
+
+    .formula {
+      background: rgba(255,255,255,0.4);
+      padding: clamp(15px, 3vw, 20px);
+      border-radius: 14px;
+      font-family: monospace;
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      margin: 20px 0;
+      text-align: center;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+    }
+
+    ul, ol {
+      padding-right: clamp(20px, 4vw, 25px);
+      margin-bottom: 20px;
+    }
+
+    body[dir="ltr"] ul,
+    body[dir="ltr"] ol {
+      padding-right: 0;
+      padding-left: clamp(20px, 4vw, 25px);
+    }
+
+    .case-study {
+      border-right: 4px solid var(--highlight-color);
+      padding-right: 20px;
+      margin: 25px 0;
+    }
+
+    body[dir="ltr"] .case-study {
+      border-right: none;
+      border-left: 4px solid var(--highlight-color);
+      padding-right: 0;
+      padding-left: 20px;
+    }
+
+    .practice-question {
+      background: rgba(22,163,74,0.08);
+      border: 2px solid rgba(22,163,74,0.2);
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .practice-question:hover {
+      transform: translateY(-3px);
+      border-color: var(--practice-color);
+      background: rgba(22,163,74,0.12);
+    }
+
+    .practice-question.open {
+      border-color: var(--practice-color);
+      background: rgba(22,163,74,0.15);
+    }
+
+    .practice-question::after {
+      content: "▼";
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      font-size: 1.2rem;
+      color: var(--practice-color);
+      transition: transform 0.4s ease;
+    }
+
+    body[dir="ltr"] .practice-question::after {
+      left: auto;
+      right: 25px;
+    }
+
+    .practice-question.open::after {
+      transform: rotate(180deg);
+    }
+
+    .solution-card {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 1.2s ease-in-out, margin-top 0.5s ease;
+    }
+
+    .solution-card.show {
+      max-height: 3000px;
+      margin-top: 20px;
+    }
+
+    .solution-content {
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      padding: 20px;
+      border-radius: 14px;
+    }
+
+    .solution-content strong {
+      color: #15803d;
+    }
+
+    .expandable-example {
+      background: rgba(139,92,246,0.08);
+      border: 2px solid rgba(139,92,246,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 15px 0;
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .expandable-example:hover {
+      border-color: var(--translation-color);
+      background: rgba(139,92,246,0.12);
+      transform: translateY(-2px);
+    }
+
+    .expandable-example.open {
+      background: rgba(139,92,246,0.15);
+    }
+
+    .example-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--translation-color);
+    }
+
+    .example-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s ease;
+      padding-top: 0;
+    }
+
+    .example-content.show {
+      max-height: 1000px;
+      padding-top: 15px;
+    }
+
+    .mcq-container {
+      background: rgba(14,165,233,0.08);
+      border: 2px solid rgba(14,165,233,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .mcq-question {
+      font-weight: 600;
+      color: var(--highlight-color);
+      margin-bottom: 15px;
+    }
+
+    .mcq-options {
+      list-style: none;
+      padding: 0;
+    }
+
+    .mcq-option {
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .mcq-option:hover {
+      background: rgba(14,165,233,0.2);
+      transform: translateX(5px);
+    }
+
+    .mcq-option.selected {
+      background: var(--highlight-color);
+      color: white;
+      border-color: var(--highlight-color);
+    }
+
+    .mcq-option.correct {
+      background: var(--practice-color);
+      color: white;
+      border-color: var(--practice-color);
+    }
+
+    .mcq-option.incorrect {
+      background: #dc2626;
+      color: white;
+      border-color: #dc2626;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-gradient"></div>
+  <div class="floating-spheres">
+    <div class="sphere large"></div>
+    <div class="sphere medium"></div>
+    <div class="sphere small-1"></div>
+  </div>
+
+  <button class="translation-button" id="translationButton">
+    <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+
+  <main class="main-content">
+    <!-- Arabic Content -->
+    <div id="arabicContent">
+      <section class="glassy-card">
+        <h1>إدارة الأعمال - دليل شامل</h1>
+        <p>دليل تعليمي متكامل يغطي المفاهيم الأساسية في إدارة الأعمال والسلوك التنظيمي</p>
+      </section>
+
+      <!-- Manager Section -->
+      <section class="glassy-card">
+        <h2>1. المدير - Manager</h2>
+        
+        <h3>التعريف الأساسي</h3>
+        <ul>
+          <li><strong>المدير:</strong> الشخص الذي يحقق الأهداف من خلال الآخرين</li>
+          <li><strong>الدور:</strong> توجيه وتنسيق أعمال أعضاء المجموعة</li>
+          <li><strong>المسؤولية:</strong> تحقيق النتائج المطلوبة بكفاءة وفعالية</li>
+        </ul>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال عملي: مدير المبيعات</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>الموقف:</strong> مدير المبيعات في شركة تقنية</p>
+            <ul>
+              <li>يضع أهداف المبيعات الشهرية</li>
+              <li>يوزع العملاء على فريق المبيعات</li>
+              <li>يتابع الأداء ويقدم الدعم</li>
+              <li>يحلل البيانات ويعدل الاستراتيجيات</li>
+            </ul>
+            <p><strong>النتيجة:</strong> تحقيق الأهداف من خلال فريق العمل وليس بالعمل المنفرد</p>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">ما هو الدور الأساسي للمدير؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) القيام بجميع المهام بنفسه</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ب) تحقيق الأهداف من خلال الآخرين</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) التحكم في جميع القرارات</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) العمل بشكل منفرد</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Organization Section -->
+      <section class="glassy-card">
+        <h2>2. المنظمة - Organization</h2>
+        
+        <h3>التعريف والمكونات</h3>
+        <ul>
+          <li><strong>المنظمة:</strong> وحدة اجتماعية منسقة بوعي</li>
+          <li><strong>الهدف:</strong> تحقيق أهداف محددة ومشتركة</li>
+          <li><strong>الخصائص:</strong> حدود واضحة وعمل مستمر</li>
+        </ul>
+
+        <h3>عناصر المنظمة الأساسية</h3>
+        <ol>
+          <li><strong>الأفراد:</strong> الموارد البشرية في المنظمة</li>
+          <li><strong>الهيكل:</strong> التنظيم الرسمي للأدوار والعلاقات</li>
+          <li><strong>الأهداف:</strong> الغايات المراد تحقيقها</li>
+          <li><strong>البيئة:</strong> المحيط الخارجي والداخلي</li>
+        </ol>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال: شركة تطوير البرمجيات</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>المنظمة:</strong> شركة "تقنية المستقبل"</p>
+            <ul>
+              <li><strong>الأفراد:</strong> مطورون، مصممون، مديري مشاريع</li>
+              <li><strong>الهيكل:</strong> أقسام التطوير، التصميم، الجودة</li>
+              <li><strong>الأهداف:</strong> تطوير تطبيقات عالية الجودة</li>
+              <li><strong>البيئة:</strong> السوق التنافسي، التقنيات الحديثة</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Management Functions Section -->
+      <section class="glassy-card">
+        <h2>3. وظائف الإدارة - Management Functions</h2>
+        
+        <h3>الوظائف الأربع الرئيسية</h3>
+        
+        <div class="case-study">
+          <h4>1. التخطيط - Planning</h4>
+          <ul>
+            <li>تحديد الأهداف والغايات التنظيمية</li>
+            <li>وضع الاستراتيجيات لتحقيق الأهداف</li>
+            <li>تطوير الخطط وتنسيق الأنشطة</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. التنظيم - Organizing</h4>
+          <ul>
+            <li>تحديد المهام والأنشطة</li>
+            <li>تجميع المهام في وظائف</li>
+            <li>تفويض السلطة وإنشاء خطوط المسؤولية</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. القيادة - Leading</h4>
+          <ul>
+            <li>تحفيز وتوجيه الموظفين</li>
+            <li>التأثير على الأفراد والجماعات</li>
+            <li>بناء فرق العمل الفعالة</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>4. الرقابة - Controlling</h4>
+          <ul>
+            <li>مراقبة الأداء الفعلي</li>
+            <li>مقارنة النتائج بالمعايير</li>
+            <li>اتخاذ الإجراءات التصحيحية</li>
+          </ul>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">ما هي الوظيفة الإدارية التي تتضمن تحفيز الموظفين؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) التخطيط</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) التنظيم</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) القيادة</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) الرقابة</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Roles Section -->
+      <section class="glassy-card">
+        <h2>4. أدوار الإدارة - Mintzberg's Management Roles</h2>
+        
+        <h3>الأدوار العشرة للمديرين</h3>
+        
+        <div class="case-study">
+          <h4>الأدوار الشخصية - Interpersonal Roles</h4>
+          <ol>
+            <li><strong>رئيس الشكليات - Figurehead</strong>
+              <ul><li>القيام بالواجبات الاحتفالية والرمزية</li></ul>
+            </li>
+            <li><strong>القائد - Leader</strong>
+              <ul><li>توجيه وتحفيز المرؤوسين</li></ul>
+            </li>
+            <li><strong>حلقة الوصل - Liaison</strong>
+              <ul><li>بناء شبكة من العلاقات الخارجية</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>الأدوار المعلوماتية - Informational Roles</h4>
+          <ol start="4">
+            <li><strong>المراقب - Monitor</strong>
+              <ul><li>البحث عن المعلومات وتلقيها</li></ul>
+            </li>
+            <li><strong>الناشر - Disseminator</strong>
+              <ul><li>نقل المعلومات للمرؤوسين</li></ul>
+            </li>
+            <li><strong>المتحدث الرسمي - Spokesperson</strong>
+              <ul><li>نقل المعلومات للأطراف الخارجية</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>أدوار اتخاذ القرار - Decisional Roles</h4>
+          <ol start="7">
+            <li><strong>المبادر - Entrepreneur</strong>
+              <ul><li>البحث عن الفرص وبدء المشاريع</li></ul>
+            </li>
+            <li><strong>معالج الاضطراب - Disturbance Handler</strong>
+              <ul><li>التعامل مع المشاكل غير المتوقعة</li></ul>
+            </li>
+            <li><strong>موزع الموارد - Resource Allocator</strong>
+              <ul><li>تحديد كيفية استخدام الموارد</li></ul>
+            </li>
+            <li><strong>المفاوض - Negotiator</strong>
+              <ul><li>التفاوض مع الأطراف المختلفة</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال تطبيقي: مدير شركة في يوم واحد</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>الصباح:</strong></p>
+            <ul>
+              <li><strong>حلقة الوصل:</strong> اتصال مع شريك تجاري</li>
+              <li><strong>المراقب:</strong> مراجعة تقارير الأداء</li>
+            </ul>
+            <p><strong>الظهيرة:</strong></p>
+            <ul>
+              <li><strong>القائد:</strong> اجتماع فريق العمل</li>
+              <li><strong>المبادر:</strong> مناقشة مشروع جديد</li>
+            </ul>
+            <p><strong>المساء:</strong></p>
+            <ul>
+              <li><strong>المتحدث الرسمي:</strong> مؤتمر صحفي</li>
+              <li><strong>المفاوض:</strong> اجتماع مع العملاء</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">ما هو الدور الذي يتضمن بناء شبكات خارجية؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) Leader</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) Spokesperson</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) Negotiator</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">د) Monitor</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Skills Section -->
+      <section class="glassy-card">
+        <h2>5. مهارات الإدارة - Management Skills</h2>
+        
+        <h3>المهارات الثلاث الأساسية</h3>
+        
+        <div class="case-study">
+          <h4>1. المهارات التقنية - Technical Skills</h4>
+          <ul>
+            <li>المعرفة والكفاءة في مجال تخصص محدد</li>
+            <li>القدرة على استخدام الأدوات والتقنيات</li>
+            <li>الخبرة الفنية المطلوبة للعمل</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. المهارات الإنسانية - Human Skills</h4>
+          <ul>
+            <li>القدرة على العمل مع الآخرين</li>
+            <li>فهم وتحفيز الأفراد والجماعات</li>
+            <li>بناء علاقات إيجابية وقيادة الفرق</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. المهارات المفاهيمية - Conceptual Skills</h4>
+          <ul>
+            <li>القدرة على التفكير والعمل مع الأفكار المعقدة</li>
+            <li>رؤية المنظمة كنظام متكامل</li>
+            <li>التفكير الاستراتيجي وحل المشكلات</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>توزيع المهارات حسب المستوى الإداري</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>الإدارة العليا:</strong></p>
+            <ul>
+              <li>المهارات المفاهيمية: 40%</li>
+              <li>المهارات الإنسانية: 35%</li>
+              <li>المهارات التقنية: 25%</li>
+            </ul>
+            <p><strong>الإدارة الوسطى:</strong></p>
+            <ul>
+              <li>المهارات الإنسانية: 40%</li>
+              <li>المهارات المفاهيمية: 30%</li>
+              <li>المهارات التقنية: 30%</li>
+            </ul>
+            <p><strong>الإدارة الدنيا:</strong></p>
+            <ul>
+              <li>المهارات التقنية: 50%</li>
+              <li>المهارات الإنسانية: 35%</li>
+              <li>المهارات المفاهيمية: 15%</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">أي مهارة تركز على التفكير الاستراتيجي؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) Technical</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) Human</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) Conceptual</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Effective vs Successful Section -->
+      <section class="glassy-card">
+        <h2>6. المدير الفعال مقابل المدير الناجح - Effective vs. Successful Managerial Activities</h2>
+        
+        <div class="formula">
+          المدير الفعال ≠ المدير الناجح دائماً
+        </div>
+
+        <div class="case-study">
+          <h4>الأنشطة الإدارية الأربع</h4>
+          <ol>
+            <li><strong>الإدارة التقليدية - Traditional Management:</strong> التخطيط، التنظيم، الرقابة</li>
+            <li><strong>التواصل - Communication:</strong> تبادل المعلومات الروتينية</li>
+            <li><strong>إدارة الموارد البشرية - Human Resource Management:</strong> التحفيز، التأديب، إدارة الصراع</li>
+            <li><strong>التواصل الشبكي - Networking:</strong> التفاعل مع الأطراف الخارجية</li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>النتائج البحثية - دراسة 450 مدير</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>المدير الناجح (الترقية السريعة):</strong></p>
+            <ul>
+              <li>التواصل الشبكي: 48%</li>
+              <li>الإدارة التقليدية: 22%</li>
+              <li>التواصل: 18%</li>
+              <li>إدارة الموارد البشرية: 12%</li>
+            </ul>
+            <p><strong>المدير الفعال (أداء الوحدة والموظفين):</strong></p>
+            <ul>
+              <li>التواصل: 44%</li>
+              <li>إدارة الموارد البشرية: 26%</li>
+              <li>الإدارة التقليدية: 19%</li>
+              <li>التواصل الشبكي: 11%</li>
+            </ul>
+            <p><strong>الخلاصة:</strong> المديرون الذين يحققون التوازن بين الأنشطة الأربع هم الأكثر نجاحاً وفعالية</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>السيناريو:</strong> مدير يقضي 60% من وقته في بناء العلاقات الخارجية، و40% في المهام الإدارية الأساسية. ما تقييمك لأسلوبه الإداري؟</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>التحليل:</strong></p>
+            <ul>
+              <li>هذا المدير يركز بشكل مفرط على التواصل الشبكي</li>
+              <li>قد يحقق نجاحاً في الترقية لكن فعاليته قد تكون محدودة</li>
+              <li>يحتاج لتوزيع أفضل للوقت على الأنشطة الأربع</li>
+            </ul>
+            <p><strong>التوصية:</strong> زيادة الاهتمام بالتواصل المباشر وإدارة الموارد البشرية</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Organizational Behavior Section -->
+      <section class="glassy-card">
+        <h2>7. السلوك التنظيمي - Organizational Behavior - OB</h2>
+        
+        <h3>التعريف والأهداف</h3>
+        <ul>
+          <li><strong>التعريف:</strong> دراسة منهجية لسلوك الأفراد والجماعات في المنظمات</li>
+          <li><strong>الهدف:</strong> تطبيق هذه المعرفة لتحسين فعالية المنظمة</li>
+        </ul>
+
+        <h3>مستويات التحليل</h3>
+        <ol>
+          <li><strong>المستوى الفردي:</strong> سلوك الأفراد ومحددات الأداء</li>
+          <li><strong>مستوى الجماعة:</strong> ديناميكيات الفريق والتفاعل</li>
+          <li><strong>المستوى التنظيمي:</strong> الهيكل والثقافة التنظيمية</li>
+        </ol>
+
+        <div class="mcq-container">
+          <div class="mcq-question">ما هو الهدف الأساسي من دراسة السلوك التنظيمي؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) فهم سلوك الأفراد فقط</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ب) تحسين فعالية المنظمة</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) زيادة الأرباح فقط</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) التحكم في الموظفين</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Systematic Study Section -->
+      <section class="glassy-card">
+        <h2>8. الدراسة المنهجية - Systematic Study</h2>
+        
+        <h3>المناهج الثلاثة لفهم السلوك</h3>
+        
+        <div class="case-study">
+          <h4>1. الحدس - Intuition</h4>
+          <ul>
+            <li>الاعتماد على المشاعر والخبرة الشخصية</li>
+            <li>اتخاذ القرارات بناءً على "الإحساس الداخلي"</li>
+            <li><strong>المخاطر:</strong> قد يؤدي إلى أحكام خاطئة</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. الدراسة المنهجية - Systematic Study</h4>
+          <ul>
+            <li>النظر للعلاقات والأنماط والاتساق</li>
+            <li>تحديد الأسباب والنتائج</li>
+            <li>الاستنتاجات المبنية على الأدلة العلمية</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. الإدارة المبنية على الأدلة - Evidence-Based Management (EBM)</h4>
+          <ul>
+            <li>اتخاذ القرارات بناءً على أفضل الأدلة المتاحة</li>
+            <li>دمج النتائج العلمية مع الخبرة العملية</li>
+            <li>التقييم المستمر للنتائج</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال مقارن: قرار التوظيف</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>الحدس:</strong> "أشعر أن هذا المرشح مناسب للمنصب"</p>
+            <p><strong>الدراسة المنهجية:</strong> تحليل أداء المرشحين السابقين وربطها بصفات محددة</p>
+            <p><strong>EBM:</strong> استخدام اختبارات موثقة + مقابلات منظمة + مراجع سابقة</p>
+            <p><strong>النتيجة:</strong> النهج العلمي يؤدي لقرارات توظيف أكثر دقة ونجاحاً</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>حالة دراسية</h4>
+          <p><strong>المشكلة:</strong> انخفاض الإنتاجية في القسم. كيف تتعامل مع هذه المشكلة باستخدام النهج العلمي؟</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>خطوات النهج العلمي:</strong></p>
+            <ol>
+              <li><strong>جمع البيانات:</strong> قياس مؤشرات الأداء الفعلي</li>
+              <li><strong>تحديد الأنماط:</strong> متى وأين تحدث المشكلة؟</li>
+              <li><strong>تحليل الأسباب:</strong> العوامل المحتملة (التدريب، الأدوات، التحفيز)</li>
+              <li><strong>اختبار الحلول:</strong> تطبيق حلول مختلفة مع مجموعات صغيرة</li>
+              <li><strong>قياس النتائج:</strong> تقييم فعالية كل حل</li>
+              <li><strong>التطبيق الشامل:</strong> تعميم الحل الأكثر فعالية</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">ما هي المنهجية التي تعتمد على الأدلة العلمية؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) Intuition</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) Systematic Study</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) Evidence-based management</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Key Concepts Glossary -->
+      <section class="glassy-card">
+        <h2>9. مسرد المفاهيم الرئيسية</h2>
+        
+        <div class="case-study">
+          <h4>المفاهيم الأساسية</h4>
+          <ul>
+            <li><strong>المدير - Manager:</strong> الشخص الذي يحقق الأهداف من خلال الآخرين</li>
+            <li><strong>المنظمة - Organization:</strong> وحدة اجتماعية منسقة بوعي لتحقيق أهداف مشتركة</li>
+            <li><strong>التخطيط - Planning:</strong> تحديد الأهداف ووضع استراتيجيات تحقيقها</li>
+            <li><strong>التنظيم - Organizing:</strong> ترتيب المهام والموارد لتحقيق الأهداف</li>
+            <li><strong>القيادة - Leading:</strong> التأثير على الآخرين لتحقيق الأهداف المشتركة</li>
+            <li><strong>الرقابة - Controlling:</strong> مراقبة الأداء واتخاذ الإجراءات التصحيحية</li>
+            <li><strong>أدوار مينتزبيرغ - Managerial Roles:</strong> عشرة أدوار يؤديها المديرون في عملهم</li>
+            <li><strong>المهارات الإدارية - Management Skills:</strong> التقنية والإنسانية والمفاهيمية</li>
+            <li><strong>المدير الفعال - Effective Manager:</strong> من يحقق نتائج عالية في أداء الوحدة والموظفين</li>
+            <li><strong>المدير الناجح - Successful Manager:</strong> من يحقق ترقيات سريعة في المنظمة</li>
+            <li><strong>السلوك التنظيمي - Organizational Behavior - OB:</strong> دراسة سلوك الأفراد والجماعات في المنظمات</li>
+            <li><strong>الدراسة المنهجية - Systematic Study:</strong> نهج علمي لفهم وتحليل السلوك</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- English Content (Full Translation) -->
+    <div id="englishContent" class="hidden">
+      <section class="glassy-card">
+        <h1>Business Management - Comprehensive Guide</h1>
+        <p>A complete educational guide covering basic concepts in business management and organizational behavior</p>
+      </section>
+
+      <!-- Manager Section (English) -->
+      <section class="glassy-card">
+        <h2>1. Manager</h2>
+        
+        <h3>Basic Definition</h3>
+        <ul>
+          <li><strong>Manager:</strong> The person who achieves goals through others</li>
+          <li><strong>Role:</strong> Directing and coordinating the work of group members</li>
+          <li><strong>Responsibility:</strong> Achieving required results efficiently and effectively</li>
+        </ul>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Practical Example: Sales Manager</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Situation:</strong> Sales manager in a technology company</p>
+            <ul>
+              <li>Sets monthly sales targets</li>
+              <li>Distributes clients to the sales team</li>
+              <li>Monitors performance and provides support</li>
+              <li>Analyzes data and adjusts strategies</li>
+            </ul>
+            <p><strong>Result:</strong> Achieving goals through the team, not individual work</p>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the primary role of a manager?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Doing all tasks personally</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Achieving goals through others</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Controlling all decisions</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Working independently</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Organization Section (English) -->
+      <section class="glassy-card">
+        <h2>2. Organization</h2>
+        
+        <h3>Definition and Components</h3>
+        <ul>
+          <li><strong>Organization:</strong> A consciously coordinated social unit</li>
+          <li><strong>Goal:</strong> Achieving specific and shared objectives</li>
+          <li><strong>Characteristics:</strong> Clear boundaries and continuous operation</li>
+        </ul>
+
+        <h3>Basic Elements of the Organization</h3>
+        <ol>
+          <li><strong>Individuals:</strong> Human resources in the organization</li>
+          <li><strong>Structure:</strong> Formal organization of roles and relationships</li>
+          <li><strong>Goals:</strong> Objectives to be achieved</li>
+          <li><strong>Environment:</strong> External and internal surroundings</li>
+        </ol>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Example: Software Development Company</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Organization:</strong> "Future Tech" Company</p>
+            <ul>
+              <li><strong>Individuals:</strong> Developers, designers, project managers</li>
+              <li><strong>Structure:</strong> Development, design, quality departments</li>
+              <li><strong>Goals:</strong> Developing high-quality applications</li>
+              <li><strong>Environment:</strong> Competitive market, modern technologies</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Management Functions Section (English) -->
+      <section class="glassy-card">
+        <h2>3. Management Functions</h2>
+        
+        <h3>The Four Main Functions</h3>
+        
+        <div class="case-study">
+          <h4>1. Planning</h4>
+          <ul>
+            <li>Defining organizational goals and objectives</li>
+            <li>Developing strategies to achieve goals</li>
+            <li>Developing plans and coordinating activities</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Organizing</h4>
+          <ul>
+            <li>Identifying tasks and activities</li>
+            <li>Grouping tasks into jobs</li>
+            <li>Delegating authority and creating lines of responsibility</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Leading</h4>
+          <ul>
+            <li>Motivating and directing employees</li>
+            <li>Influencing individuals and groups</li>
+            <li>Building effective work teams</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>4. Controlling</h4>
+          <ul>
+            <li>Monitoring actual performance</li>
+            <li>Comparing results to standards</li>
+            <li>Taking corrective actions</li>
+          </ul>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which management function involves motivating employees?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Planning</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Organizing</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Leading</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Controlling</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Roles Section (English) -->
+      <section class="glassy-card">
+        <h2>4. Management Roles - Mintzberg's Management Roles</h2>
+        
+        <h3>The Ten Roles of Managers</h3>
+        
+        <div class="case-study">
+          <h4>Interpersonal Roles</h4>
+          <ol>
+            <li><strong>Figurehead</strong>
+              <ul><li>Performing ceremonial and symbolic duties</li></ul>
+            </li>
+            <li><strong>Leader</strong>
+              <ul><li>Directing and motivating subordinates</li></ul>
+            </li>
+            <li><strong>Liaison</strong>
+              <ul><li>Building a network of external relationships</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>Informational Roles</h4>
+          <ol start="4">
+            <li><strong>Monitor</strong>
+              <ul><li>Seeking and receiving information</li></ul>
+            </li>
+            <li><strong>Disseminator</strong>
+              <ul><li>Transmitting information to subordinates</li></ul>
+            </li>
+            <li><strong>Spokesperson</strong>
+              <ul><li>Transmitting information to external parties</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>Decisional Roles</h4>
+          <ol start="7">
+            <li><strong>Entrepreneur</strong>
+              <ul><li>Searching for opportunities and initiating projects</li></ul>
+            </li>
+            <li><strong>Disturbance Handler</strong>
+              <ul><li>Dealing with unexpected problems</li></ul>
+            </li>
+            <li><strong>Resource Allocator</strong>
+              <ul><li>Determining how to use resources</li></ul>
+            </li>
+            <li><strong>Negotiator</strong>
+              <ul><li>Negotiating with various parties</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Applied Example: Company Manager in One Day</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Morning:</strong></p>
+            <ul>
+              <li><strong>Liaison:</strong> Contact with business partner</li>
+              <li><strong>Monitor:</strong> Reviewing performance reports</li>
+            </ul>
+            <p><strong>Afternoon:</strong></p>
+            <ul>
+              <li><strong>Leader:</strong> Team meeting</li>
+              <li><strong>Entrepreneur:</strong> Discussing new project</li>
+            </ul>
+            <p><strong>Evening:</strong></p>
+            <ul>
+              <li><strong>Spokesperson:</strong> Press conference</li>
+              <li><strong>Negotiator:</strong> Meeting with clients</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which role involves building external networks?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Leader</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Spokesperson</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Negotiator</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">d) Monitor</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Skills Section (English) -->
+      <section class="glassy-card">
+        <h2>5. Management Skills</h2>
+        
+        <h3>The Three Basic Skills</h3>
+        
+        <div class="case-study">
+          <h4>1. Technical Skills</h4>
+          <ul>
+            <li>Knowledge and efficiency in a specific field</li>
+            <li>Ability to use tools and techniques</li>
+            <li>Technical experience required for work</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Human Skills</h4>
+          <ul>
+            <li>Ability to work with others</li>
+            <li>Understanding and motivating individuals and groups</li>
+            <li>Building positive relationships and leading teams</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Conceptual Skills</h4>
+          <ul>
+            <li>Ability to think and work with complex ideas</li>
+            <li>Seeing the organization as an integrated system</li>
+            <li>Strategic thinking and problem-solving</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Distribution of Skills by Management Level</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Top Management:</strong></p>
+            <ul>
+              <li>Conceptual Skills: 40%</li>
+              <li>Human Skills: 35%</li>
+              <li>Technical Skills: 25%</li>
+            </ul>
+            <p><strong>Middle Management:</strong></p>
+            <ul>
+              <li>Human Skills: 40%</li>
+              <li>Conceptual Skills: 30%</li>
+              <li>Technical Skills: 30%</li>
+            </ul>
+            <p><strong>Lower Management:</strong></p>
+            <ul>
+              <li>Technical Skills: 50%</li>
+              <li>Human Skills: 35%</li>
+              <li>Conceptual Skills: 15%</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which skill focuses on strategic thinking?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Technical</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Human</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Conceptual</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Effective vs Successful Section (English) -->
+      <section class="glassy-card">
+        <h2>6. Effective Manager vs. Successful Manager</h2>
+        
+        <div class="formula">
+          Effective Manager ≠ Successful Manager always
+        </div>
+
+        <div class="case-study">
+          <h4>The Four Managerial Activities</h4>
+          <ol>
+            <li><strong>Traditional Management:</strong> Planning, Organizing, Controlling</li>
+            <li><strong>Communication:</strong> Exchanging routine information</li>
+            <li><strong>Human Resource Management:</strong> Motivating, Disciplining, Managing Conflict</li>
+            <li><strong>Networking:</strong> Interacting with external parties</li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Research Results - Study of 450 Managers</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Successful Manager (Rapid Promotion):</strong></p>
+            <ul>
+              <li>Networking: 48%</li>
+              <li>Traditional Management: 22%</li>
+              <li>Communication: 18%</li>
+              <li>Human Resource Management: 12%</li>
+            </ul>
+            <p><strong>Effective Manager (Unit and Employee Performance):</strong></p>
+            <ul>
+              <li>Communication: 44%</li>
+              <li>Human Resource Management: 26%</li>
+              <li>Traditional Management: 19%</li>
+              <li>Networking: 11%</li>
+            </ul>
+            <p><strong>Conclusion:</strong> Managers who balance the four activities are the most successful and effective</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Applied Question</h4>
+          <p><strong>Scenario:</strong> A manager spends 60% of time building external relationships and 40% on basic managerial tasks. What is your assessment of their management style?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Analysis:</strong></p>
+            <ul>
+              <li>This manager over-focuses on networking</li>
+              <li>May achieve promotion success but effectiveness may be limited</li>
+              <li>Needs better time distribution across the four activities</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Increase focus on direct communication and human resource management</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Organizational Behavior Section (English) -->
+      <section class="glassy-card">
+        <h2>7. Organizational Behavior - OB</h2>
+        
+        <h3>Definition and Objectives</h3>
+        <ul>
+          <li><strong>Definition:</strong> Systematic study of individual and group behavior in organizations</li>
+          <li><strong>Goal:</strong> Applying this knowledge to improve organizational effectiveness</li>
+        </ul>
+
+        <h3>Levels of Analysis</h3>
+        <ol>
+          <li><strong>Individual Level:</strong> Individual behavior and performance determinants</li>
+          <li><strong>Group Level:</strong> Team dynamics and interaction</li>
+          <li><strong>Organizational Level:</strong> Structure and organizational culture</li>
+        </ol>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the primary goal of studying organizational behavior?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Understanding individual behavior only</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Improving organizational effectiveness</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Increasing profits only</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Controlling employees</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Systematic Study Section (English) -->
+      <section class="glassy-card">
+        <h2>8. Systematic Study</h2>
+        
+        <h3>The Three Approaches to Understanding Behavior</h3>
+        
+        <div class="case-study">
+          <h4>1. Intuition</h4>
+          <ul>
+            <li>Relying on feelings and personal experience</li>
+            <li>Making decisions based on "gut feeling"</li>
+            <li><strong>Risks:</strong> May lead to wrong judgments</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Systematic Study</h4>
+          <ul>
+            <li>Looking at relationships, patterns, and consistency</li>
+            <li>Identifying causes and effects</li>
+            <li>Conclusions based on scientific evidence</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Evidence-Based Management (EBM)</h4>
+          <ul>
+            <li>Making decisions based on the best available evidence</li>
+            <li>Integrating scientific results with practical experience</li>
+            <li>Continuous evaluation of results</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Comparative Example: Hiring Decision</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Intuition:</strong> "I feel this candidate is suitable for the position"</p>
+            <p><strong>Systematic Study:</strong> Analyzing previous candidates' performance and linking to specific traits</p>
+            <p><strong>EBM:</strong> Using documented tests + structured interviews + previous references</p>
+            <p><strong>Result:</strong> The scientific approach leads to more accurate and successful hiring decisions</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Case Study</h4>
+          <p><strong>Problem:</strong> Decreased productivity in the department. How do you deal with this problem using the scientific approach?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Steps of the Scientific Approach:</strong></p>
+            <ol>
+              <li><strong>Data Collection:</strong> Measuring actual performance indicators</li>
+              <li><strong>Identifying Patterns:</strong> When and where does the problem occur?</li>
+              <li><strong>Analyzing Causes:</strong> Possible factors (training, tools, motivation)</li>
+              <li><strong>Testing Solutions:</strong> Applying different solutions with small groups</li>
+              <li><strong>Measuring Results:</strong> Evaluating the effectiveness of each solution</li>
+              <li><strong>Comprehensive Application:</strong> Generalizing the most effective solution</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the methodology based on scientific evidence?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Intuition</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Systematic Study</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Evidence-based management</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Key Concepts Glossary -->
+      <section class="glassy-card">
+        <h2>9. مسرد المفاهيم الرئيسية</h2>
+        
+        <div class="case-study">
+          <h4>المفاهيم الأساسية</h4>
+          <ul>
+            <li><strong>المدير - Manager:</strong> الشخص الذي يحقق الأهداف من خلال الآخرين</li>
+            <li><strong>المنظمة - Organization:</strong> وحدة اجتماعية منسقة بوعي لتحقيق أهداف مشتركة</li>
+            <li><strong>التخطيط - Planning:</strong> تحديد الأهداف ووضع استراتيجيات تحقيقها</li>
+            <li><strong>التنظيم - Organizing:</strong> ترتيب المهام والموارد لتحقيق الأهداف</li>
+            <li><strong>القيادة - Leading:</strong> التأثير على الآخرين لتحقيق الأهداف المشتركة</li>
+            <li><strong>الرقابة - Controlling:</strong> مراقبة الأداء واتخاذ الإجراءات التصحيحية</li>
+            <li><strong>أدوار مينتزبيرغ - Managerial Roles:</strong> عشرة أدوار يؤديها المديرون في عملهم</li>
+            <li><strong>المهارات الإدارية - Management Skills:</strong> التقنية والإنسانية والمفاهيمية</li>
+            <li><strong>المدير الفعال - Effective Manager:</strong> من يحقق نتائج عالية في أداء الوحدة والموظفين</li>
+            <li><strong>المدير الناجح - Successful Manager:</strong> من يحقق ترقيات سريعة في المنظمة</li>
+            <li><strong>السلوك التنظيمي - Organizational Behavior - OB:</strong> دراسة سلوك الأفراد والجماعات في المنظمات</li>
+            <li><strong>الدراسة المنهجية - Systematic Study:</strong> نهج علمي لفهم وتحليل السلوك</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- English Content (Full Translation) -->
+    <div id="englishContent" class="hidden">
+      <section class="glassy-card">
+        <h1>Business Management - Comprehensive Guide</h1>
+        <p>A complete educational guide covering basic concepts in business management and organizational behavior</p>
+      </section>
+
+      <!-- Manager Section (English) -->
+      <section class="glassy-card">
+        <h2>1. Manager</h2>
+        
+        <h3>Basic Definition</h3>
+        <ul>
+          <li><strong>Manager:</strong> The person who achieves goals through others</li>
+          <li><strong>Role:</strong> Directing and coordinating the work of group members</li>
+          <li><strong>Responsibility:</strong> Achieving required results efficiently and effectively</li>
+        </ul>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Practical Example: Sales Manager</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Situation:</strong> Sales manager in a technology company</p>
+            <ul>
+              <li>Sets monthly sales targets</li>
+              <li>Distributes clients to the sales team</li>
+              <li>Monitors performance and provides support</li>
+              <li>Analyzes data and adjusts strategies</li>
+            </ul>
+            <p><strong>Result:</strong> Achieving goals through the team, not individual work</p>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the primary role of a manager?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Doing all tasks personally</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Achieving goals through others</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Controlling all decisions</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Working independently</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Organization Section (English) -->
+      <section class="glassy-card">
+        <h2>2. Organization</h2>
+        
+        <h3>Definition and Components</h3>
+        <ul>
+          <li><strong>Organization:</strong> A consciously coordinated social unit</li>
+          <li><strong>Goal:</strong> Achieving specific and shared objectives</li>
+          <li><strong>Characteristics:</strong> Clear boundaries and continuous operation</li>
+        </ul>
+
+        <h3>Basic Elements of the Organization</h3>
+        <ol>
+          <li><strong>Individuals:</strong> Human resources in the organization</li>
+          <li><strong>Structure:</strong> Formal organization of roles and relationships</li>
+          <li><strong>Goals:</strong> Objectives to be achieved</li>
+          <li><strong>Environment:</strong> External and internal surroundings</li>
+        </ol>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Example: Software Development Company</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Organization:</strong> "Future Tech" Company</p>
+            <ul>
+              <li><strong>Individuals:</strong> Developers, designers, project managers</li>
+              <li><strong>Structure:</strong> Development, design, quality departments</li>
+              <li><strong>Goals:</strong> Developing high-quality applications</li>
+              <li><strong>Environment:</strong> Competitive market, modern technologies</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Management Functions Section (English) -->
+      <section class="glassy-card">
+        <h2>3. Management Functions</h2>
+        
+        <h3>The Four Main Functions</h3>
+        
+        <div class="case-study">
+          <h4>1. Planning</h4>
+          <ul>
+            <li>Defining organizational goals and objectives</li>
+            <li>Developing strategies to achieve goals</li>
+            <li>Developing plans and coordinating activities</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Organizing</h4>
+          <ul>
+            <li>Identifying tasks and activities</li>
+            <li>Grouping tasks into jobs</li>
+            <li>Delegating authority and creating lines of responsibility</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Leading</h4>
+          <ul>
+            <li>Motivating and directing employees</li>
+            <li>Influencing individuals and groups</li>
+            <li>Building effective work teams</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>4. Controlling</h4>
+          <ul>
+            <li>Monitoring actual performance</li>
+            <li>Comparing results to standards</li>
+            <li>Taking corrective actions</li>
+          </ul>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which management function involves motivating employees?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Planning</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Organizing</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Leading</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Controlling</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Roles Section (English) -->
+      <section class="glassy-card">
+        <h2>4. Management Roles - Mintzberg's Management Roles</h2>
+        
+        <h3>The Ten Roles of Managers</h3>
+        
+        <div class="case-study">
+          <h4>Interpersonal Roles</h4>
+          <ol>
+            <li><strong>Figurehead</strong>
+              <ul><li>Performing ceremonial and symbolic duties</li></ul>
+            </li>
+            <li><strong>Leader</strong>
+              <ul><li>Directing and motivating subordinates</li></ul>
+            </li>
+            <li><strong>Liaison</strong>
+              <ul><li>Building a network of external relationships</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>Informational Roles</h4>
+          <ol start="4">
+            <li><strong>Monitor</strong>
+              <ul><li>Seeking and receiving information</li></ul>
+            </li>
+            <li><strong>Disseminator</strong>
+              <ul><li>Transmitting information to subordinates</li></ul>
+            </li>
+            <li><strong>Spokesperson</strong>
+              <ul><li>Transmitting information to external parties</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>Decisional Roles</h4>
+          <ol start="7">
+            <li><strong>Entrepreneur</strong>
+              <ul><li>Searching for opportunities and initiating projects</li></ul>
+            </li>
+            <li><strong>Disturbance Handler</strong>
+              <ul><li>Dealing with unexpected problems</li></ul>
+            </li>
+            <li><strong>Resource Allocator</strong>
+              <ul><li>Determining how to use resources</li></ul>
+            </li>
+            <li><strong>Negotiator</strong>
+              <ul><li>Negotiating with various parties</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Applied Example: Company Manager in One Day</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Morning:</strong></p>
+            <ul>
+              <li><strong>Liaison:</strong> Contact with business partner</li>
+              <li><strong>Monitor:</strong> Reviewing performance reports</li>
+            </ul>
+            <p><strong>Afternoon:</strong></p>
+            <ul>
+              <li><strong>Leader:</strong> Team meeting</li>
+              <li><strong>Entrepreneur:</strong> Discussing new project</li>
+            </ul>
+            <p><strong>Evening:</strong></p>
+            <ul>
+              <li><strong>Spokesperson:</strong> Press conference</li>
+              <li><strong>Negotiator:</strong> Meeting with clients</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which role involves building external networks?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Leader</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Spokesperson</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Negotiator</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">d) Monitor</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Skills Section (English) -->
+      <section class="glassy-card">
+        <h2>5. Management Skills</h2>
+        
+        <h3>The Three Basic Skills</h3>
+        
+        <div class="case-study">
+          <h4>1. Technical Skills</h4>
+          <ul>
+            <li>Knowledge and efficiency in a specific field</li>
+            <li>Ability to use tools and techniques</li>
+            <li>Technical experience required for work</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Human Skills</h4>
+          <ul>
+            <li>Ability to work with others</li>
+            <li>Understanding and motivating individuals and groups</li>
+            <li>Building positive relationships and leading teams</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Conceptual Skills</h4>
+          <ul>
+            <li>Ability to think and work with complex ideas</li>
+            <li>Seeing the organization as an integrated system</li>
+            <li>Strategic thinking and problem-solving</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Distribution of Skills by Management Level</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Top Management:</strong></p>
+            <ul>
+              <li>Conceptual Skills: 40%</li>
+              <li>Human Skills: 35%</li>
+              <li>Technical Skills: 25%</li>
+            </ul>
+            <p><strong>Middle Management:</strong></p>
+            <ul>
+              <li>Human Skills: 40%</li>
+              <li>Conceptual Skills: 30%</li>
+              <li>Technical Skills: 30%</li>
+            </ul>
+            <p><strong>Lower Management:</strong></p>
+            <ul>
+              <li>Technical Skills: 50%</li>
+              <li>Human Skills: 35%</li>
+              <li>Conceptual Skills: 15%</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which skill focuses on strategic thinking?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Technical</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Human</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Conceptual</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Effective vs Successful Section (English) -->
+      <section class="glassy-card">
+        <h2>6. Effective Manager vs. Successful Manager</h2>
+        
+        <div class="formula">
+          Effective Manager ≠ Successful Manager always
+        </div>
+
+        <div class="case-study">
+          <h4>The Four Managerial Activities</h4>
+          <ol>
+            <li><strong>Traditional Management:</strong> Planning, Organizing, Controlling</li>
+            <li><strong>Communication:</strong> Exchanging routine information</li>
+            <li><strong>Human Resource Management:</strong> Motivating, Disciplining, Managing Conflict</li>
+            <li><strong>Networking:</strong> Interacting with external parties</li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Research Results - Study of 450 Managers</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Successful Manager (Rapid Promotion):</strong></p>
+            <ul>
+              <li>Networking: 48%</li>
+              <li>Traditional Management: 22%</li>
+              <li>Communication: 18%</li>
+              <li>Human Resource Management: 12%</li>
+            </ul>
+            <p><strong>Effective Manager (Unit and Employee Performance):</strong></p>
+            <ul>
+              <li>Communication: 44%</li>
+              <li>Human Resource Management: 26%</li>
+              <li>Traditional Management: 19%</li>
+              <li>Networking: 11%</li>
+            </ul>
+            <p><strong>Conclusion:</strong> Managers who balance the four activities are the most successful and effective</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Applied Question</h4>
+          <p><strong>Scenario:</strong> A manager spends 60% of time building external relationships and 40% on basic managerial tasks. What is your assessment of their management style?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Analysis:</strong></p>
+            <ul>
+              <li>This manager over-focuses on networking</li>
+              <li>May achieve promotion success but effectiveness may be limited</li>
+              <li>Needs better time distribution across the four activities</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Increase focus on direct communication and human resource management</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Organizational Behavior Section (English) -->
+      <section class="glassy-card">
+        <h2>7. Organizational Behavior - OB</h2>
+        
+        <h3>Definition and Objectives</h3>
+        <ul>
+          <li><strong>Definition:</strong> Systematic study of individual and group behavior in organizations</li>
+          <li><strong>Goal:</strong> Applying this knowledge to improve organizational effectiveness</li>
+        </ul>
+
+        <h3>Levels of Analysis</h3>
+        <ol>
+          <li><strong>Individual Level:</strong> Individual behavior and performance determinants</li>
+          <li><strong>Group Level:</strong> Team dynamics and interaction</li>
+          <li><strong>Organizational Level:</strong> Structure and organizational culture</li>
+        </ol>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the primary goal of studying organizational behavior?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Understanding individual behavior only</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Improving organizational effectiveness</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Increasing profits only</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Controlling employees</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Systematic Study Section (English) -->
+      <section class="glassy-card">
+        <h2>8. Systematic Study</h2>
+        
+        <h3>The Three Approaches to Understanding Behavior</h3>
+        
+        <div class="case-study">
+          <h4>1. Intuition</h4>
+          <ul>
+            <li>Relying on feelings and personal experience</li>
+            <li>Making decisions based on "gut feeling"</li>
+            <li><strong>Risks:</strong> May lead to wrong judgments</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Systematic Study</h4>
+          <ul>
+            <li>Looking at relationships, patterns, and consistency</li>
+            <li>Identifying causes and effects</li>
+            <li>Conclusions based on scientific evidence</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Evidence-Based Management (EBM)</h4>
+          <ul>
+            <li>Making decisions based on the best available evidence</li>
+            <li>Integrating scientific results with practical experience</li>
+            <li>Continuous evaluation of results</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Comparative Example: Hiring Decision</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Intuition:</strong> "I feel this candidate is suitable for the position"</p>
+            <p><strong>Systematic Study:</strong> Analyzing previous candidates' performance and linking to specific traits</p>
+            <p><strong>EBM:</strong> Using documented tests + structured interviews + previous references</p>
+            <p><strong>Result:</strong> The scientific approach leads to more accurate and successful hiring decisions</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Case Study</h4>
+          <p><strong>Problem:</strong> Decreased productivity in the department. How do you deal with this problem using the scientific approach?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Steps of the Scientific Approach:</strong></p>
+            <ol>
+              <li><strong>Data Collection:</strong> Measuring actual performance indicators</li>
+              <li><strong>Identifying Patterns:</strong> When and where does the problem occur?</li>
+              <li><strong>Analyzing Causes:</strong> Possible factors (training, tools, motivation)</li>
+              <li><strong>Testing Solutions:</strong> Applying different solutions with small groups</li>
+              <li><strong>Measuring Results:</strong> Evaluating the effectiveness of each solution</li>
+              <li><strong>Comprehensive Application:</strong> Generalizing the most effective solution</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the methodology based on scientific evidence?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Intuition</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Systematic Study</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Evidence-based management</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Key Concepts Glossary -->
+      <section class="glassy-card">
+        <h2>9. مسرد المفاهيم الرئيسية</h2>
+        
+        <div class="case-study">
+          <h4>المفاهيم الأساسية</h4>
+          <ul>
+            <li><strong>المدير - Manager:</strong> الشخص الذي يحقق الأهداف من خلال الآخرين</li>
+            <li><strong>المنظمة - Organization:</strong> وحدة اجتماعية منسقة بوعي لتحقيق أهداف مشتركة</li>
+            <li><strong>التخطيط - Planning:</strong> تحديد الأهداف ووضع استراتيجيات تحقيقها</li>
+            <li><strong>التنظيم - Organizing:</strong> ترتيب المهام والموارد لتحقيق الأهداف</li>
+            <li><strong>القيادة - Leading:</strong> التأثير على الآخرين لتحقيق الأهداف المشتركة</li>
+            <li><strong>الرقابة - Controlling:</strong> مراقبة الأداء واتخاذ الإجراءات التصحيحية</li>
+            <li><strong>أدوار مينتزبيرغ - Managerial Roles:</strong> عشرة أدوار يؤديها المديرون في عملهم</li>
+            <li><strong>المهارات الإدارية - Management Skills:</strong> التقنية والإنسانية والمفاهيمية</li>
+            <li><strong>المدير الفعال - Effective Manager:</strong> من يحقق نتائج عالية في أداء الوحدة والموظفين</li>
+            <li><strong>المدير الناجح - Successful Manager:</strong> من يحقق ترقيات سريعة في المنظمة</li>
+            <li><strong>السلوك التنظيمي - Organizational Behavior - OB:</strong> دراسة سلوك الأفراد والجماعات في المنظمات</li>
+            <li><strong>الدراسة المنهجية - Systematic Study:</strong> نهج علمي لفهم وتحليل السلوك</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- English Content (Full Translation) -->
+    <div id="englishContent" class="hidden">
+      <section class="glassy-card">
+        <h1>Business Management - Comprehensive Guide</h1>
+        <p>A complete educational guide covering basic concepts in business management and organizational behavior</p>
+      </section>
+
+      <!-- Manager Section (English) -->
+      <section class="glassy-card">
+        <h2>1. Manager</h2>
+        
+        <h3>Basic Definition</h3>
+        <ul>
+          <li><strong>Manager:</strong> The person who achieves goals through others</li>
+          <li><strong>Role:</strong> Directing and coordinating the work of group members</li>
+          <li><strong>Responsibility:</strong> Achieving required results efficiently and effectively</li>
+        </ul>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Practical Example: Sales Manager</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Situation:</strong> Sales manager in a technology company</p>
+            <ul>
+              <li>Sets monthly sales targets</li>
+              <li>Distributes clients to the sales team</li>
+              <li>Monitors performance and provides support</li>
+              <li>Analyzes data and adjusts strategies</li>
+            </ul>
+            <p><strong>Result:</strong> Achieving goals through the team, not individual work</p>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the primary role of a manager?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Doing all tasks personally</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Achieving goals through others</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Controlling all decisions</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Working independently</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Organization Section (English) -->
+      <section class="glassy-card">
+        <h2>2. Organization</h2>
+        
+        <h3>Definition and Components</h3>
+        <ul>
+          <li><strong>Organization:</strong> A consciously coordinated social unit</li>
+          <li><strong>Goal:</strong> Achieving specific and shared objectives</li>
+          <li><strong>Characteristics:</strong> Clear boundaries and continuous operation</li>
+        </ul>
+
+        <h3>Basic Elements of the Organization</h3>
+        <ol>
+          <li><strong>Individuals:</strong> Human resources in the organization</li>
+          <li><strong>Structure:</strong> Formal organization of roles and relationships</li>
+          <li><strong>Goals:</strong> Objectives to be achieved</li>
+          <li><strong>Environment:</strong> External and internal surroundings</li>
+        </ol>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Example: Software Development Company</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Organization:</strong> "Future Tech" Company</p>
+            <ul>
+              <li><strong>Individuals:</strong> Developers, designers, project managers</li>
+              <li><strong>Structure:</strong> Development, design, quality departments</li>
+              <li><strong>Goals:</strong> Developing high-quality applications</li>
+              <li><strong>Environment:</strong> Competitive market, modern technologies</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Management Functions Section (English) -->
+      <section class="glassy-card">
+        <h2>3. Management Functions</h2>
+        
+        <h3>The Four Main Functions</h3>
+        
+        <div class="case-study">
+          <h4>1. Planning</h4>
+          <ul>
+            <li>Defining organizational goals and objectives</li>
+            <li>Developing strategies to achieve goals</li>
+            <li>Developing plans and coordinating activities</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Organizing</h4>
+          <ul>
+            <li>Identifying tasks and activities</li>
+            <li>Grouping tasks into jobs</li>
+            <li>Delegating authority and creating lines of responsibility</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Leading</h4>
+          <ul>
+            <li>Motivating and directing employees</li>
+            <li>Influencing individuals and groups</li>
+            <li>Building effective work teams</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>4. Controlling</h4>
+          <ul>
+            <li>Monitoring actual performance</li>
+            <li>Comparing results to standards</li>
+            <li>Taking corrective actions</li>
+          </ul>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which management function involves motivating employees?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Planning</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Organizing</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Leading</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Controlling</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Roles Section (English) -->
+      <section class="glassy-card">
+        <h2>4. Management Roles - Mintzberg's Management Roles</h2>
+        
+        <h3>The Ten Roles of Managers</h3>
+        
+        <div class="case-study">
+          <h4>Interpersonal Roles</h4>
+          <ol>
+            <li><strong>Figurehead</strong>
+              <ul><li>Performing ceremonial and symbolic duties</li></ul>
+            </li>
+            <li><strong>Leader</strong>
+              <ul><li>Directing and motivating subordinates</li></ul>
+            </li>
+            <li><strong>Liaison</strong>
+              <ul><li>Building a network of external relationships</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>Informational Roles</h4>
+          <ol start="4">
+            <li><strong>Monitor</strong>
+              <ul><li>Seeking and receiving information</li></ul>
+            </li>
+            <li><strong>Disseminator</strong>
+              <ul><li>Transmitting information to subordinates</li></ul>
+            </li>
+            <li><strong>Spokesperson</strong>
+              <ul><li>Transmitting information to external parties</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="case-study">
+          <h4>Decisional Roles</h4>
+          <ol start="7">
+            <li><strong>Entrepreneur</strong>
+              <ul><li>Searching for opportunities and initiating projects</li></ul>
+            </li>
+            <li><strong>Disturbance Handler</strong>
+              <ul><li>Dealing with unexpected problems</li></ul>
+            </li>
+            <li><strong>Resource Allocator</strong>
+              <ul><li>Determining how to use resources</li></ul>
+            </li>
+            <li><strong>Negotiator</strong>
+              <ul><li>Negotiating with various parties</li></ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Applied Example: Company Manager in One Day</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Morning:</strong></p>
+            <ul>
+              <li><strong>Liaison:</strong> Contact with business partner</li>
+              <li><strong>Monitor:</strong> Reviewing performance reports</li>
+            </ul>
+            <p><strong>Afternoon:</strong></p>
+            <ul>
+              <li><strong>Leader:</strong> Team meeting</li>
+              <li><strong>Entrepreneur:</strong> Discussing new project</li>
+            </ul>
+            <p><strong>Evening:</strong></p>
+            <ul>
+              <li><strong>Spokesperson:</strong> Press conference</li>
+              <li><strong>Negotiator:</strong> Meeting with clients</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which role involves building external networks?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Leader</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Spokesperson</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Negotiator</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">d) Monitor</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Management Skills Section (English) -->
+      <section class="glassy-card">
+        <h2>5. Management Skills</h2>
+        
+        <h3>The Three Basic Skills</h3>
+        
+        <div class="case-study">
+          <h4>1. Technical Skills</h4>
+          <ul>
+            <li>Knowledge and efficiency in a specific field</li>
+            <li>Ability to use tools and techniques</li>
+            <li>Technical experience required for work</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Human Skills</h4>
+          <ul>
+            <li>Ability to work with others</li>
+            <li>Understanding and motivating individuals and groups</li>
+            <li>Building positive relationships and leading teams</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Conceptual Skills</h4>
+          <ul>
+            <li>Ability to think and work with complex ideas</li>
+            <li>Seeing the organization as an integrated system</li>
+            <li>Strategic thinking and problem-solving</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Distribution of Skills by Management Level</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Top Management:</strong></p>
+            <ul>
+              <li>Conceptual Skills: 40%</li>
+              <li>Human Skills: 35%</li>
+              <li>Technical Skills: 25%</li>
+            </ul>
+            <p><strong>Middle Management:</strong></p>
+            <ul>
+              <li>Human Skills: 40%</li>
+              <li>Conceptual Skills: 30%</li>
+              <li>Technical Skills: 30%</li>
+            </ul>
+            <p><strong>Lower Management:</strong></p>
+            <ul>
+              <li>Technical Skills: 50%</li>
+              <li>Human Skills: 35%</li>
+              <li>Conceptual Skills: 15%</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Which skill focuses on strategic thinking?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Technical</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Human</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Conceptual</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Effective vs Successful Section (English) -->
+      <section class="glassy-card">
+        <h2>6. Effective Manager vs. Successful Manager</h2>
+        
+        <div class="formula">
+          Effective Manager ≠ Successful Manager always
+        </div>
+
+        <div class="case-study">
+          <h4>The Four Managerial Activities</h4>
+          <ol>
+            <li><strong>Traditional Management:</strong> Planning, Organizing, Controlling</li>
+            <li><strong>Communication:</strong> Exchanging routine information</li>
+            <li><strong>Human Resource Management:</strong> Motivating, Disciplining, Managing Conflict</li>
+            <li><strong>Networking:</strong> Interacting with external parties</li>
+          </ol>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Research Results - Study of 450 Managers</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Successful Manager (Rapid Promotion):</strong></p>
+            <ul>
+              <li>Networking: 48%</li>
+              <li>Traditional Management: 22%</li>
+              <li>Communication: 18%</li>
+              <li>Human Resource Management: 12%</li>
+            </ul>
+            <p><strong>Effective Manager (Unit and Employee Performance):</strong></p>
+            <ul>
+              <li>Communication: 44%</li>
+              <li>Human Resource Management: 26%</li>
+              <li>Traditional Management: 19%</li>
+              <li>Networking: 11%</li>
+            </ul>
+            <p><strong>Conclusion:</strong> Managers who balance the four activities are the most successful and effective</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Applied Question</h4>
+          <p><strong>Scenario:</strong> A manager spends 60% of time building external relationships and 40% on basic managerial tasks. What is your assessment of their management style?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Analysis:</strong></p>
+            <ul>
+              <li>This manager over-focuses on networking</li>
+              <li>May achieve promotion success but effectiveness may be limited</li>
+              <li>Needs better time distribution across the four activities</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Increase focus on direct communication and human resource management</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Organizational Behavior Section (English) -->
+      <section class="glassy-card">
+        <h2>7. Organizational Behavior - OB</h2>
+        
+        <h3>Definition and Objectives</h3>
+        <ul>
+          <li><strong>Definition:</strong> Systematic study of individual and group behavior in organizations</li>
+          <li><strong>Goal:</strong> Applying this knowledge to improve organizational effectiveness</li>
+        </ul>
+
+        <h3>Levels of Analysis</h3>
+        <ol>
+          <li><strong>Individual Level:</strong> Individual behavior and performance determinants</li>
+          <li><strong>Group Level:</strong> Team dynamics and interaction</li>
+          <li><strong>Organizational Level:</strong> Structure and organizational culture</li>
+        </ol>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the primary goal of studying organizational behavior?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Understanding individual behavior only</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Improving organizational effectiveness</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Increasing profits only</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Controlling employees</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Systematic Study Section (English) -->
+      <section class="glassy-card">
+        <h2>8. Systematic Study</h2>
+        
+        <h3>The Three Approaches to Understanding Behavior</h3>
+        
+        <div class="case-study">
+          <h4>1. Intuition</h4>
+          <ul>
+            <li>Relying on feelings and personal experience</li>
+            <li>Making decisions based on "gut feeling"</li>
+            <li><strong>Risks:</strong> May lead to wrong judgments</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Systematic Study</h4>
+          <ul>
+            <li>Looking at relationships, patterns, and consistency</li>
+            <li>Identifying causes and effects</li>
+            <li>Conclusions based on scientific evidence</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Evidence-Based Management (EBM)</h4>
+          <ul>
+            <li>Making decisions based on the best available evidence</li>
+            <li>Integrating scientific results with practical experience</li>
+            <li>Continuous evaluation of results</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Comparative Example: Hiring Decision</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Intuition:</strong> "I feel this candidate is suitable for the position"</p>
+            <p><strong>Systematic Study:</strong> Analyzing previous candidates' performance and linking to specific traits</p>
+            <p><strong>EBM:</strong> Using documented tests + structured interviews + previous references</p>
+            <p><strong>Result:</strong> The scientific approach leads to more accurate and successful hiring decisions</p>
+          </div>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Case Study</h4>
+          <p><strong>Problem:</strong> Decreased productivity in the department. How do you deal with this problem using the scientific approach?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Steps of the Scientific Approach:</strong></p>
+            <ol>
+              <li><strong>Data Collection:</strong> Measuring actual performance indicators</li>
+              <li><strong>Identifying Patterns:</strong> When and where does the problem occur?</li>
+              <li><strong>Analyzing Causes:</strong> Possible factors (training, tools, motivation)</li>
+              <li><strong>Testing Solutions:</strong> Applying different solutions with small groups</li>
+              <li><strong>Measuring Results:</strong> Evaluating the effectiveness of each solution</li>
+              <li><strong>Comprehensive Application:</strong> Generalizing the most effective solution</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">What is the methodology based on scientific evidence?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Intuition</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Systematic Study</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Evidence-based management</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Key Concepts Glossary -->
+      <section class="glassy-card">
+        <h2>9. Key Concepts Glossary</h2>
+        
+        <div class="case-study">
+          <h4>Basic Concepts</h4>
+          <ul>
+            <li><strong>Manager:</strong> The person who achieves goals through others</li>
+            <li><strong>Organization:</strong> A consciously coordinated social unit to achieve shared goals</li>
+            <li><strong>Planning:</strong> Defining goals and developing strategies to achieve them</li>
+            <li><strong>Organizing:</strong> Arranging tasks and resources to achieve goals</li>
+            <li><strong>Leading:</strong> Influencing others to achieve common goals</li>
+            <li><strong>Controlling:</strong> Monitoring performance and taking corrective actions</li>
+            <li><strong>Managerial Roles:</strong> Ten roles performed by managers in their work</li>
+            <li><strong>Management Skills:</strong> Technical, human, and conceptual</li>
+            <li><strong>Effective Manager:</strong> One who achieves high results in unit and employee performance</li>
+            <li><strong>Successful Manager:</strong> One who achieves rapid promotions in the organization</li>
+            <li><strong>Organizational Behavior - OB:</strong> Study of individual and group behavior in organizations</li>
+            <li><strong>Systematic Study:</strong> Scientific approach to understanding and analyzing behavior</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Translation functionality
+    const translationButton = document.getElementById('translationButton');
+    const arabicContent = document.getElementById('arabicContent');
+    const englishContent = document.getElementById('englishContent');
+    const html = document.documentElement;
+    const body = document.body;
+    let isArabic = true;
+
+    function switchLanguage() {
+      isArabic = !isArabic;
+      
+      if (isArabic) {
+        html.setAttribute('lang', 'ar');
+        html.setAttribute('dir', 'rtl');
+        body.setAttribute('dir', 'rtl');
+        arabicContent.classList.remove('hidden');
+        englishContent.classList.add('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'English';
+      } else {
+        html.setAttribute('lang', 'en');
+        html.setAttribute('dir', 'ltr');
+        body.setAttribute('dir', 'ltr');
+        arabicContent.classList.add('hidden');
+        englishContent.classList.remove('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'العربية';
+      }
+    }
+
+    translationButton.addEventListener('click', switchLanguage);
+
+    // Expandable examples functionality
+    function toggleExample(element) {
+      const content = element.querySelector('.example-content');
+      const arrow = element.querySelector('.example-header span:last-child');
+      
+      element.classList.toggle('open');
+      content.classList.toggle('show');
+      arrow.style.transform = element.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    // MCQ functionality
+    function selectMCQ(element, isCorrect) {
+      const options = element.parentNode.querySelectorAll('.mcq-option');
+      
+      // Remove all previous selections
+      options.forEach(option => {
+        option.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      // Mark the selected option
+      element.classList.add('selected');
+      
+      // Show correct/incorrect after a delay
+      setTimeout(() => {
+        if (isCorrect) {
+          element.classList.add('correct');
+        } else {
+          element.classList.add('incorrect');
+          // Show the correct answer
+          options.forEach(option => {
+            if (option !== element) {
+              const onclick = option.getAttribute('onclick');
+              if (onclick && onclick.includes('true')) {
+                option.classList.add('correct');
+              }
+            }
+          });
+        }
+      }, 500);
+    }
+
+    // Practice question functionality
+    function toggleSolution(element) {
+      const solutionCard = element.nextElementSibling;
+      if (solutionCard && solutionCard.classList.contains('solution-card')) {
+        element.classList.toggle('open');
+        solutionCard.classList.toggle('show');
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page initialized successfully');
+    });
+  </script>
+</body>
+</html>
+
