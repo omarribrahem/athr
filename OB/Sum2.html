@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>السلوك التنظيمي - الجزء الثاني</title>
+  <style>
+    :root {
+      --glass-bg: rgba(255,255,255,0.18);
+      --glass-border: rgba(255,255,255,0.4);
+      --text-color: #1e293b;
+      --highlight-color: #0ea5e9;
+      --practice-color: #16a34a;
+      --translation-color: #8b5cf6;
+      --border-radius: 24px;
+    }
+
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes floatSphere1 {
+      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateY(-30px) rotate(180deg) scale(1.05); }
+    }
+
+    @keyframes floatSphere2 {
+      0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95); }
+    }
+
+    @keyframes floatSphere3 {
+      0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateX(-20px) translateY(35px) rotate(120deg) scale(1.08); }
+    }
+
+    @keyframes translate-glow {
+      0%, 100% { box-shadow: 0 0 15px -5px rgba(139,92,246,0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 25px 0px rgba(139,92,246,0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #e0f2fe;
+      color: var(--text-color);
+      line-height: 1.8;
+      overflow-x: hidden;
+      position: relative;
+      direction: rtl;
+      padding: clamp(10px, 3vw, 20px);
+    }
+
+    body[dir="ltr"] {
+      direction: ltr;
+    }
+
+    .background-gradient,
+    .floating-spheres {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    .background-gradient {
+      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 25%, #fce7f3 75%, #fdf2f8 100%);
+      background-size: 400% 400%;
+      animation: gradientAnimation 40s ease infinite;
+    }
+
+    .floating-spheres {
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .sphere {
+      position: absolute;
+      border-radius: 50%;
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: 0 20px 60px rgba(14,165,233,0.3), inset 0 4px 0 rgba(255,255,255,0.4);
+    }
+
+    .sphere.large {
+      width: clamp(120px, 20vw, 220px);
+      height: clamp(120px, 20vw, 220px);
+      top: 8%;
+      right: 12%;
+      background: radial-gradient(circle, #3b82f6, #1e3a8a);
+      animation: floatSphere1 12s ease-in-out infinite;
+    }
+
+    .sphere.medium {
+      width: clamp(80px, 15vw, 140px);
+      height: clamp(80px, 15vw, 140px);
+      bottom: 20%;
+      left: 8%;
+      background: radial-gradient(circle, #0ea5e9, #0369a1);
+      animation: floatSphere2 9s ease-in-out infinite;
+    }
+
+    .sphere.small-1 {
+      width: clamp(60px, 12vw, 95px);
+      height: clamp(60px, 12vw, 95px);
+      top: 50%;
+      right: 8%;
+      background: radial-gradient(circle, #06b6d4, #0e7490);
+      animation: floatSphere3 6s ease-in-out infinite;
+    }
+
+    .translation-button {
+      position: fixed;
+      top: clamp(20px, 5vw, 30px);
+      right: clamp(20px, 5vw, 30px);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(25px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
+      padding: clamp(8px, 2vw, 12px);
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(50px, 12vw, 60px);
+      height: clamp(50px, 12vw, 60px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 25px -10px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+
+    body[dir="ltr"] .translation-button {
+      right: auto;
+      left: clamp(20px, 5vw, 30px);
+    }
+
+    .translation-button:hover {
+      width: auto;
+      padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
+      border-color: var(--translation-color);
+      background: rgba(139,92,246,0.1);
+      transform: translateY(-3px);
+      animation: translate-glow 2.5s infinite alternate;
+    }
+
+    .translation-button .icon-translate {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .translation-button:hover .icon-translate {
+      transform: scale(0.9);
+    }
+
+    .translation-text {
+      font-size: clamp(0.85rem, 2.2vw, 1rem);
+      font-weight: 600;
+      color: var(--translation-color);
+      white-space: nowrap;
+      display: none;
+      margin-left: 10px;
+    }
+
+    body[dir="ltr"] .translation-text {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+
+    .translation-button:hover .translation-text {
+      display: block;
+    }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 90px auto 0;
+      padding: clamp(20px, 5vw, 40px);
+    }
+
+    .glassy-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: clamp(20px, 5vw, 30px);
+      margin-bottom: clamp(25px, 5vw, 35px);
+      backdrop-filter: blur(25px);
+      transition: all 0.4s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+
+    .glassy-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: #0f172a;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      text-align: center;
+      margin-bottom: clamp(20px, 4vw, 30px);
+      color: #0c4a6e;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      border-bottom: 3px solid rgba(14,165,233,0.3);
+      padding-bottom: clamp(10px, 2vw, 15px);
+      margin-bottom: clamp(20px, 4vw, 30px);
+    }
+
+    h3 {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      margin-bottom: clamp(15px, 3vw, 20px);
+    }
+
+    h4 {
+      font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+      color: var(--highlight-color);
+      margin-bottom: clamp(12px, 2vw, 15px);
+    }
+
+    h5 {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: var(--practice-color);
+      margin-bottom: clamp(10px, 2vw, 12px);
+    }
+
+    p, li {
+      color: #475569;
+      margin-bottom: clamp(10px, 2vw, 12px);
+    }
+
+    strong {
+      color: #1e3a8a;
+    }
+
+    .formula {
+      background: rgba(255,255,255,0.4);
+      padding: clamp(15px, 3vw, 20px);
+      border-radius: 14px;
+      font-family: monospace;
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      margin: 20px 0;
+      text-align: center;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+    }
+
+    ul, ol {
+      padding-right: clamp(20px, 4vw, 25px);
+      margin-bottom: 20px;
+    }
+
+    body[dir="ltr"] ul,
+    body[dir="ltr"] ol {
+      padding-right: 0;
+      padding-left: clamp(20px, 4vw, 25px);
+    }
+
+    .case-study {
+      border-right: 4px solid var(--highlight-color);
+      padding-right: 20px;
+      margin: 25px 0;
+    }
+
+    body[dir="ltr"] .case-study {
+      border-right: none;
+      border-left: 4px solid var(--highlight-color);
+      padding-right: 0;
+      padding-left: 20px;
+    }
+
+    .practice-question {
+      background: rgba(22,163,74,0.08);
+      border: 2px solid rgba(22,163,74,0.2);
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .practice-question:hover {
+      transform: translateY(-3px);
+      border-color: var(--practice-color);
+      background: rgba(22,163,74,0.12);
+    }
+
+    .practice-question.open {
+      border-color: var(--practice-color);
+      background: rgba(22,163,74,0.15);
+    }
+
+    .practice-question::after {
+      content: "▼";
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      font-size: 1.2rem;
+      color: var(--practice-color);
+      transition: transform 0.4s ease;
+    }
+
+    body[dir="ltr"] .practice-question::after {
+      left: auto;
+      right: 25px;
+    }
+
+    .practice-question.open::after {
+      transform: rotate(180deg);
+    }
+
+    .solution-card {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 1.2s ease-in-out, margin-top 0.5s ease;
+    }
+
+    .solution-card.show {
+      max-height: 3000px;
+      margin-top: 20px;
+    }
+
+    .solution-content {
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      padding: 20px;
+      border-radius: 14px;
+    }
+
+    .solution-content strong {
+      color: #15803d;
+    }
+
+    .expandable-example {
+      background: rgba(139,92,246,0.08);
+      border: 2px solid rgba(139,92,246,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 15px 0;
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .expandable-example:hover {
+      border-color: var(--translation-color);
+      background: rgba(139,92,246,0.12);
+      transform: translateY(-2px);
+    }
+
+    .expandable-example.open {
+      background: rgba(139,92,246,0.15);
+    }
+
+    .example-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--translation-color);
+    }
+
+    .example-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s ease;
+      padding-top: 0;
+    }
+
+    .example-content.show {
+      max-height: 1000px;
+      padding-top: 15px;
+    }
+
+    .mcq-container {
+      background: rgba(14,165,233,0.08);
+      border: 2px solid rgba(14,165,233,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .mcq-question {
+      font-weight: 600;
+      color: var(--highlight-color);
+      margin-bottom: 15px;
+    }
+
+    .mcq-options {
+      list-style: none;
+      padding: 0;
+    }
+
+    .mcq-option {
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .mcq-option:hover {
+      background: rgba(14,165,233,0.2);
+      transform: translateX(5px);
+    }
+
+    .mcq-option.selected {
+      background: var(--highlight-color);
+      color: white;
+      border-color: var(--highlight-color);
+    }
+
+    .mcq-option.correct {
+      background: var(--practice-color);
+      color: white;
+      border-color: var(--practice-color);
+    }
+
+    .mcq-option.incorrect {
+      background: #dc2626;
+      color: white;
+      border-color: #dc2626;
+    }
+
+    .concepts-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: rgba(255,255,255,0.1);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .concepts-table th,
+    .concepts-table td {
+      padding: 15px;
+      text-align: right;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    body[dir="ltr"] .concepts-table th,
+    body[dir="ltr"] .concepts-table td {
+      text-align: left;
+    }
+
+    .concepts-table th {
+      background: rgba(14,165,233,0.2);
+      font-weight: 600;
+      color: var(--highlight-color);
+    }
+
+    .concepts-table tr:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-gradient"></div>
+  <div class="floating-spheres">
+    <div class="sphere large"></div>
+    <div class="sphere medium"></div>
+    <div class="sphere small-1"></div>
+  </div>
+
+  <button class="translation-button" id="translationButton">
+    <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+
+  <main class="main-content">
+    <!-- Arabic Content -->
+    <div id="arabicContent">
+      <section class="glassy-card">
+        <h1>السلوك التنظيمي - الجزء الثاني</h1>
+        <p>رحلتنا التعليمية مع المفاهيم المتقدمة في السلوك التنظيمي</p>
+      </section>
+
+      <!-- Big Data Section -->
+      <section class="glassy-card">
+        <h2>1. البيانات الضخمة - Big Data</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>ببساطة، "البيانات الضخمة" هي استخدام الكمبيوترات العملاقة لتحليل كميات مهولة من المعلومات اللي بنجمعها عن كل حاجة تقريباً. زمان كنا بنجمع بيانات بسيطة، لكن دلوقتي بنقدر نجمع ونحلل بيانات عن سلوك العملاء، أداء الموظفين، وحتى تفاعل الناس على السوشيال ميديا.</p>
+
+        <h3>التعريف الرسمي</h3>
+        <ul>
+          <li><strong>البيانات الضخمة:</strong> الاستخدام المكثف للتحليل الإحصائي لكميات هائلة من المعلومات لفهم السلوك والتنبؤ به</li>
+          <li><strong>الهدف:</strong> اكتشاف أنماط مخفية والتنبؤ بالمستقبل</li>
+          <li><strong>الفكرة:</strong> ليس فقط في كثرة البيانات، لكن في استخدامها بدل الاكتفاء بوصف الماضي</li>
+        </ul>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال واقعي: نتفليكس ويوتيوب</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>كيف يعمل:</strong></p>
+            <ul>
+              <li>تسجل كل فيديو تشاهده ومتى تشاهده</li>
+              <li>تحلل كم من الوقت تقضيه ومتى تتوقف</li>
+              <li>تجمع هذه البيانات من ملايين المستخدمين</li>
+              <li>تتنبأ بدقة بنوع المحتوى الذي قد يعجبك</li>
+            </ul>
+            <p><strong>النتيجة:</strong> هذا هو جوهر استخدام البيانات الضخمة لفهم السلوك والتنبؤ به لتحقيق أهداف معينة (إبقاؤك على المنصة لوقت أطول)</p>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">الاستخدام المكثف للتحليل الإحصائي لكميات هائلة من المعلومات لدعم اتخاذ القرارات الإدارية يُعرف بـ:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) الحدس الإداري</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) الإدارة التقليدية</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) البيانات الضخمة (Big Data)</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) الدراسة المنهجية المحدودة</li>
+          </ul>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>السيناريو:</strong> اشرح كيف يمكن لمدير الموارد البشرية في شركة كبيرة استخدام "البيانات الضخمة" لتحسين عملية اختيار الموظفين الجدد وتقليل معدل دوران العمالة.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>الحل المقترح:</strong></p>
+            <ul>
+              <li><strong>جمع البيانات:</strong> تحليل سير العمل، الأداء التاريخي، ومؤشرات النجاح للموظفين الحاليين</li>
+              <li><strong>التحليل التنبؤي:</strong> إنشاء نماذج تنبؤية لتحديد الصفات المشتركة للموظفين الناجحين</li>
+              <li><strong>تحسين الاختيار:</strong> استخدام النماذج لفحص المرشحين وتوقع نجاحهم</li>
+              <li><strong>مراقبة الدوران:</strong> تحليل أسباب ترك الموظفين وتطوير استراتيجيات للاحتفاظ بهم</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contributing Disciplines Section -->
+      <section class="glassy-card">
+        <h2>2. العلوم المساهمة في السلوك التنظيمي</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>علم السلوك التنظيمي (OB) ليس علماً مستقلاً بذاته، بل هو أشبه بطبق سلطة غني، يأخذ أفضل المكونات من عدة علوم أخرى ليقدم لنا فهماً متكاملاً.</p>
+
+        <div class="case-study">
+          <h4>1. علم النفس - Psychology</h4>
+          <ul>
+            <li><strong>التركيز:</strong> مستوى الفرد (الموظف لوحده)</li>
+            <li><strong>المساهمات:</strong> الشخصية، الإدراك، التعلم، الدوافع، الرضا الوظيفي</li>
+            <li><strong>الهدف:</strong> فهم كيف يفكر ويتصرف الفرد في العمل</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. علم النفس الاجتماعي - Social Psychology</h4>
+          <ul>
+            <li><strong>التركيز:</strong> مستوى الجماعة (الفريق)</li>
+            <li><strong>المساهمات:</strong> التغيير، التواصل، بناء الثقة، ديناميكيات الفريق</li>
+            <li><strong>الهدف:</strong> فهم كيف يتصرف الأفراد عندما يكونون في مجموعات</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. علم الاجتماع - Sociology</h4>
+          <ul>
+            <li><strong>التركيز:</strong> مستوى الجماعة والنظام التنظيمي</li>
+            <li><strong>المساهمات:</strong> ثقافة المنظمة، هيكل السلطة، الصراع بين المجموعات</li>
+            <li><strong>الهدف:</strong> فهم كيف تعمل المنظمة كنظام كبير والمجتمع المحيط بها</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>4. علم الإنسان - Anthropology</h4>
+          <ul>
+            <li><strong>التركيز:</strong> مستوى الجماعة والنظام التنظيمي</li>
+            <li><strong>المساهمات:</strong> الفروق في القيم والمواقف بين الثقافات المختلفة</li>
+            <li><strong>الهدف:</strong> فهم كيف تؤثر الثقافات المختلفة على سلوك الناس</li>
+          </ul>
+        </div>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال تطبيقي: شركة متعددة الجنسيات</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>التحدي:</strong> مدير يواجه صعوبة في دمج فريق عمل من ثقافات مختلفة</p>
+            <p><strong>الحلول من العلوم المختلفة:</strong></p>
+            <ul>
+              <li><strong>علم النفس:</strong> فهم دوافع كل فرد وتقديم الدعم المناسب</li>
+              <li><strong>علم النفس الاجتماعي:</strong> تطوير استراتيجيات لبناء الثقة والتواصل الفعال</li>
+              <li><strong>علم الاجتماع:</strong> فهم كيفية تأثير ثقافة الشركة على الفريق</li>
+              <li><strong>علم الإنسان:</strong> تقدير الاختلافات الثقافية وتحويلها لنقاط قوة</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">العلم الذي يركز على دراسة سلوك الأفراد داخل المجموعات وتأثير الأفراد على بعضهم البعض هو:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) علم النفس</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) علم الاجتماع</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) علم النفس الاجتماعي</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) علم الإنسان</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- OB Model Section -->
+      <section class="glassy-card">
+        <h2>3. نموذج السلوك التنظيمي - The OB Model</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>هذا النموذج هو الخريطة التي نستخدمها لفهم ما يحدث داخل أي منظمة. يقسم النموذج عملية التحليل إلى ثلاثة مستويات: <strong>الفرد، الفريق، والمنظمة ككل</strong>.</p>
+
+        <div class="formula">
+          مدخلات → عمليات → مخرجات<br>
+          (على 3 مستويات مختلفة)
+        </div>
+
+        <h3>المستويات الثلاثة</h3>
+        <ol>
+          <li><strong>المستوى الفردي:</strong> يركز على خصائص وسلوكيات الفرد</li>
+          <li><strong>المستوى الجماعي:</strong> يركز على كيفية تفاعل الأفراد في فرق العمل</li>
+          <li><strong>المستوى التنظيمي:</strong> يركز على تأثير الهيكل والثقافة التنظيمية على كل شيء</li>
+        </ol>
+
+        <h3>المكونات الرئيسية</h3>
+        <div class="case-study">
+          <h4>المدخلات - Inputs</h4>
+          <ul>
+            <li><strong>المستوى الفردي:</strong> التنوع، الشخصية، القيم</li>
+            <li><strong>المستوى الجماعي:</strong> هيكل الفريق، أدوار الفريق</li>
+            <li><strong>المستوى التنظيمي:</strong> الهيكل، الثقافة</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>العمليات - Processes</h4>
+          <ul>
+            <li><strong>المستوى الفردي:</strong> المشاعر، الدوافع</li>
+            <li><strong>المستوى الجماعي:</strong> التواصل، القيادة، الصراع</li>
+            <li><strong>المستوى التنظيمي:</strong> إدارة الموارد البشرية، ممارسات التغيير</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>المخرجات - Outcomes</h4>
+          <ul>
+            <li><strong>المستوى الفردي:</strong> الأداء، الرضا الوظيفي</li>
+            <li><strong>المستوى الجماعي:</strong> تماسك الفريق، أداء الفريق</li>
+            <li><strong>المستوى التنظيمي:</strong> الإنتاجية، البقاء التنظيمي</li>
+          </ul>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">في نموذج السلوك التنظيمي، تُعتبر "ثقافة الشركة" مثالاً على:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, true)">أ) المدخلات على المستوى التنظيمي</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) العمليات على المستوى الفردي</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) المخرجات على المستوى الجماعي</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) العمليات على المستوى التنظيمي</li>
+          </ul>
+        </div>
+
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>المشكلة:</strong> باستخدام نموذج السلوك التنظيمي، حلل مشكلة "ارتفاع معدل الصراع بين أعضاء فريق التسويق". حدد مثالاً واحداً على الأقل لكل من المدخلات، والعمليات، والمخرجات المحتملة المتعلقة بهذه المشكلة على المستوى الجماعي.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>التحليل على المستوى الجماعي:</strong></p>
+            <ul>
+              <li><strong>المدخلات:</strong> تنوع شخصيات أعضاء الفريق، عدم وضوح الأدوار، اختلاف الخلفيات المهنية</li>
+              <li><strong>العمليات:</strong> ضعف في التواصل، عدم وجود آليات لحل الصراعات، نقص في قيادة الفريق</li>
+              <li><strong>المخرجات:</strong> انخفاض أداء الفريق، تراجع الروح المعنوية، زيادة معدل الدوران</li>
+            </ul>
+            <p><strong>الحلول المقترحة:</strong> تحسين التواصل، توضيح الأدوار، تدريب على حل الصراعات</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Concepts Glossary -->
+      <section class="glassy-card">
+        <h2>4. جدول المفاهيم الأساسية</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>المفهوم</th>
+              <th>التعريف الرسمي</th>
+              <th>الخلاصة بكلمتين</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>البيانات الضخمة</strong></td>
+              <td>الاستخدام المكثف للتحليل الإحصائي لكميات هائلة من المعلومات لفهم السلوك والتنبؤ به</td>
+              <td>تحليل بيانات ضخمة</td>
+            </tr>
+            <tr>
+              <td><strong>علم النفس</strong></td>
+              <td>العلم الذي يسعى لقياس وتفسير سلوك البشر، ويركز على مستوى الفرد</td>
+              <td>فهم الفرد</td>
+            </tr>
+            <tr>
+              <td><strong>علم النفس الاجتماعي</strong></td>
+              <td>فرع يمزج بين مفاهيم علم النفس وعلم الاجتماع لدراسة تأثير الأفراد على بعضهم البعض</td>
+              <td>فهم تفاعل الناس</td>
+            </tr>
+            <tr>
+              <td><strong>علم الاجتماع</strong></td>
+              <td>دراسة الناس في علاقتهم ببيئتهم الاجتماعية أو ثقافتهم، ويركز على مستوى الجماعة والنظام التنظيمي</td>
+              <td>فهم المجتمع والمنظمة</td>
+            </tr>
+            <tr>
+              <td><strong>علم الإنسان</strong></td>
+              <td>دراسة المجتمعات لتعلم المزيد عن البشر وأنشطتهم، ويركز على فهم الاختلافات الثقافية</td>
+              <td>فهم الثقافات</td>
+            </tr>
+            <tr>
+              <td><strong>نموذج السلوك التنظيمي</strong></td>
+              <td>نموذج يبسط التعقيد من خلال تقسيم المنظمة إلى مدخلات وعمليات ومخرجات على ثلاثة مستويات</td>
+              <td>خريطة فهم الشركة</td>
+            </tr>
+            <tr>
+              <td><strong>المدخلات</strong></td>
+              <td>المتغيرات مثل الشخصية وهيكل المجموعة والثقافة التنظيمية التي تؤدي إلى العمليات</td>
+              <td>نقطة البداية</td>
+            </tr>
+            <tr>
+              <td><strong>العمليات</strong></td>
+              <td>أفعال الأفراد والجماعات والمنظمات التي تربط المدخلات بالمخرجات</td>
+              <td>التفاعلات والأفعال</td>
+            </tr>
+            <tr>
+              <td><strong>المخرجات</strong></td>
+              <td>المتغيرات الرئيسية التي تحاول شرحها أو التنبؤ بها، والتي تتأثر بالمدخلات والعمليات</td>
+              <td>النتائج النهائية</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <!-- English Content -->
+    <div id="englishContent" class="hidden">
+      <section class="glassy-card">
+        <h1>Organizational Behavior - Part Two</h1>
+        <p>Our educational journey with advanced concepts in organizational behavior</p>
+      </section>
+
+      <!-- Big Data Section (English) -->
+      <section class="glassy-card">
+        <h2>1. Big Data</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>Simply, "Big Data" is the use of giant computers to analyze massive amounts of information we collect about almost everything. In the past, we collected simple data, but now we can collect and analyze data about customer behavior, employee performance, and even people's interactions on social media.</p>
+
+        <h3>Formal Definition</h3>
+        <ul>
+          <li><strong>Big Data:</strong> Intensive use of statistical analysis of huge amounts of information to understand and predict behavior</li>
+          <li><strong>Goal:</strong> Discover hidden patterns and predict the future</li>
+          <li><strong>Concept:</strong> Not just about data quantity, but using it instead of just describing the past</li>
+        </ul>
+
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Real Example: Netflix and YouTube</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>How it works:</strong></p>
+            <ul>
+              <li>Records every video you watch and when you watch it</li>
+              <li>Analyzes how much time you spend and when you stop</li>
+              <li>Collects this data from millions of users</li>
+              <li>Accurately predicts the type of content you might like</li>
+            </ul>
+            <p><strong>Result:</strong> This is the essence of using big data to understand behavior and predict it to achieve specific goals (keeping you on the platform longer)</p>
+          </div>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">Intensive use of statistical analysis of huge amounts of information to support managerial decision-making is known as:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Managerial intuition</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Traditional management</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Big Data</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Limited systematic study</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Contributing Disciplines Section (English) -->
+      <section class="glassy-card">
+        <h2>2. Contributing Disciplines to Organizational Behavior</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>Organizational Behavior (OB) is not an independent science by itself, but rather like a rich salad, taking the best components from several other sciences to provide us with an integrated understanding.</p>
+
+        <div class="case-study">
+          <h4>1. Psychology</h4>
+          <ul>
+            <li><strong>Focus:</strong> Individual level (the employee alone)</li>
+            <li><strong>Contributions:</strong> Personality, perception, learning, motivation, job satisfaction</li>
+            <li><strong>Goal:</strong> Understanding how individuals think and behave at work</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>2. Social Psychology</h4>
+          <ul>
+            <li><strong>Focus:</strong> Group level (the team)</li>
+            <li><strong>Contributions:</strong> Change, communication, trust building, team dynamics</li>
+            <li><strong>Goal:</strong> Understanding how individuals behave when in groups</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>3. Sociology</h4>
+          <ul>
+            <li><strong>Focus:</strong> Group and organizational system level</li>
+            <li><strong>Contributions:</strong> Organizational culture, power structure, intergroup conflict</li>
+            <li><strong>Goal:</strong> Understanding how the organization works as a large system and its surrounding society</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <h4>4. Anthropology</h4>
+          <ul>
+            <li><strong>Focus:</strong> Group and organizational system level</li>
+            <li><strong>Contributions:</strong> Differences in values and attitudes between different cultures</li>
+            <li><strong>Goal:</strong> Understanding how different cultures affect people's behavior</li>
+          </ul>
+        </div>
+
+        <div class="mcq-container">
+          <div class="mcq-question">The science that focuses on studying individual behavior within groups and the influence of individuals on each other is:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Psychology</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Sociology</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Social Psychology</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Anthropology</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- OB Model Section (English) -->
+      <section class="glassy-card">
+        <h2>3. The OB Model</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>This model is the map we use to understand what happens within any organization. The model divides the analysis process into three levels: <strong>individual, team, and organization as a whole</strong>.</p>
+
+        <div class="formula">
+          Inputs → Processes → Outcomes<br>
+          (At 3 different levels)
+        </div>
+
+        <h3>The Three Levels</h3>
+        <ol>
+          <li><strong>Individual Level:</strong> Focuses on individual characteristics and behaviors</li>
+          <li><strong>Group Level:</strong> Focuses on how individuals interact in work teams</li>
+          <li><strong>Organizational Level:</strong> Focuses on the impact of organizational structure and culture on everything</li>
+        </ol>
+
+        <div class="mcq-container">
+          <div class="mcq-question">In the organizational behavior model, "company culture" is considered an example of:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, true)">a) Inputs at the organizational level</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Processes at the individual level</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Outcomes at the group level</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Processes at the organizational level</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Key Concepts Glossary (English) -->
+      <section class="glassy-card">
+        <h2>4. Key Concepts Table</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>Formal Definition</th>
+              <th>Summary in Two Words</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Big Data</strong></td>
+              <td>Intensive use of statistical analysis of huge amounts of information to understand and predict behavior</td>
+              <td>Massive data analysis</td>
+            </tr>
+            <tr>
+              <td><strong>Psychology</strong></td>
+              <td>Science that seeks to measure and explain human behavior, focusing on the individual level</td>
+              <td>Understanding individuals</td>
+            </tr>
+            <tr>
+              <td><strong>Social Psychology</strong></td>
+              <td>Branch that combines psychology and sociology concepts to study individual influence on each other</td>
+              <td>Understanding interaction</td>
+            </tr>
+            <tr>
+              <td><strong>Sociology</strong></td>
+              <td>Study of people in relation to their social environment or culture, focusing on group and organizational system level</td>
+              <td>Understanding society and organization</td>
+            </tr>
+            <tr>
+              <td><strong>Anthropology</strong></td>
+              <td>Study of societies to learn more about humans and their activities, focusing on understanding cultural differences</td>
+              <td>Understanding cultures</td>
+            </tr>
+            <tr>
+              <td><strong>OB Model</strong></td>
+              <td>Model that simplifies complexity by dividing organization into inputs, processes, and outcomes at three levels</td>
+              <td>Company understanding map</td>
+            </tr>
+            <tr>
+              <td><strong>Inputs</strong></td>
+              <td>Variables like personality, group structure, and organizational culture that lead to processes</td>
+              <td>Starting point</td>
+            </tr>
+            <tr>
+              <td><strong>Processes</strong></td>
+              <td>Actions of individuals, groups, and organizations that link inputs to outcomes</td>
+              <td>Interactions and actions</td>
+            </tr>
+            <tr>
+              <td><strong>Outcomes</strong></td>
+              <td>Key variables you try to explain or predict, affected by inputs and processes</td>
+              <td>Final results</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Translation functionality
+    const translationButton = document.getElementById('translationButton');
+    const arabicContent = document.getElementById('arabicContent');
+    const englishContent = document.getElementById('englishContent');
+    const html = document.documentElement;
+    const body = document.body;
+    let isArabic = true;
+
+    function switchLanguage() {
+      isArabic = !isArabic;
+      
+      if (isArabic) {
+        html.setAttribute('lang', 'ar');
+        html.setAttribute('dir', 'rtl');
+        body.setAttribute('dir', 'rtl');
+        arabicContent.classList.remove('hidden');
+        englishContent.classList.add('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'English';
+      } else {
+        html.setAttribute('lang', 'en');
+        html.setAttribute('dir', 'ltr');
+        body.setAttribute('dir', 'ltr');
+        arabicContent.classList.add('hidden');
+        englishContent.classList.remove('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'العربية';
+      }
+    }
+
+    translationButton.addEventListener('click', switchLanguage);
+
+    // Expandable examples functionality
+    function toggleExample(element) {
+      const content = element.querySelector('.example-content');
+      const arrow = element.querySelector('.example-header span:last-child');
+      
+      element.classList.toggle('open');
+      content.classList.toggle('show');
+      arrow.style.transform = element.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    // MCQ functionality
+    function selectMCQ(element, isCorrect) {
+      const options = element.parentNode.querySelectorAll('.mcq-option');
+      
+      options.forEach(option => {
+        option.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      element.classList.add('selected');
+      
+      setTimeout(() => {
+        if (isCorrect) {
+          element.classList.add('correct');
+        } else {
+          element.classList.add('incorrect');
+          options.forEach(option => {
+            if (option !== element) {
+              const onclick = option.getAttribute('onclick');
+              if (onclick && onclick.includes('true')) {
+                option.classList.add('correct');
+              }
+            }
+          });
+        }
+      }, 500);
+    }
+
+    // Practice question functionality
+    function toggleSolution(element) {
+      const solutionCard = element.nextElementSibling;
+      if (solutionCard && solutionCard.classList.contains('solution-card')) {
+        element.classList.toggle('open');
+        solutionCard.classList.toggle('show');
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page initialized successfully');
+    });
+  </script>
+</body>
+</html>
+
