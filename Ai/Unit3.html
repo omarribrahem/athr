@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الوحدة الثالثة: مجموعة أدوات المحترفين</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Tajawal for elegant Arabic script -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Applying the custom font and setting base styles */
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0D1117; /* A deep, modern dark blue */
+            color: #C9D1D9; /* Soft off-white for readability */
+        }
+        /* Custom styles for headings to add a touch of gold gradient */
+        h1, h2, h3 {
+            background: linear-gradient(90deg, #D4AF37, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        /* Styling for the command blocks to make them stand out */
+        .command-block {
+            background-color: #161B22; /* Slightly lighter than the body */
+            border-right: 4px solid #D4AF37; /* Gold accent border */
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+        .command-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        /* Custom table styling */
+        .custom-table {
+            background-color: #161B22;
+            border-radius: 8px;
+            overflow: hidden; /* Ensures the border-radius is applied to corners */
+        }
+        .custom-table th, .custom-table td {
+            border-bottom: 1px solid #30363d;
+        }
+        .custom-table th {
+            background-color: rgba(212, 175, 55, 0.1); /* Subtle gold background for headers */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Main Container -->
+    <div class="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">الوحدة الثالثة: مجموعة أدوات المحترفين - إتقان التحكم والفروق الدقيقة في الذكاء الاصطناعي</h1>
+            <p class="text-lg text-gray-400">مرحباً بك في الوحدة الثالثة يا كريم!</p>
+        </header>
+
+        <!-- Introduction Section -->
+        <main class="space-y-12">
+            <section class="bg-gray-900/50 p-6 sm:p-8 rounded-xl shadow-lg border border-gray-800">
+                <p class="text-lg leading-relaxed">
+                    تهانينا على إتقان المبادئ الأساسية للتفاعل مع الذكاء الاصطناعي. لقد زودك تفانيك في الوحدتين 1 و 2 بإطار RTFC (الدور، المهمة، التنسيق، السياق)، وهو أسلوب قوي للحصول على نتائج واضحة ومتسقة من الذكاء الاصطناعي.
+                </p>
+                <p class="mt-4 text-xl font-semibold text-gray-300">
+                    الآن، أنت مستعد للارتقاء بمهاراتك من الكفاءة إلى الإتقان الاحترافي الحقيقي. تم تصميم هذه الوحدة لمنحك درجة أعلى من التحكم والقوة على مخرجات الذكاء الاصطناعي، مما يتيح لك حل المشكلات الأكثر تعقيداً وإنتاج نتائج أكثر دقة بكثير.
+                </p>
+                 <p class="mt-6 text-2xl font-bold text-center tracking-wider" style="color: #D4AF37;">
+                    مرحباً بك في مجموعة أدوات المحترفين.
+                </p>
+            </section>
+
+            <!-- Lesson 3.1 -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 border-b-2 border-yellow-500/30 pb-3">الدرس 3.1: إجبار الذكاء الاصطناعي على التفكير: تقنية "خطوة بخطوة"</h2>
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-3">المشكلة: عندما يتسرع الذكاء الاصطناعي إلى إجابة خاطئة</h3>
+                        <p class="leading-loose">
+                           هل سبق لك أن طرحت على الذكاء الاصطناعي سؤالاً متعدد الخطوات وتلقيت إجابة تبدو واثقة ولكنها غير صحيحة منطقياً؟ هذه تجربة شائعة ومحبطة. تم تصميم نماذج اللغة الكبيرة (LLMs) للتنبؤ بالكلمة التالية الأكثر احتمالاً في تسلسل، وليس للتفكير بطريقة منظمة وشبيهة بالإنسان.
+                        </p>
+                    </div>
+                     <div>
+                        <h3 class="text-2xl font-semibold mb-3">الحل: إطلاق العنان للتفكير الأعمق مع سلسلة الأفكار (CoT)</h3>
+                        <p class="leading-loose mb-4">
+                           لحل هذا، نحتاج إلى إجبار الذكاء الاصطناعي على التباطؤ وإظهار عملية تفكيره. أسهل وأكثر الطرق فعالية للقيام بذلك هي بإضافة عبارة بسيطة إلى أمرك: "فكر خطوة بخطوة".
+                        </p>
+                        <div class="command-block p-6 font-mono text-sm text-gray-300">
+                            <p class="font-bold text-yellow-400 mb-2">// جرب بنفسك: تحدي التنقل في الرياض</p>
+                            <p><strong>السيناريو:</strong> تحتاج إلى مغادرة منزلك في الرياض لإجراء بعض المهمات قبل مقابلة صديق. تحتاج إلى الذهاب إلى البنك في مركز الملك عبد الله المالي (KAFD)، ثم الذهاب إلى مكتبة جرير لشراء هدية، والتي تغلق في الساعة 5:00 مساءً، وأخيراً اصطحاب صديقك من مطار الملك خالد الدولي (RUH) في الساعة 6:00 مساءً. يستغرق الوصول إلى البنك 20 دقيقة بالسيارة من منزلك. جرير تبعد 15 دقيقة عن البنك. المطار يبعد 30 دقيقة عن جرير. افترض أن كل محطة (البنك والمكتبة) ستستغرق 15 دقيقة. ما هو آخر وقت يمكنك فيه مغادرة المنزل لإكمال جميع مهامك بنجاح؟</p>
+                            <br>
+                            <p><strong>النهج الاحترافي:</strong> افتح محادثة جديدة أخرى. هذه المرة، اطرح نفس السؤال ولكن أضف العبارة السحرية في النهاية: "دعنا نفكر خطوة بخطوة."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Lesson 3.2 -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 border-b-2 border-yellow-500/30 pb-3">الدرس 3.2: فن المثال: تعليم الذكاء الاصطناعي أسلوبك</h2>
+                 <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-3">المشكلة: وصف "إحساس" معين يكاد يكون مستحيلاً</h3>
+                        <p class="leading-loose">
+                           كيف تجعل الذكاء الاصطناعي يكتب بنبرة أو تنسيق معين يصعب وصفه بالكلمات؟ صفات مثل "احترافي" أو "إبداعي" أو "راقي" هي ذاتية ويمكن تفسيرها بطرق لا حصر لها.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-3">الحل: "أرني، لا تخبرني" مع التوجيه بأمثلة قليلة</h3>
+                        <p class="leading-loose mb-4">
+                           الحل هو التوقف عن وصف الأسلوب والبدء في إظهاره. تُعرف هذه التقنية باسم التوجيه بأمثلة قليلة (Few-Shot Prompting). وهي تتضمن تزويد الذكاء الاصطناعي ببضعة أمثلة عالية الجودة للمخرجات التي تريدها بالضبط، مباشرة داخل الأمر نفسه.
+                        </p>
+                        <div class="command-block p-6 font-mono text-sm text-gray-300">
+                            <p class="font-bold text-yellow-400 mb-2">// جرب بنفسك: صياغة محتوى لـ "طيران الرياض"</p>
+                            <p><strong>السيناريو:</strong> أنت مدير وسائل التواصل الاجتماعي الجديد لـ "طيران الرياض"، شركة الطيران السعودية الجديدة ذات المستوى العالمي. يجب أن تؤسس علامتك التجارية صوتاً عصرياً وأنيقاً وراقياً للتنافس مع عمالقة المنطقة الراسخين مثل طيران الإمارات والاتحاد للطيران. مهمتك هي تعليم الذكاء الاصطناعي هذا الصوت المحدد لإنشاء منشورات على إنستغرام.</p>
+                            <br>
+                            <p><strong>قم ببناء أمرك:</strong></p>
+                            <p>أنت مدير وسائل التواصل الاجتماعي لطيران الرياض. مهمتك هي كتابة منشور إنستغرام قصير ومثير حول وجهتنا الجديدة: براغ. يجب أن تتطابق مع صوت علامتنا التجارية، وهو عصري وأنيق وراقي. إليك مثالان على أسلوبنا:</p>
+                            <p>مثال: "مدينة الألف مئذنة في انتظارك. اكتشف أناقة القاهرة الخالدة، الآن رحلات يومية من الرياض. #طيران_الرياض #رحلات_خالدة #القاهرة"</p>
+                            <p>مثال: "من قلب الجزيرة العربية إلى روح لندن. جرب راحة لا مثيل لها وأنت تحلق إلى آفاق جديدة معنا. #طيران_الرياض #نداء_لندن #سافر_بأناقة"</p>
+                            <p>الآن، باستخدام نفس الأسلوب بالضبط، اكتب منشوراً جديداً لوجهة: براغ.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lesson 3.3 -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 border-b-2 border-yellow-500/30 pb-3">الدرس 3.3: نسخة المخرج: تحسين المسودة الأولى</h2>
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-3">المشكلة: الناتج الأول هو نقطة بداية، وليس منتجاً نهائياً</h3>
+                        <p class="leading-loose">
+                            خطأ شائع بين مستخدمي الذكاء الاصطناعي الجدد هو التعامل معه كآلة بيع: تضع أمراً وتقبل كل ما يخرج. هذا غالباً ما يؤدي إلى نتائج "جيدة بما فيه الكفاية" ولكنها ليست رائعة. يفهم المحترفون أن الناتج الأول للذكاء الاصطناعي نادراً ما يكون المنتج النهائي. إنه مسودة أولى، كتلة من الطين، أو مادة خام تحتاج إلى تشكيل.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-3">الحل: سير العمل الاحترافي للتحسين التكراري</h3>
+                        <p class="leading-loose mb-4">
+                           تكمن القوة الحقيقية للذكاء الاصطناعي الحديث في المحادثة. يحدد الأمر الأولي الاتجاه، لكن الأوامر اللاحقة توفر التوجيه الحاسم، مما يسمح لك بتشكيل وصقل المخرجات إلى حد الكمال. تسمى هذه العملية التحسين التكراري، وهي سير العمل الأساسي لكل مستخدم محترف للذكاء الاصطناعي تقريباً.
+                        </p>
+                         <div class="command-block p-6 font-mono text-sm text-gray-300">
+                            <p class="font-bold text-yellow-400 mb-2">// جرب بنفسك: طلب البريد الإلكتروني الاحترافي</p>
+                            <p><strong>السيناريو:</strong> أنت طالب في جامعة الملك فهد للبترول والمعادن (KFUPM). لديك مشروع كبير مستحق، ولكن ظهرت مشكلة غير متوقعة، وتحتاج إلى طلب تمديد قصير من أستاذك. يجب أن يكون البريد الإلكتروني احترافياً ومحترماً وواضحاً.</p>
+                            <br>
+                            <p><strong>الخطوة 1 (المسودة الأولى):</strong> ابدأ المحادثة بأمر أولي واضح باستخدام إطار RTFC.</p>
+                            <p><strong>الخطوة 2 (تحسين النبرة والمحتوى):</strong> سينتج الذكاء الاصطناعي مسودة عامة ولكنها قابلة للاستخدام. الآن، استخدم أوامر من مجموعة أدواتك الجديدة لتحسينها.</p>
+                            <p><strong>الخطوة 3 (التحسين للإيجاز):</strong> سيقوم الذكاء الاصطناعي الآن بدمج تغييراتك. للمسة النهائية، دعنا نجعله أكثر إيجازاً.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Final Project -->
+            <section class="bg-yellow-900/20 p-6 sm:p-8 rounded-xl border border-yellow-500/50">
+                <h2 class="text-3xl font-bold mb-4">المشروع النهائي للوحدة 3: تحدي مستشار الشركات الناشئة</h2>
+                <p class="text-lg mb-6 text-yellow-300">
+                    كريم، حان الوقت للجمع بين جميع التقنيات الاحترافية الثلاث التي تعلمتها في هذه الوحدة: سلسلة الأفكار، التوجيه بأمثلة قليلة، والتحسين التكراري.
+                </p>
+                <div class="space-y-4 text-gray-300">
+                    <p><strong class="font-bold text-yellow-400">المهمة 1: تحليل السوق (تطبيق سلسلة الأفكار).</strong> مهمتك الأولى هي إنتاج تحليل منطقي لمشهد السوق لـ "NourishDXB"، وهي خدمة توصيل وجبات صحية فاخرة للمهنيين المشغولين في دبي.</p>
+                    <p><strong class="font-bold text-yellow-400">المهمة 2: إنشاء شعار للعلامة التجارية (تطبيق التوجيه بأمثلة قليلة).</strong> بعد ذلك، ستحدد صوت العلامة التجارية للشركة الناشئة وتستخدم التوجيه بأمثلة قليلة لتوليد شعارات تسويقية إبداعية تجسد هذه الهوية.</p>
+                    <p><strong class="font-bold text-yellow-400">المهمة 3: بريد إلكتروني لإعلان الإطلاق (تطبيق التحسين التكراري).</strong> أخيراً، ستستخدم سير العمل التكراري الكامل لصياغة ونقد وصقل بريد إلكتروني احترافي لإعلان الإطلاق لجذب العملاء الأوائل.</p>
+                </div>
+                 <p class="mt-6 font-semibold text-lg">
+                    حظاً موفقاً يا كريم. أنت الآن مجهز بأدوات المحترفين. أرنا ما يمكنك بناؤه بها.
+                </p>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-16 pt-8 border-t border-gray-800">
+            <p class="text-gray-400">لقد أكملت الوحدة الثالثة. أنت الآن لا تتقن الأساسيات فحسب، بل تستخدم تقنيات متقدمة للتحكم في مخرجات الذكاء الاصطناعي وصقلها بدقة.</p>
+            <p class="mt-4 text-yellow-500 font-semibold">لقد أصبحت الآن قائداً حقيقياً للذكاء الاصطناعي.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
+
