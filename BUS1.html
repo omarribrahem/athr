@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل شامل: أساسيات الأعمال - منصة أثر</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255,255,255,0.18);
+            --glass-border: rgba(255,255,255,0.4);
+            --text-color: #1e293b;
+            --highlight-color: #0ea5e9;
+            --practice-color: #16a34a;
+            --translation-color: #8b5cf6;
+            --border-radius: 24px;
+        }
+        
+        @keyframes gradientAnimation { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes floatSphere1 { 0%,100%{transform:translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateY(-30px) rotate(180deg) scale(1.05)} }
+        @keyframes floatSphere2 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95)} }
+        @keyframes floatSphere3 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(-20px) translateY(35px) rotate(120deg) scale(1.08)} }
+        @keyframes translate-glow { 0%,100%{box-shadow:0 0 15px -5px rgba(139,92,246,0.4),inset 0 2px 0 rgba(255,255,255,0.4);} 50%{box-shadow:0 0 25px 0px rgba(139,92,246,0.6),inset 0 2px 0 rgba(255,255,255,0.6);} }
+
+        * { box-sizing:border-box; margin:0; padding:0; }
+        html { font-size:16px; scroll-behavior:smooth; }
+        body {
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            background-color:#e0f2fe; color:var(--text-color); line-height:1.8;
+            overflow-x:hidden; position:relative; direction:rtl;
+            font-size:clamp(0.9rem,2.5vw,1.05rem); padding:20px clamp(10px,3vw,20px);
+        }
+        body[dir="ltr"] { direction:ltr; }
+        
+        .background-gradient, .floating-spheres { position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2; }
+        .background-gradient { background:linear-gradient(135deg,#e0f2fe 0%,#bae6fd 25%,#fce7f3 75%,#fdf2f8 100%);background-size:400% 400%;animation:gradientAnimation 40s ease infinite;}
+        .floating-spheres {z-index:-1;pointer-events:none;}
+        .sphere {position:absolute;border-radius:50%;backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.3);box-shadow:0 20px 60px rgba(14,165,233,0.3),inset 0 4px 0 rgba(255,255,255,0.4);}
+        .sphere.large {width:clamp(120px,20vw,220px);height:clamp(120px,20vw,220px);top:8%;right:12%;background:radial-gradient(circle,#3b82f6,#1e3a8a);animation:floatSphere1 12s ease-in-out infinite;}
+        .sphere.medium {width:clamp(80px,15vw,140px);height:clamp(80px,15vw,140px);bottom:20%;left:8%;background:radial-gradient(circle,#0ea5e9,#0369a1);animation:floatSphere2 9s ease-in-out infinite;}
+        .sphere.small-1 {width:clamp(60px,12vw,95px);height:clamp(60px,12vw,95px);top:50%;right:8%;background:radial-gradient(circle,#06b6d4,#0e7490);animation:floatSphere3 6s ease-in-out infinite;}
+
+        .translation-button {
+            position:fixed;top:clamp(20px,5vw,30px);right:clamp(20px,5vw,30px);
+            background:rgba(255,255,255,0.1);backdrop-filter:blur(25px);
+            border:2px solid var(--glass-border);border-radius:50px;
+            padding:clamp(8px,2vw,12px);cursor:pointer;z-index:1000;display:flex;align-items:center;justify-content:center;
+            width:clamp(50px,12vw,60px);height:clamp(50px,12vw,60px);
+            transition:all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+            box-shadow:0 8px 25px -10px rgba(0,0,0,0.2),inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        body[dir="ltr"] .translation-button {right:auto;left:clamp(20px,5vw,30px);}
+        .translation-button:hover {
+            width:auto;padding:clamp(8px,2vw,12px) clamp(16px,4vw,22px);
+            border-color:var(--translation-color);background:rgba(139,92,246,0.1);transform:translateY(-3px);
+            animation:translate-glow 2.5s infinite alternate;
+        }
+        .translation-button .icon-translate {width:28px;height:28px;flex-shrink:0;transition:transform 0.3s ease;}
+        .translation-button:hover .icon-translate {transform:scale(0.9);}
+        .translation-text {font-size:clamp(0.85rem,2.2vw,1rem);font-weight:600;color:var(--translation-color);white-space:nowrap;display:none;margin-left:10px;}
+        body[dir="ltr"] .translation-text {margin-left:0;margin-right:10px;}
+        .translation-button:hover .translation-text {display:block;}
+
+        .main-content {max-width:1200px;margin:90px auto 0;padding:clamp(20px,5vw,40px);}
+        .glassy-card {
+            background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:var(--border-radius);
+            padding:clamp(20px,5vw,30px);margin-bottom:clamp(25px,5vw,35px);backdrop-filter:blur(25px);
+            transition:all 0.4s ease;box-shadow:0 20px 50px rgba(0,0,0,0.1),inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        .glassy-card:hover {transform:translateY(-5px) scale(1.01);border-color:rgba(255,255,255,0.7);}
+        
+        h1,h2,h3,h4,h5 { color:#0f172a;text-shadow:0 2px 8px rgba(255,255,255,0.8);font-weight:700;}
+        h1 { font-size:clamp(2rem,6vw,3.2rem);text-align:center;margin-bottom:clamp(20px,4vw,30px);color:#0c4a6e; }
+        h2 { font-size:clamp(1.5rem,5vw,2.5rem);border-bottom:3px solid rgba(14,165,233,0.3);padding-bottom:clamp(10px,2vw,15px);margin-bottom:clamp(20px,4vw,30px);}
+        h3 { font-size:clamp(1.2rem,4vw,1.8rem);margin-bottom:clamp(15px,3vw,20px);}
+        h4 { font-size:clamp(1.1rem,3.5vw,1.4rem);color:var(--highlight-color);margin-bottom:clamp(12px,2vw,15px);}
+        h5 { font-size:clamp(1rem,3vw,1.2rem);color:var(--practice-color);margin-bottom:clamp(10px,2vw,12px);}
+        p,li { color:#475569;margin-bottom:clamp(10px,2vw,12px);}
+        strong {color:#1e3a8a;}
+        
+        .concept-card {
+            background:rgba(255,255,255,0.1);
+            border:2px solid rgba(255,255,255,0.2);
+            border-radius:20px;
+            padding:25px;
+            margin-bottom:20px;
+            backdrop-filter:blur(20px);
+            transition:all 0.4s ease;
+        }
+        .concept-card:hover {
+            transform:translateY(-3px);
+            border-color:rgba(255,255,255,0.35);
+            background:rgba(255,255,255,0.15);
+        }
+        
+        .example-toggle {
+            background:rgba(22,163,74,0.08); 
+            border:2px solid rgba(22,163,74,0.2);
+            border-radius:15px; 
+            padding:15px 20px; 
+            margin-top:15px;
+            cursor:pointer; 
+            position:relative;
+            transition:all 0.4s ease;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+        .example-toggle:hover {
+            transform: translateY(-2px);
+            border-color: var(--practice-color);
+            background:rgba(22,163,74,0.12);
+        }
+        .example-toggle.open {
+            border-color: var(--practice-color);
+            background:rgba(22,163,74,0.15);
+        }
+        
+        .example-toggle-text {
+            font-weight:600;
+            color:var(--practice-color);
+            font-size:clamp(0.95rem,2.5vw,1.1rem);
+        }
+        
+        .example-arrow {
+            font-size:1.2rem;
+            color:var(--practice-color);
+            transition:transform 0.4s ease;
+        }
+        .example-toggle.open .example-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .example-content { 
+            max-height:0; 
+            overflow:hidden; 
+            transition:max-height 1.2s ease-in-out,margin-top 0.5s ease;
+        }
+        .example-content.show { 
+            max-height:500px;
+            margin-top:15px;
+        }
+        .example-inner { 
+            background:rgba(255,255,255,0.2); 
+            border:1px solid rgba(255,255,255,0.3); 
+            padding:20px; 
+            border-radius:12px; 
+        }
+
+        .table-container { overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .business-table { 
+            width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.2); 
+            border-radius: 12px; overflow: hidden; backdrop-filter: blur(15px); 
+        }
+        .business-table th, .business-table td { 
+            padding: clamp(8px, 2vw, 12px); border: 1px solid rgba(255,255,255,0.3); 
+            text-align: right; font-size: clamp(0.8rem, 2vw, 1rem); vertical-align: top; 
+        }
+        body[dir="ltr"] .business-table th, body[dir="ltr"] .business-table td { text-align: left; }
+        .business-table th { 
+            background: rgba(14,165,233,0.2); font-weight: 700; color: #0c4a6e; text-align: center; 
+        }
+        
+        .hidden { display:none !important; }
+    </style>
+</head>
+<body>
+    <div class="background-gradient"></div>
+    <div class="floating-spheres">
+        <div class="sphere large"></div>
+        <div class="sphere medium"></div>
+        <div class="sphere small-1"></div>
+    </div>
+    
+    <button class="translation-button" id="translationButton">
+        <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="translation-text">ترجمة</span>
+    </button>
+
+    <main class="main-content">
+        <!-- Arabic Content -->
+        <div id="arabicContent">
+            <section class="glassy-card">
+                <h1>دليل شامل: أساسيات الأعمال</h1>
+                <p style="text-align: center; font-size: 1.1rem; color: #475569;">شرح المفاهيم مع أمثلة واقعية تفاعلية</p>
+            </section>
+
+            <section class="glassy-card">
+                <h2>📚 المفاهيم الأساسية</h2>
+                
+                <!-- الأعمال -->
+                <div class="concept-card">
+                    <h3>الأعمال (Business)</h3>
+                    <p>فكر في "الأعمال" على أنها أي نشاط أو مجهود يقوم به شخص أو شركة بهدف تقديم سلعة (مثل الطعام والملابس) أو خدمة (مثل التصليح أو الاستشارات) للآخرين، وفي المقابل يحصل على ربح مادي. من أصغر كشك في الشارع إلى أكبر شركة عالمية، كلها تندرج تحت مسمى "الأعمال".</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> تخيل أنك قررت صنع كيك وبيعه للجيران. أنت تشتري المكونات (تكلفة)، وتصنع الكيك (مجهود)، ثم تبيعه بسعر أعلى من تكلفة المكونات. هذا النشاط هو "عمل تجاري" مصغر.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الربح -->
+                <div class="concept-card">
+                    <h3>الربح (Profit)</h3>
+                    <p>الربح هو الفلوس الصافية اللي بتبقى في جيبك بعد ما تخصم كل مصاريفك. يعني لو بعت منتجات بـ 1000 جنيه، وكانت تكلفتها عليك (إيجار، خامات، مرتبات) 700 جنيه، يبقى ربحك هو 300 جنيه. الربح هو المؤشر الحقيقي لنجاح أي بيزنس.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> صاحب مكتبة اشترى مجموعة كتب بتكلفة 5000 جنيه. بعد بيعها كلها، جمع مبلغ 8000 جنيه. إذًا، الربح الذي حققه هو 3000 جنيه (8000 - 5000).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- رائد الأعمال -->
+                <div class="concept-card">
+                    <h3>رائد الأعمال (Entrepreneur)</h3>
+                    <p>رائد الأعمال هو الشخص "المغامر" اللي بياخد المخاطرة وبيحط وقته وفلوسه في فكرة مشروع جديد من الصفر. هو مش مجرد مدير، هو اللي بيبني الكيان كله على أمل إنه ينجح ويحقق ربح، ومستعد يتحمل الخسارة لو المشروع فشل.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> شاب لاحظ أن منطقته لا يوجد بها مكان جيد لشرب القهوة المختصة، فقرر أن يستقيل من وظيفته، ويستخدم مدخراته، ويقترض مبلغًا ليفتتح مقهى صغير. هذا الشاب هو رائد أعمال لأنه يخاطر بوقته وماله من أجل فكرة يؤمن بها.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- مطابقة المخاطر مع الربح -->
+                <div class="concept-card">
+                    <h3>مطابقة المخاطر مع الربح (Matching Risk With Profit)</h3>
+                    <p>القاعدة بسيطة: "على قد المخاطرة، على قد الربح المتوقع". يعني لو دخلت مشروع مضمون ومفيهوش مخاطرة تقريبًا (زي وديعة بنكية)، ربحك هيكون قليل. لكن لو دخلت مشروع مخاطرته عالية جدًا (زي الاستثمار في عملة رقمية جديدة)، فاحتمال الخسارة كبير، لكن لو نجح، الربح هيكون ضخم جدًا.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> مستثمر أمامه خياران: شراء عقار في منطقة سكنية قائمة (مخاطرة منخفضة وربح مستقر من الإيجار)، أو شراء أرض في الصحراء على أمل أن تصل إليها المرافق يومًا ما (مخاطرة عالية جدًا). إذا وصلت المرافق، سيتضاعف سعر الأرض أضعافًا مضاعفة (ربح عالٍ).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الإيرادات -->
+                <div class="concept-card">
+                    <h3>الإيرادات (Revenue)</h3>
+                    <p>الإيرادات هي إجمالي الفلوس اللي بتدخل الشركة من المبيعات، قبل ما تشيل منها أي مصاريف. هي الرقم الكبير اللي بتسمعه في الأول. يعني لو مطعم باع أكل بـ 10,000 جنيه في يوم، يبقى إيراداته 10,000 جنيه، بغض النظر عن تكلفة الأكل أو المرتبات.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> متجر إلكتروني باع 50 منتجًا في يوم، سعر المنتج الواحد 100 جنيه. إجمالي الإيرادات لهذا اليوم هو 50 × 100 = 5000 جنيه. هذا المبلغ هو "الإيرادات".</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الخسارة -->
+                <div class="concept-card">
+                    <h3>الخسارة (Loss)</h3>
+                    <p>الخسارة هي الكابوس بتاع أي بيزنس. بتحصل لما تكون مصاريفك أكتر من الفلوس اللي دخلتلك. يعني لو صرفت 1000 جنيه على مشروعك، لكن كل اللي كسبته منه 800 جنيه بس، يبقى أنت خسران 200 جنيه.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> ورشة لتصليح السيارات دفعت إيجار وم مرتبات وفواتير بقيمة 20,000 جنيه في شهر، لكنها لم تحقق إيرادات إلا 15,000 جنيه فقط. في هذه الحالة، الورشة سجلت خسارة قدرها 5,000 جنيه.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المخاطرة -->
+                <div class="concept-card">
+                    <h3>المخاطرة (Risk)</h3>
+                    <p>المخاطرة هي حالة عدم اليقين أو فرصة إنك تخسر وقتك أو فلوسك في مشروع ممكن مينجحش. مفيش حاجة مضمونة 100% في البيزنس، والمخاطرة هي الثمن اللي بتدفعه عشان تاخد فرصة تحقيق ربح.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> مزارع يقرر زراعة محصول جديد وغالي الثمن لأول مرة. المخاطرة هنا تكمن في احتمالية أن الطقس لا يكون مناسبًا، أو أن تهاجم الآفات المحصول، أو أن سعره ينخفض في السوق عند الحصاد. كل هذه الاحتمالات قد تؤدي به إلى خسارة كل ما أنفقه.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الاستعانة بمصادر خارجية -->
+                <div class="concept-card">
+                    <h3>الاستعانة بمصادر خارجية (Outsourcing)</h3>
+                    <p>بدل ما شركتك تعمل كل حاجة بنفسها، بتقوم "تأجر" شركة تانية متخصصة عشان تعملها مهمة معينة. زي إنك تجيب شركة أمن لحراسة المقر، أو شركة تسويق عشان تدير صفحاتك على السوشيال ميديا. ده بيوفر عليك وقت وفلوس وبيخليك تركز في شغلك الأساسي.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> عيادة طبية، بدلاً من توظيف فريق متخصص في تكنولوجيا المعلومات لإدارة أنظمة الحجز والموقع الإلكتروني، تتعاقد مع شركة تقنية متخصصة لإدارة كل هذه الأمور التقنية مقابل اشتراك شهري.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- مستوى المعيشة -->
+                <div class="concept-card">
+                    <h3>مستوى المعيشة (Standard of Living)</h3>
+                    <p>ده مقياس مادي بحت. بيقيس كمية الحاجات والخدمات اللي الناس تقدر تشتريها بفلوسها. كل ما قدرت تشتري أكتر وأحسن بنفس الراتب، كل ما كان مستوى معيشتك أعلى.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> في عام 2010، كان راتبك يشتري لك 100 كيلو من سلعة معينة. في عام 2020، نفس الراتب أصبح يشتري لك 70 كيلو فقط من نفس السلعة بسبب ارتفاع الأسعار. هذا يعني أن مستوى معيشتك انخفض.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- جودة الحياة -->
+                <div class="concept-card">
+                    <h3>جودة الحياة (Quality of Life)</h3>
+                    <p>دي الصورة الأكبر والأشمل. مش بس فلوس، دي بتتكلم عن مدى رضاك وسعادتك في حياتك. بتشمل الأمان، البيئة النظيفة، جودة التعليم والصحة، وقت الفراغ اللي عندك، وحريتك الشخصية. ممكن تكون غني بس جودة حياتك سيئة.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> مليونير يعيش في مدينة مزدحمة ومليئة بالتلوث والضوضاء، ويقضي 4 ساعات يوميًا في المواصلات. بالرغم من مستوى معيشته المرتفع، فإن جودة حياته منخفضة. على النقيض، موظف بسيط يعيش في قرية هادئة قريبة من الطبيعة، لديه وقت لأسرته وهواياته، يشعر بجودة حياة أعلى.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أصحاب المصلحة -->
+                <div class="concept-card">
+                    <h3>أصحاب المصلحة (Stakeholders)</h3>
+                    <p>دول كل الناس اللي ليهم "مصلحة" أو بيتأثروا بالشركة بتاعتك، سواء بالكسب أو بالخسارة. مش بس الملاك، دول كمان الموظفين، العملاء، الموردين، البنوك، الحكومة، وحتى الجيران اللي جنب المصنع بتاعك.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> عندما تقرر شركة أغذية استخدام مكونات أرخص لزيادة أرباحها. يتأثر بهذا القرار: العملاء (بسبب تغير الطعم أو الجودة)، والموردون القدامى (لأن الشركة توقفت عن الشراء منهم)، والموظفون في قسم الجودة (قد يتعرضون للضغط)، والمنافسون (قد يكتسبون عملاء الشركة).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنظمات غير الربحية -->
+                <div class="concept-card">
+                    <h3>المنظمات غير الربحية (Nonprofit Organizations)</h3>
+                    <p>دي منظمات هدفها مش إن أصحابها يكسبوا فلوس، هدفها خدمة قضية معينة في المجتمع. زي الجمعيات الخيرية اللي بتساعد الفقراء، أو المؤسسات اللي بتعمل توعية عن مرض معين. أي فلوس بتكسبها بترجع تصرفها على نفس القضية عشان تكبر وتخدم ناس أكتر.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> مؤسسة تقوم بجمع التبرعات لبناء مدارس في القرى المحرومة. كل الأموال التي تجمعها تُستخدم في البناء وشراء الأدوات المدرسية ودفع رواتب المعلمين. هدفها النهائي هو التعليم، وليس تحقيق ربح للمؤسسين.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أهداف الأعمال -->
+                <div class="concept-card">
+                    <h3>أهداف الأعمال (Objectives of Business)</h3>
+                    <p>الشركة عاملة زي السفينة اللي ليها وجهة. أهدافها هي البوصلة بتاعتها. أهم الأهداف دي هي: إنها تفضل عايشة ومتقفلش (البقاء)، وإنها تكسب فلوس (الربح)، وإنها تكبر وتتوسع (النمو)، وإنها تكون عضو نافع في المجتمع (المسؤولية الاجتماعية).</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 مثال واقعي</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>مثال:</strong> صيدلية صغيرة: هدفها الأول هو البقاء في وجه المنافسة من الصيدليات الكبيرة. بعد ذلك، تسعى لتحقيق ربح شهري ثابت. ثم قد يكون هدفها النمو عبر تقديم خدمة توصيل للمنازل. وفي نفس الوقت، تلتزم بالمسؤولية الاجتماعية عبر عدم بيع أدوية منتهية الصلاحية وتقديم النصح للمرضى.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>📊 جدول المفاهيم الأساسية</h2>
+                <div class="table-container">
+                    <table class="business-table">
+                        <thead>
+                            <tr>
+                                <th>المفهوم</th>
+                                <th>Concept</th>
+                                <th>التعريف الرسمي</th>
+                                <th>Official Definition</th>
+                                <th>الخلاصة</th>
+                                <th>The Gist</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>الأعمال</strong></td>
+                                <td>Business</td>
+                                <td>أي نشاط يسعى لتقديم سلع وخدمات للآخرين مقابل ربح.</td>
+                                <td>Any activity that seeks to provide goods and services to others while operating at a profit.</td>
+                                <td>نشاط ربحي</td>
+                                <td>Profit Activity</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الربح</strong></td>
+                                <td>Profit</td>
+                                <td>المبلغ المالي الذي تكسبه الشركة بعد خصم كل نفقاتها.</td>
+                                <td>The amount of money a business earns beyond what it spends for salaries and other expenses.</td>
+                                <td>الكسب الصافي</td>
+                                <td>Net Gain</td>
+                            </tr>
+                            <tr>
+                                <td><strong>رائد الأعمال</strong></td>
+                                <td>Entrepreneur</td>
+                                <td>شخص يخاطر بوقته وماله لبدء وإدارة عمل تجاري.</td>
+                                <td>A person who risks time and money to start and manage a business.</td>
+                                <td>مؤسس مغامر</td>
+                                <td>Risking Founder</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الإيرادات</strong></td>
+                                <td>Revenue</td>
+                                <td>إجمالي المبلغ المالي الذي تحصّله الشركة من بيع السلع والخدمات.</td>
+                                <td>The total amount of money a business takes in during a given period by selling goods and services.</td>
+                                <td>إجمالي الدخل</td>
+                                <td>Total Income</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الخسارة</strong></td>
+                                <td>Loss</td>
+                                <td>تحدث عندما تكون نفقات الشركة أكبر من إيراداتها.</td>
+                                <td>Occurs when a business's expenses are more than its revenues.</td>
+                                <td>صرف أكثر من الدخل</td>
+                                <td>Spending > Earning</td>
+                            </tr>
+                            <tr>
+                                <td><strong>المخاطرة</strong></td>
+                                <td>Risk</td>
+                                <td>فرصة خسارة الوقت والمال في عمل قد لا يكون مربحًا.</td>
+                                <td>The chance an entrepreneur takes of losing time and money on a business that may not prove profitable.</td>
+                                <td>احتمال الخسارة</td>
+                                <td>Chance of Loss</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الاستعانة بمصادر خارجية</strong></td>
+                                <td>Outsourcing</td>
+                                <td>التعاقد مع شركات أخرى لأداء وظائف معينة.</td>
+                                <td>Contracting with other companies to do some or all of the functions of a firm.</td>
+                                <td>تأجير مهام</td>
+                                <td>Task Renting</td>
+                            </tr>
+                            <tr>
+                                <td><strong>مستوى المعيشة</strong></td>
+                                <td>Standard of Living</td>
+                                <td>كمية السلع والخدمات التي يستطيع الناس شراءها بالمال الذي لديهم.</td>
+                                <td>The amount of goods and services people can buy with the money they have.</td>
+                                <td>القدرة الشرائية</td>
+                                <td>Buying Power</td>
+                            </tr>
+                            <tr>
+                                <td><strong>جودة الحياة</strong></td>
+                                <td>Quality of Life</td>
+                                <td>الرفاهية العامة للمجتمع من حيث الأمان، البيئة، التعليم، والصحة.</td>
+                                <td>The general well-being of a society in terms of freedom, environment, education, health care, etc.</td>
+                                <td>الرضا عن الحياة</td>
+                                <td>Life Satisfaction</td>
+                            </tr>
+                            <tr>
+                                <td><strong>أصحاب المصلحة</strong></td>
+                                <td>Stakeholders</td>
+                                <td>كل من يتأثر بسياسات وأنشطة الشركة سواء بالكسب أو الخسارة.</td>
+                                <td>All the people who stand to gain or lose by the policies and activities of a business.</td>
+                                <td>الأطراف المعنية</td>
+                                <td>Affected Parties</td>
+                            </tr>
+                            <tr>
+                                <td><strong>المنظمات غير الربحية</strong></td>
+                                <td>Nonprofit Org.</td>
+                                <td>منظمة هدفها ليس تحقيق ربح شخصي بل تحقيق أهداف اجتماعية.</td>
+                                <td>An organization whose goals do not include making a personal profit for its owners or organizers.</td>
+                                <td>للخدمة لا للربح</td>
+                                <td>Service not Profit</td>
+                            </tr>
+                            <tr>
+                                <td><strong>أهداف الأعمال</strong></td>
+                                <td>Business Objectives</td>
+                                <td>الأهداف التي تسعى الشركة لتحقيقها مثل البقاء، الربح، والنمو.</td>
+                                <td>The goals a company seeks to achieve, such as survival, profit, and growth.</td>
+                                <td>غايات الشركة</td>
+                                <td>Company Goals</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- English Content -->
+        <div id="englishContent" class="hidden">
+            <section class="glassy-card">
+                <h1>Comprehensive Guide: Business Fundamentals</h1>
+                <p style="text-align: center; font-size: 1.1rem; color: #475569;">Concept explanations with interactive real-world examples</p>
+            </section>
+
+            <section class="glassy-card">
+                <h2>📚 Core Concepts</h2>
+                
+                <!-- Business -->
+                <div class="concept-card">
+                    <h3>Business</h3>
+                    <p>Think of "business" as any activity or effort by a person or company to provide a good (like food or clothes) or a service (like repairs or consulting) to others, in return for a monetary profit. From the smallest street kiosk to the largest global corporation, all fall under "business."</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> Imagine deciding to bake cakes and sell them to neighbors. You buy ingredients (cost), bake the cake (effort), then sell it at a price higher than the cost. This activity is a mini "business."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profit -->
+                <div class="concept-card">
+                    <h3>Profit</h3>
+                    <p>Profit is the net money remaining in your pocket after deducting all expenses. If you sell products for 1,000 and total costs (rent, materials, salaries) are 700, then profit is 300. Profit is the real indicator of business success.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> A bookstore owner buys books for 5,000. After selling all, collects 8,000. The profit achieved is 3,000 (8,000 - 5,000).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Entrepreneur -->
+                <div class="concept-card">
+                    <h3>Entrepreneur</h3>
+                    <p>An entrepreneur is the "risk-taker" who invests time and money to build a new venture from scratch. Not just a manager, but the builder of the whole entity, hoping for success and profit, while being ready to bear loss if it fails.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> A young person notices no specialty coffee shop in the area, resigns from a job, uses savings, and borrows to open a small café. This person is an entrepreneur for risking time and money for a believed idea.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Matching Risk With Profit -->
+                <div class="concept-card">
+                    <h3>Matching Risk With Profit</h3>
+                    <p>The rule is simple: the greater the risk, the greater the expected profit. A near-riskless investment (like a bank deposit) yields low returns; a high-risk venture (like a new cryptocurrency) carries high chance of loss, but if it succeeds, profit can be huge.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> An investor has two options: buy property in an established residential area (low risk, steady rent) or buy desert land hoping utilities arrive later (very high risk). If utilities arrive, land price may multiply many times (high profit).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue -->
+                <div class="concept-card">
+                    <h3>Revenue</h3>
+                    <p>Revenue is the total money a company earns from sales before deducting any expenses. It's the big top-line number. If a restaurant sells food worth 10,000 in a day, its revenue is 10,000 regardless of food cost or salaries.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> An online store sells 50 items a day at 100 per item. Total revenue for that day is 50 × 100 = 5,000. That amount is "revenue."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loss -->
+                <div class="concept-card">
+                    <h3>Loss</h3>
+                    <p>Loss is every business's nightmare. It occurs when expenses exceed the money coming in. If 1,000 is spent but only 800 is earned, then there's a 200 loss.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> An auto repair shop pays 20,000 for rent, salaries, and bills in a month, but earns only 15,000 in revenue. The shop records a 5,000 loss.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk -->
+                <div class="concept-card">
+                    <h3>Risk</h3>
+                    <p>Risk is uncertainty or the chance of losing time or money on a venture that might not succeed. Nothing is 100% guaranteed in business; risk is the price to pay for an opportunity to earn profit.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> A farmer grows a new, expensive crop for the first time. Weather may be unsuitable, pests may attack, or market prices may drop at harvest. Any of these can cause losing all invested funds.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outsourcing -->
+                <div class="concept-card">
+                    <h3>Outsourcing</h3>
+                    <p>Instead of doing everything in-house, a company contracts a specialized firm to handle certain tasks. Hiring security or a marketing agency to manage social media saves time and money and keeps focus on core work.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> A clinic, rather than hiring an in-house IT team to manage booking systems and website, contracts a tech company to handle it all for a monthly subscription.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Standard of Living -->
+                <div class="concept-card">
+                    <h3>Standard of Living</h3>
+                    <p>This is a purely material measure: how many goods and services people can purchase with their money. The more and better one can buy with the same salary, the higher the standard of living.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> In 2010, a salary could buy 100 kg of a certain product. In 2020, the same salary buys only 70 kg due to price increases. This means the standard of living dropped.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quality of Life -->
+                <div class="concept-card">
+                    <h3>Quality of Life</h3>
+                    <p>This is the bigger, more holistic picture. It's not just money; it concerns overall satisfaction and happiness. It includes safety, clean environment, education and health quality, free time, and personal freedom.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> A millionaire lives in a polluted, noisy city and spends 4 hours daily commuting; despite high standard of living, quality of life is low. Meanwhile, a modest employee in a quiet village near nature enjoys family time and hobbies, feeling higher quality of life.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stakeholders -->
+                <div class="concept-card">
+                    <h3>Stakeholders</h3>
+                    <p>Stakeholders are all those who have an interest in or are affected by the company—owners, employees, customers, suppliers, banks, government, and even neighbors around the factory.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> When a food company opts for cheaper ingredients to raise profit, affected parties include customers (taste/quality), old suppliers (stopped purchases), quality staff (added pressure), and competitors (may gain customers).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nonprofit Organizations -->
+                <div class="concept-card">
+                    <h3>Nonprofit Organizations</h3>
+                    <p>These organizations are not aimed at personal profit; they exist to serve a social cause. Any money they earn is reinvested to grow and serve more people.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> An organization raises donations to build schools in underserved villages. Funds are used for construction, school supplies, and paying teachers—aiming for education, not founders' profit.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Objectives of Business -->
+                <div class="concept-card">
+                    <h3>Objectives of Business</h3>
+                    <p>A company is like a ship with a destination; its objectives are the compass. Key aims include survival, profit, growth, and social responsibility.</p>
+                    
+                    <div class="example-toggle">
+                        <span class="example-toggle-text">💡 Real Example</span>
+                        <span class="example-arrow">⏷</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-inner">
+                            <p><strong>Example:</strong> A small pharmacy first aims to survive amid big competitors, then to secure steady monthly profits, then to grow via home delivery, while upholding social responsibility through safe practices and patient advice.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>📊 Key Concepts Glossary</h2>
+                <div class="table-container">
+                    <table class="business-table">
+                        <thead>
+                            <tr>
+                                <th>المفهوم</th>
+                                <th>Concept</th>
+                                <th>التعريف الرسمي</th>
+                                <th>Official Definition</th>
+                                <th>الخلاصة</th>
+                                <th>The Gist</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>الأعمال</strong></td>
+                                <td>Business</td>
+                                <td>أي نشاط يسعى لتقديم سلع وخدمات للآخرين مقابل ربح.</td>
+                                <td>Any activity that seeks to provide goods and services to others while operating at a profit.</td>
+                                <td>نشاط ربحي</td>
+                                <td>Profit Activity</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الربح</strong></td>
+                                <td>Profit</td>
+                                <td>المبلغ المالي الذي تكسبه الشركة بعد خصم كل نفقاتها.</td>
+                                <td>The amount of money a business earns beyond what it spends for salaries and other expenses.</td>
+                                <td>الكسب الصافي</td>
+                                <td>Net Gain</td>
+                            </tr>
+                            <tr>
+                                <td><strong>رائد الأعمال</strong></td>
+                                <td>Entrepreneur</td>
+                                <td>شخص يخاطر بوقته وماله لبدء وإدارة عمل تجاري.</td>
+                                <td>A person who risks time and money to start and manage a business.</td>
+                                <td>مؤسس مغامر</td>
+                                <td>Risking Founder</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الإيرادات</strong></td>
+                                <td>Revenue</td>
+                                <td>إجمالي المبلغ المالي الذي تحصّله الشركة من بيع السلع والخدمات.</td>
+                                <td>The total amount of money a business takes in during a given period by selling goods and services.</td>
+                                <td>إجمالي الدخل</td>
+                                <td>Total Income</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الخسارة</strong></td>
+                                <td>Loss</td>
+                                <td>تحدث عندما تكون نفقات الشركة أكبر من إيراداتها.</td>
+                                <td>Occurs when a business's expenses are more than its revenues.</td>
+                                <td>صرف أكثر من الدخل</td>
+                                <td>Spending > Earning</td>
+                            </tr>
+                            <tr>
+                                <td><strong>المخاطرة</strong></td>
+                                <td>Risk</td>
+                                <td>فرصة خسارة الوقت والمال في عمل قد لا يكون مربحًا.</td>
+                                <td>The chance an entrepreneur takes of losing time and money on a business that may not prove profitable.</td>
+                                <td>احتمال الخسارة</td>
+                                <td>Chance of Loss</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الاستعانة بمصادر خارجية</strong></td>
+                                <td>Outsourcing</td>
+                                <td>التعاقد مع شركات أخرى لأداء وظائف معينة.</td>
+                                <td>Contracting with other companies to do some or all of the functions of a firm.</td>
+                                <td>تأجير مهام</td>
+                                <td>Task Renting</td>
+                            </tr>
+                            <tr>
+                                <td><strong>مستوى المعيشة</strong></td>
+                                <td>Standard of Living</td>
+                                <td>كمية السلع والخدمات التي يستطيع الناس شراءها بالمال الذي لديهم.</td>
+                                <td>The amount of goods and services people can buy with the money they have.</td>
+                                <td>القدرة الشرائية</td>
+                                <td>Buying Power</td>
+                            </tr>
+                            <tr>
+                                <td><strong>جودة الحياة</strong></td>
+                                <td>Quality of Life</td>
+                                <td>الرفاهية العامة للمجتمع من حيث الأمان، البيئة، التعليم، والصحة.</td>
+                                <td>The general well-being of a society in terms of freedom, environment, education, health care, etc.</td>
+                                <td>الرضا عن الحياة</td>
+                                <td>Life Satisfaction</td>
+                            </tr>
+                            <tr>
+                                <td><strong>أصحاب المصلحة</strong></td>
+                                <td>Stakeholders</td>
+                                <td>كل من يتأثر بسياسات وأنشطة الشركة سواء بالكسب أو الخسارة.</td>
+                                <td>All the people who stand to gain or lose by the policies and activities of a business.</td>
+                                <td>الأطراف المعنية</td>
+                                <td>Affected Parties</td>
+                            </tr>
+                            <tr>
+                                <td><strong>المنظمات غير الربحية</strong></td>
+                                <td>Nonprofit Org.</td>
+                                <td>منظمة هدفها ليس تحقيق ربح شخصي بل تحقيق أهداف اجتماعية.</td>
+                                <td>An organization whose goals do not include making a personal profit for its owners or organizers.</td>
+                                <td>للخدمة لا للربح</td>
+                                <td>Service not Profit</td>
+                            </tr>
+                            <tr>
+                                <td><strong>أهداف الأعمال</strong></td>
+                                <td>Business Objectives</td>
+                                <td>الأهداف التي تسعى الشركة لتحقيقها مثل البقاء، الربح، والنمو.</td>
+                                <td>The goals a company seeks to achieve, such as survival, profit, and growth.</td>
+                                <td>غايات الشركة</td>
+                                <td>Company Goals</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Translation functionality
+            const translationButton = document.getElementById('translationButton');
+            const translationText = translationButton.querySelector('.translation-text');
+            const arabicContent = document.getElementById('arabicContent');
+            const englishContent = document.getElementById('englishContent');
+            const html = document.documentElement;
+            const body = document.body;
+            let isArabic = true;
+
+            function switchLanguage() {
+                isArabic = !isArabic;
+                
+                if (isArabic) {
+                    html.setAttribute('lang', 'ar');
+                    html.setAttribute('dir', 'rtl');
+                    body.setAttribute('dir', 'rtl');
+                    arabicContent.classList.remove('hidden');
+                    englishContent.classList.add('hidden');
+                    translationText.textContent = 'ترجمة';
+                } else {
+                    html.setAttribute('lang', 'en');
+                    html.setAttribute('dir', 'ltr');
+                    body.setAttribute('dir', 'ltr');
+                    arabicContent.classList.add('hidden');
+                    englishContent.classList.remove('hidden');
+                    translationText.textContent = 'Translate';
+                }
+                
+                bindExampleToggles();
+            }
+
+            translationButton.addEventListener('click', switchLanguage);
+
+            // Example toggle functionality
+            function bindExampleToggles() {
+                const exampleToggles = document.querySelectorAll('.example-toggle');
+                
+                exampleToggles.forEach(toggle => {
+                    toggle.removeEventListener('click', handleToggleClick);
+                    toggle.addEventListener('click', handleToggleClick);
+                });
+            }
+
+            function handleToggleClick(event) {
+                const toggle = event.currentTarget;
+                const content = toggle.nextElementSibling;
+                
+                if (content && content.classList.contains('example-content')) {
+                    toggle.classList.toggle('open');
+                    content.classList.toggle('show');
+                }
+            }
+
+            bindExampleToggles();
+        });
+    </script>
+</body>
+</html>
+
