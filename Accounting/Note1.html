@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أثر - ثيم غابة السكون</title>
+  <style>
+    :root {
+      /* لوحة ألوان غابة السكون */
+      --color-primary: #16a34a;      /* أخضر عشبي للتمييز */
+      --color-primary-dark: #4d7c0f;  /* أخضر زيتوني عميق */
+      --color-primary-medium: #22c55e;/* أخضر زاهي */
+      
+      /* تحديث متغيرات التصميم الرئيسية */
+      --glass-bg: rgba(240, 253, 244, 0.25); /* زجاجي مائل للخضرة */
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --text-color: #0f172a;
+      --highlight-color: var(--color-primary);
+      --practice-color: var(--color-primary-medium);
+      --translation-color: var(--color-primary-dark);
+      --border-radius: 24px;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    @keyframes waveFlow {
+      0%, 100% { transform: translateX(-25%) scaleY(1) scaleX(1); }
+      33%      { transform: translateX(-10%) scaleY(1.1) scaleX(0.9); }
+      66%      { transform: translateX(10%)  scaleY(0.9) scaleX(1.1); }
+    }
+    
+    @keyframes translate-glow {
+      0%, 100% { box-shadow: 0 0 15px -5px rgba(77, 124, 15, 0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 25px 0px rgba(77, 124, 15, 0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0fdf4; /* لون احتياطي أخضر فاتح */
+      color: var(--text-color);
+      line-height: 1.8;
+      overflow-x: hidden;
+      position: relative;
+      direction: rtl;
+      padding: clamp(10px, 3vw, 20px);
+    }
+    body[dir="ltr"] {
+      direction: ltr;
+    }
+    .background-waves {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      background: linear-gradient(135deg,
+        #f0fdf4 0%,
+        #dcfce7 25%,
+        #fefce8 50%,
+        #ecfccb 75%,
+        #f0fdf4 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+    }
+    .wave-layer {
+      position: absolute;
+      bottom: -10%; left: -10%;
+      width: 120%; height: 300px;
+      background: linear-gradient(90deg,
+        rgba(22,163,74,0.08) 0%,
+        rgba(77,124,15,0.08) 50%,
+        rgba(34,197,94,0.08) 100%);
+      border-radius: 60% 40% 0 0;
+      animation: waveFlow 15s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    .wave-layer:nth-child(2) {
+      bottom: -5%; height: 250px; animation-delay: -5s;
+      background: linear-gradient(90deg, rgba(77,124,15,0.06) 0%, rgba(34,197,94,0.06) 100%);
+      border-radius: 40% 60% 0 0;
+    }
+    .wave-layer:nth-child(3) {
+      bottom: 0%; height: 200px; animation-delay: -10s;
+      background: linear-gradient(90deg, rgba(34,197,94,0.04) 0%, rgba(22,163,74,0.04) 100%);
+      border-radius: 80% 20% 0 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .background-waves, .wave-layer { animation: none !important; }
+    }
+    
+    .translation-button {
+      position: fixed;
+      top: clamp(20px, 5vw, 30px);
+      right: clamp(20px, 5vw, 30px);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(25px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
+      padding: clamp(8px, 2vw, 12px);
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(50px, 12vw, 60px);
+      height: clamp(50px, 12vw, 60px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 25px -10px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+    .translation-button svg path { stroke: var(--translation-color); }
+    body[dir="ltr"] .translation-button { right: auto; left: clamp(20px, 5vw, 30px); }
+    .translation-button:hover {
+      width: auto; padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
+      border-color: var(--translation-color);
+      background: rgba(77, 124, 15, 0.1);
+      transform: translateY(-3px);
+      animation: translate-glow 2.5s infinite alternate;
+    }
+    .translation-button .icon-translate { width: 28px; height: 28px; flex-shrink: 0; transition: transform 0.3s ease; }
+    .translation-button:hover .icon-translate { transform: scale(0.9); }
+    .translation-text {
+      font-size: clamp(0.85rem, 2.2vw, 1rem);
+      font-weight: 600; color: var(--translation-color);
+      white-space: nowrap; display: none; margin-left: 10px;
+    }
+    body[dir="ltr"] .translation-text { margin-left: 0; margin-right: 10px; }
+    .translation-button:hover .translation-text { display: block; }
+    
+    .main-content { max-width: 1200px; margin: 90px auto 0; padding: clamp(20px, 5vw, 40px); }
+    .glassy-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: clamp(20px, 5vw, 30px);
+      margin-bottom: clamp(25px, 5vw, 35px);
+      backdrop-filter: blur(25px);
+      transition: all 0.4s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+    .glassy-card:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(255,255,255,0.7); }
+    h1, h2, h3, h4, h5 { font-weight: 700; text-shadow: 0 2px 8px rgba(255,255,255,0.8); }
+    h1 { font-size: clamp(2rem, 6vw, 3.2rem); text-align: center; margin-bottom: clamp(20px, 4vw, 30px); color: #14532d; }
+    h2 { font-size: clamp(1.5rem, 5vw, 2.5rem); border-bottom: 3px solid rgba(22,163,74,0.3); padding-bottom: clamp(10px, 2vw, 15px); margin-bottom: clamp(20px, 4vw, 30px); color: #166534; }
+    h3 { font-size: clamp(1.2rem, 4vw, 1.8rem); margin-bottom: clamp(15px, 3vw, 20px); color: #15803d; }
+    h4 { font-size: clamp(1.1rem, 3.5vw, 1.4rem); color: var(--highlight-color); margin-bottom: clamp(12px, 2vw, 15px); }
+    h5 { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--practice-color); margin-bottom: clamp(10px, 2vw, 12px); }
+    p, li { color: #475569; margin-bottom: clamp(10px, 2vw, 12px); }
+    strong { color: #14532d; }
+    
+    .formula {
+      background: rgba(255,255,255,0.4);
+      padding: clamp(15px, 3vw, 20px); border-radius: 14px;
+      font-family: monospace; border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px); margin: 20px 0; text-align: center;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+    }
+    ul, ol { padding-right: clamp(20px, 4vw, 25px); margin-bottom: 20px; }
+    body[dir="ltr"] ul, body[dir="ltr"] ol { padding-right: 0; padding-left: clamp(20px, 4vw, 25px); }
+    .case-study { border-right: 4px solid var(--highlight-color); padding-right: 20px; margin: 25px 0; }
+    body[dir="ltr"] .case-study { border-right: none; border-left: 4px solid var(--highlight-color); padding-right: 0; padding-left: 20px; }
+    
+    .practice-question {
+      background: rgba(34,197,94,0.08);
+      border: 2px solid rgba(34,197,94,0.2);
+      border-radius: 18px; padding: 25px; margin-top: 20px;
+      cursor: pointer; position: relative; transition: all 0.4s ease;
+    }
+    .practice-question:hover { transform: translateY(-3px); border-color: var(--practice-color); background: rgba(34,197,94,0.12); }
+    .practice-question.open { border-color: var(--practice-color); background: rgba(34,197,94,0.15); }
+    .practice-question::after {
+      content: "▼"; position: absolute; top: 25px; left: 25px;
+      font-size: 1.2rem; color: var(--practice-color); transition: transform 0.4s ease;
+    }
+    body[dir="ltr"] .practice-question::after { left: auto; right: 25px; }
+    .practice-question.open::after { transform: rotate(180deg); }
+    
+    .solution-card { max-height: 0; overflow: hidden; transition: max-height 1.2s ease-in-out, margin-top 0.5s ease; }
+    .solution-card.show { max-height: 3000px; margin-top: 20px; }
+    .solution-content { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.4); padding: 20px; border-radius: 14px; }
+    .solution-content strong { color: #15803d; }
+    
+    .expandable-example {
+      background: rgba(77,124,15,0.08);
+      border: 2px solid rgba(77,124,15,0.2);
+      border-radius: 16px; padding: 20px; margin: 15px 0;
+      cursor: pointer; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .expandable-example:hover { border-color: var(--translation-color); background: rgba(77,124,15,0.12); transform: translateY(-2px); }
+    .expandable-example.open { background: rgba(77,124,15,0.15); }
+    .example-header { display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--translation-color); }
+    .example-content { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s ease; padding-top: 0; }
+    .example-content.show { max-height: 1000px; padding-top: 15px; }
+    
+    .mcq-container {
+      background: rgba(22,163,74,0.08);
+      border: 2px solid rgba(22,163,74,0.2);
+      border-radius: 16px; padding: 20px; margin: 20px 0;
+    }
+    .mcq-question { font-weight: 600; color: var(--highlight-color); margin-bottom: 15px; }
+    .mcq-options { list-style: none; padding: 0; }
+    .mcq-option { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; padding: 12px 16px; margin: 8px 0; cursor: pointer; transition: all 0.3s ease; }
+    .mcq-option:hover { background: rgba(22,163,74,0.2); transform: translateX(5px); }
+    .mcq-option.selected, .mcq-option.correct { background: var(--practice-color); color: white; border-color: var(--practice-color); }
+    .mcq-option.incorrect { background: #dc2626; color: white; border-color: #dc2626; }
+    
+    .concepts-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; }
+    .concepts-table th, .concepts-table td { padding: 15px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.2); }
+    body[dir="ltr"] .concepts-table th, body[dir="ltr"] .concepts-table td { text-align: left; }
+    .concepts-table th { background: rgba(22,163,74,0.2); font-weight: 600; color: var(--highlight-color); }
+    .concepts-table tr:hover { background: rgba(255,255,255,0.1); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+  <button class="translation-button" id="translationButton">
+    <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="var(--translation-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+  <main class="main-content">
+    <!-- Arabic Content -->
+    <div id="arabicContent">
+      <section class="glassy-card">
+        <h1>خريطة أثر للتركيز الذكي: مبادئ المحاسبة 1</h1>
+        <p>رحلتنا التعليمية مع المفاهيم الأساسية في مبادئ المحاسبة</p>
+      </section>
+      <!-- Section 1 -->
+      <section class="glassy-card">
+        <h2>1. المحاسبة كنظام معلومات</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>تبدأ المحاسبة بالتعرّف على الأحداث الاقتصادية القابلة للقياس النقدي ثم تُسجِّل وتُصنِّف وتُلخِّص لتنتج قوائم مالية مفهومة وملائمة لاتخاذ القرار.</p>
+        <h3>التعريف الرسمي</h3>
+        <ul>
+          <li><strong>المحاسبة كنظام معلومات:</strong> مدخلات من أحداث قابلة للقياس النقدي، معالجة عبر التسجيل والتصنيف والتلخيص، ومخرجات هي القوائم المالية</li>
+          <li><strong>الهدف:</strong> توفير معلومات مفيدة لاتخاذ القرارات</li>
+          <li><strong>الفكرة:</strong> أي نظام معلومات يتكون من مدخلات ومعالجة ومخرجات، وتطبيقه المحاسبي يوضّح تدفق البيانات إلى القوائم المالية</li>
+        </ul>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال واقعي: بيع بضاعة على الحساب</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>كيف يعمل:</strong></p>
+            <ul>
+              <li>حدث اقتصادي يُسجَّل كإيراد وذمم مدينة</li>
+              <li>يظهر إجماليه في قائمة الدخل</li>
+              <li>يؤثر على المركز المالي في الميزانية</li>
+            </ul>
+            <p><strong>النتيجة:</strong> هذا هو جوهر استخدام المحاسبة كنظام معلومات لفهم الأحداث الاقتصادية ودعم اتخاذ القرارات</p>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">الهدف الأساسي للمحاسبة هو:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) تقليل الضرائب فقط</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ب) توفير معلومات مفيدة لاتخاذ القرارات</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) زيادة المبيعات بغض النظر عن الربحية</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) جرد المخزون فقط</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>السيناريو:</strong> هل يعتبر توقيع عقد توريد مستقبلي دون تسليم أو دفع حالّي معاملة تُسجَّل فوراً؟ فسّر وفق شرطي التأثير والقياس النقدي.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>الحل المقترح:</strong></p>
+            <ul>
+              <li><strong>الشرط الأول:</strong> التأثير على كيان اقتصادي</li>
+              <li><strong>الشرط الثاني:</strong> إمكانية القياس بالنقد</li>
+              <li><strong>التفسير:</strong> العقد المستقبلي لا يُسجل فوراً لعدم تحقيق الشروط، حيث لا يوجد تأثير فوري قابل للقياس</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Section 2 -->
+      <section class="glassy-card">
+        <h2>2. المعادلة المحاسبية الأساسية</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>تُمثّل الأصول موارد المنشأة بينما الخصوم + حقوق الملكية تمثل المطالبات على هذه الموارد من الدائنين والملاك ويجب أن يبقى التوازن قائماً دائماً.</p>
+        <div class="case-study">
+          <h4>1. الأصول</h4>
+          <ul>
+            <li><strong>التركيز:</strong> موارد تملكها المنشأة</li>
+            <li><strong>المساهمات:</strong> تحقق منافع اقتصادية مستقبلية</li>
+            <li><strong>الهدف:</strong> فهم مصادر الموارد</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>2. الخصوم</h4>
+          <ul>
+            <li><strong>التركيز:</strong> التزامات على المنشأة</li>
+            <li><strong>المساهمات:</strong> لصالح الدائنين نتيجة معاملات سابقة</li>
+            <li><strong>الهدف:</strong> فهم المطالبات الخارجية</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>3. حقوق الملكية</h4>
+          <ul>
+            <li><strong>التركيز:</strong> مطالبات الملاك</li>
+            <li><strong>المساهمات:</strong> على صافي أصول المنشأة بعد الخصوم</li>
+            <li><strong>الهدف:</strong> فهم المطالبات الداخلية</li>
+          </ul>
+        </div>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال تطبيقي: ضخ رأس المال</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>التحدي:</strong> ضخّ المالك 50,000 نقداً في الشركة</p>
+            <p><strong>الحلول:</strong></p>
+            <ul>
+              <li><strong>التأثير على الأصول:</strong> زيادة النقدية</li>
+              <li><strong>التأثير على حقوق الملكية:</strong> زيادة بالقيمة نفسها</li>
+              <li><strong>النتيجة:</strong> تظل المعادلة متساوية</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">أي من التالي يعبّر عن المعادلة الأساسية:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) الأصول = حقوق الملكية - الخصوم</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) الأصول + الخصوم = حقوق الملكية</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) الأصول = الخصوم + حقوق الملكية</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) الخصوم = الأصول + حقوق الملكية</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Section 3 -->
+      <section class="glassy-card">
+        <h2>3. أنشطة المحاسبة ومستخدمو المعلومات</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>المحاسبة نظام معلومات يحدد ويسجل ويُوصل الأحداث الاقتصادية للوحدة الاقتصادية بهدف دعم القرارات للمستخدمين المهتمين.</p>
+        <div class="formula">
+          الأصول = الخصوم + حقوق الملكية<br>
+          (معادلة المركز المالي)
+        </div>
+        <h3>المستويات الثلاثة</h3>
+        <ol>
+          <li><strong>التحديد:</strong> يميّز الأحداث التي تستوفي شرطي التأثير والقياس</li>
+          <li><strong>التسجيل:</strong> يوثق القيمة في السجلات ويصنّفها ويُلخّصها</li>
+          <li><strong>التوصيل:</strong> يحوّل البيانات إلى تقارير قابلة للاستخدام</li>
+        </ol>
+        <h3>المكونات الرئيسية</h3>
+        <div class="case-study">
+          <h4>المدخلات - Inputs</h4>
+          <ul>
+            <li><strong>المستوى الداخلي:</strong> إدارة، إنتاج، تسويق، تمويل</li>
+            <li><strong>المستوى الخارجي:</strong> مستثمرون، دائنون</li>
+            <li><strong>المستوى التنظيمي:</strong> ضرائب، عملاء، نقابات، هيئة سوق المال</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>العمليات - Processes</h4>
+          <ul>
+            <li><strong>المستوى الداخلي:</strong> التخطيط والتشغيل</li>
+            <li><strong>المستوى الخارجي:</strong> تقييم المخاطر والعوائد</li>
+            <li><strong>المستوى التنظيمي:</strong> جودة التقارير المحاسبية</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>المخرجات - Outcomes</h4>
+          <ul>
+            <li><strong>المستوى الداخلي:</strong> قرارات الاستثمار والتمويل</li>
+            <li><strong>المستوى الخارجي:</strong> تقارير التكلفة والمخزون</li>
+            <li><strong>المستوى التنظيمي:</strong> اتخاذ قرارات تشغيلية</li>
+          </ul>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">أي مما يلي يُعد من المستخدمين الداخليين:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) المستثمرون الخارجيون</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) الدائنون</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) الإدارة</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) مصلحة الضرائب</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>المشكلة:</strong> صنّف الجهات التالية مع التبرير: مستثمر فردي، هيئة الضرائب، مدير التسويق، مورد رئيسي.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>التحليل:</strong></p>
+            <ul>
+              <li><strong>مستثمر فردي:</strong> خارجي، يقيم العوائد</li>
+              <li><strong>هيئة الضرائب:</strong> خارجي، تقيم الالتزامات الضريبية</li>
+              <li><strong>مدير التسويق:</strong> داخلي، يستخدم للتخطيط</li>
+              <li><strong>مورد رئيسي:</strong> خارجي، يقيم الملاءة</li>
+            </ul>
+            <p><strong>الحلول المقترحة:</strong> تصنيف دقيق يساعد في فهم احتياجات كل مستخدم</p>
+          </div>
+        </div>
+      </section>
+      <!-- Section 4 -->
+      <section class="glassy-card">
+        <h2>4. جدول المصطلحات</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>المصطلح</th>
+              <th>التعريف</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>المحاسبة</strong></td>
+              <td>نظام معلومات لتحديد وتسجيل وتوصيل الأحداث الاقتصادية لوحدة اقتصادية لخدمة اتخاذ القرار</td>
+            </tr>
+            <tr>
+              <td><strong>الوحدة الاقتصادية</strong></td>
+              <td>مشروع/كيان مستقل تُنسب إليه الأحداث وتُفصل عن ملاّكه ووحدات أخرى</td>
+            </tr>
+            <tr>
+              <td><strong>المعاملة التجارية</strong></td>
+              <td>حدث اقتصادي يؤثر على الكيان ويمكن قياس أثره بالنقد ليُسجَّل محاسبياً</td>
+            </tr>
+            <tr>
+              <td><strong>الأصول</strong></td>
+              <td>موارد تملكها المنشأة وتحقق منافع اقتصادية مستقبلية</td>
+            </tr>
+            <tr>
+              <td><strong>الخصوم</strong></td>
+              <td>التزامات على المنشأة لصالح الدائنين نتيجة معاملات سابقة</td>
+            </tr>
+            <tr>
+              <td><strong>حقوق الملكية</strong></td>
+              <td>مطالبات الملاك على صافي أصول المنشأة بعد الخصوم</td>
+            </tr>
+            <tr>
+              <td><strong>القوائم المالية</strong></td>
+              <td>مخرجات النظام المحاسبي لعرض المركز والأداء والتدفقات</td>
+            </tr>
+            <tr>
+              <td><strong>مسك الدفاتر</strong></td>
+              <td>وظيفة تسجيل الأحداث وهي جزء من عملية المحاسبة الأشمل</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <!-- English Content -->
+    <div id="englishContent" class="hidden">
+      <section class="glassy-card">
+        <h1>Impact Map for Smart Focus: Accounting Principles 1</h1>
+        <p>Our educational journey with the basic concepts in accounting principles</p>
+      </section>
+      <!-- Section 1 (English) -->
+      <section class="glassy-card">
+        <h2>1. Accounting as an Information System</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>Accounting begins by identifying economic events that can be measured monetarily, then records, classifies, and summarizes them to produce understandable financial statements suitable for decision-making.</p>
+        <h3>Formal Definition</h3>
+        <ul>
+          <li><strong>Accounting as an Information System:</strong> Inputs from measurable monetary events, processing through recording, classification, and summarization, and outputs as financial statements</li>
+          <li><strong>Goal:</strong> Provide useful information for decision-making</li>
+          <li><strong>Concept:</strong> Any information system consists of inputs, processing, and outputs, and its accounting application clarifies the data flow to financial statements</li>
+        </ul>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Real Example: Sale of Goods on Credit</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>How it works:</strong></p>
+            <ul>
+              <li>Economic event recorded as revenue and accounts receivable</li>
+              <li>Appears in total in the income statement</li>
+              <li>Affects the financial position in the balance sheet</li>
+            </ul>
+            <p><strong>Result:</strong> This is the essence of using accounting as an information system to understand economic events and support decision-making</p>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">The primary goal of accounting is:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Reducing taxes only</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Providing useful information for decision-making</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Increasing sales regardless of profitability</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Inventory counting only</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Application Question</h4>
+          <p><strong>Scenario:</strong> Is signing a future supply contract without delivery or current payment considered a transaction to be recorded immediately? Explain according to the conditions of impact and monetary measurement.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Proposed Solution:</strong></p>
+            <ul>
+              <li><strong>First Condition:</strong> Impact on an economic entity</li>
+              <li><strong>Second Condition:</strong> Ability to measure in money</li>
+              <li><strong>Explanation:</strong> The future contract is not recorded immediately due to not meeting the conditions, as there is no immediate measurable impact</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Section 2 (English) -->
+      <section class="glassy-card">
+        <h2>2. The Basic Accounting Equation</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>Assets represent the entity's resources while liabilities + owner's equity represent claims on these resources from creditors and owners, and the balance must always remain.</p>
+        <div class="case-study">
+          <h4>1. Assets</h4>
+          <ul>
+            <li><strong>Focus:</strong> Resources owned by the entity</li>
+            <li><strong>Contributions:</strong> Achieve future economic benefits</li>
+            <li><strong>Goal:</strong> Understanding resource sources</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>2. Liabilities</h4>
+          <ul>
+            <li><strong>Focus:</strong> Obligations on the entity</li>
+            <li><strong>Contributions:</strong> In favor of creditors resulting from previous transactions</li>
+            <li><strong>Goal:</strong> Understanding external claims</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>3. Owner's Equity</h4>
+          <ul>
+            <li><strong>Focus:</strong> Owners' claims</li>
+            <li><strong>Contributions:</strong> On the net assets of the entity after liabilities</li>
+            <li><strong>Goal:</strong> Understanding internal claims</li>
+          </ul>
+        </div>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Practical Example: Capital Injection</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Challenge:</strong> Owner injects 50,000 cash into the company</p>
+            <p><strong>Solutions:</strong></p>
+            <ul>
+              <li><strong>Impact on Assets:</strong> Increase in cash</li>
+              <li><strong>Impact on Owner's Equity:</strong> Increase by the same value</li>
+              <li><strong>Result:</strong> The equation remains balanced</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">Which of the following expresses the basic equation:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Assets = Owner's Equity - Liabilities</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Assets + Liabilities = Owner's Equity</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Assets = Liabilities + Owner's Equity</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Liabilities = Assets + Owner's Equity</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Section 3 (English) -->
+      <section class="glassy-card">
+        <h2>3. Accounting Activities and Information Users</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>Accounting is an information system that identifies, records, and communicates economic events of the economic unit to support decisions for interested users.</p>
+        <div class="formula">
+          Assets = Liabilities + Owner's Equity<br>
+          (Financial Position Equation)
+        </div>
+        <h3>The Three Levels</h3>
+        <ol>
+          <li><strong>Identification:</strong> Distinguishes events that meet the conditions of impact and measurement</li>
+          <li><strong>Recording:</strong> Documents the value in records, classifies, and summarizes it</li>
+          <li><strong>Communication:</strong> Transforms data into usable reports</li>
+        </ol>
+        <h3>Main Components</h3>
+        <div class="case-study">
+          <h4>Inputs</h4>
+          <ul>
+            <li><strong>Internal Level:</strong> Management, production, marketing, finance</li>
+            <li><strong>External Level:</strong> Investors, creditors</li>
+            <li><strong>Organizational Level:</strong> Taxes, customers, unions, capital market authority</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>Processes</h4>
+          <ul>
+            <li><strong>Internal Level:</strong> Planning and operations</li>
+            <li><strong>External Level:</strong> Assessing risks and returns</li>
+            <li><strong>Organizational Level:</strong> Quality of accounting reports</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>Outcomes</h4>
+          <ul>
+            <li><strong>Internal Level:</strong> Investment and financing decisions</li>
+            <li><strong>External Level:</strong> Cost and inventory reports</li>
+            <li><strong>Organizational Level:</strong> Operational decisions</li>
+          </ul>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">Which of the following is considered an internal user:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) External investors</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Creditors</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Management</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Tax authority</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Application Question</h4>
+          <p><strong>Problem:</strong> Classify the following entities with justification: Individual investor, tax authority, marketing manager, major supplier.</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Analysis:</strong></p>
+            <ul>
+              <li><strong>Individual Investor:</strong> External, assesses returns</li>
+              <li><strong>Tax Authority:</strong> External, assesses tax obligations</li>
+              <li><strong>Marketing Manager:</strong> Internal, uses for planning</li>
+              <li><strong>Major Supplier:</strong> External, assesses solvency</li>
+            </ul>
+            <p><strong>Proposed Solutions:</strong> Accurate classification helps understand each user's needs</p>
+          </div>
+        </div>
+      </section>
+      <!-- Section 4 (English) -->
+      <section class="glassy-card">
+        <h2>4. Glossary Table</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Accounting</strong></td>
+              <td>Information system for identifying, recording, and communicating economic events of an economic unit to serve decision-making</td>
+            </tr>
+            <tr>
+              <td><strong>Economic Unit</strong></td>
+              <td>Independent project/entity to which events are attributed and separated from its owners and other units</td>
+            </tr>
+            <tr>
+              <td><strong>Business Transaction</strong></td>
+              <td>Economic event that affects the entity and can be measured in money to be recorded accounting-wise</td>
+            </tr>
+            <tr>
+              <td><strong>Assets</strong></td>
+              <td>Resources owned by the entity that achieve future economic benefits</td>
+            </tr>
+            <tr>
+              <td><strong>Liabilities</strong></td>
+              <td>Obligations on the entity in favor of creditors resulting from previous transactions</td>
+            </tr>
+            <tr>
+              <td><strong>Owner's Equity</strong></td>
+              <td>Owners' claims on the net assets of the entity after liabilities</td>
+            </tr>
+            <tr>
+              <td><strong>Financial Statements</strong></td>
+              <td>Outputs of the accounting system to display position, performance, and flows</td>
+            </tr>
+            <tr>
+              <td><strong>Bookkeeping</strong></td>
+              <td>Function of recording events, which is part of the broader accounting process</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+  <script>
+    // Translation functionality
+    const translationButton = document.getElementById('translationButton');
+    const arabicContent = document.getElementById('arabicContent');
+    const englishContent = document.getElementById('englishContent');
+    const html = document.documentElement;
+    const body = document.body;
+    let isArabic = true;
+    function switchLanguage() {
+      isArabic = !isArabic;
+      
+      if (isArabic) {
+        html.setAttribute('lang', 'ar');
+        html.setAttribute('dir', 'rtl');
+        body.setAttribute('dir', 'rtl');
+        arabicContent.classList.remove('hidden');
+        englishContent.classList.add('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'English';
+      } else {
+        html.setAttribute('lang', 'en');
+        html.setAttribute('dir', 'ltr');
+        body.setAttribute('dir', 'ltr');
+        arabicContent.classList.add('hidden');
+        englishContent.classList.remove('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'العربية';
+      }
+    }
+    translationButton.addEventListener('click', switchLanguage);
+    // Expandable examples functionality
+    function toggleExample(element) {
+      const content = element.querySelector('.example-content');
+      const arrow = element.querySelector('.example-header span:last-child');
+      
+      element.classList.toggle('open');
+      content.classList.toggle('show');
+      arrow.style.transform = element.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+    // MCQ functionality
+    function selectMCQ(element, isCorrect) {
+      const options = element.parentNode.querySelectorAll('.mcq-option');
+      
+      options.forEach(option => {
+        option.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      element.classList.add('selected');
+      
+      setTimeout(() => {
+        if (isCorrect) {
+          element.classList.add('correct');
+        } else {
+          element.classList.add('incorrect');
+          options.forEach(option => {
+            if (option !== element) {
+              const onclick = option.getAttribute('onclick');
+              if (onclick && onclick.includes('true')) {
+                option.classList.add('correct');
+              }
+            }
+          });
+        }
+      }, 500);
+    }
+    // Practice question functionality
+    function toggleSolution(element) {
+      const solutionCard = element.nextElementSibling;
+      if (solutionCard && solutionCard.classList.contains('solution-card')) {
+        element.classList.toggle('open');
+        solutionCard.classList.toggle('show');
+      }
+    }
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page initialized successfully');
+    });
+  </script>
+</body>
+</html>
+

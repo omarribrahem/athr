@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أثر - ثيم غابة السكون</title>
+  <style>
+    :root {
+      /* لوحة ألوان غابة السكون */
+      --color-primary: #16a34a;      /* أخضر عشبي للتمييز */
+      --color-primary-dark: #4d7c0f;  /* أخضر زيتوني عميق */
+      --color-primary-medium: #22c55e;/* أخضر زاهي */
+      
+      /* تحديث متغيرات التصميم الرئيسية */
+      --glass-bg: rgba(240, 253, 244, 0.25); /* زجاجي مائل للخضرة */
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --text-color: #0f172a;
+      --highlight-color: var(--color-primary);
+      --practice-color: var(--color-primary-medium);
+      --translation-color: var(--color-primary-dark);
+      --border-radius: 24px;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    @keyframes waveFlow {
+      0%, 100% { transform: translateX(-25%) scaleY(1) scaleX(1); }
+      33%      { transform: translateX(-10%) scaleY(1.1) scaleX(0.9); }
+      66%      { transform: translateX(10%)  scaleY(0.9) scaleX(1.1); }
+    }
+    
+    @keyframes translate-glow {
+      0%, 100% { box-shadow: 0 0 15px -5px rgba(77, 124, 15, 0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 25px 0px rgba(77, 124, 15, 0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0fdf4; /* لون احتياطي أخضر فاتح */
+      color: var(--text-color);
+      line-height: 1.8;
+      overflow-x: hidden;
+      position: relative;
+      direction: rtl;
+      padding: clamp(10px, 3vw, 20px);
+    }
+    body[dir="ltr"] {
+      direction: ltr;
+    }
+    .background-waves {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      background: linear-gradient(135deg,
+        #f0fdf4 0%,
+        #dcfce7 25%,
+        #fefce8 50%,
+        #ecfccb 75%,
+        #f0fdf4 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+    }
+    .wave-layer {
+      position: absolute;
+      bottom: -10%; left: -10%;
+      width: 120%; height: 300px;
+      background: linear-gradient(90deg,
+        rgba(22,163,74,0.08) 0%,
+        rgba(77,124,15,0.08) 50%,
+        rgba(34,197,94,0.08) 100%);
+      border-radius: 60% 40% 0 0;
+      animation: waveFlow 15s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    .wave-layer:nth-child(2) {
+      bottom: -5%; height: 250px; animation-delay: -5s;
+      background: linear-gradient(90deg, rgba(77,124,15,0.06) 0%, rgba(34,197,94,0.06) 100%);
+      border-radius: 40% 60% 0 0;
+    }
+    .wave-layer:nth-child(3) {
+      bottom: 0%; height: 200px; animation-delay: -10s;
+      background: linear-gradient(90deg, rgba(34,197,94,0.04) 0%, rgba(22,163,74,0.04) 100%);
+      border-radius: 80% 20% 0 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .background-waves, .wave-layer { animation: none !important; }
+    }
+    
+    .translation-button {
+      position: fixed;
+      top: clamp(20px, 5vw, 30px);
+      right: clamp(20px, 5vw, 30px);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(25px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
+      padding: clamp(8px, 2vw, 12px);
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(50px, 12vw, 60px);
+      height: clamp(50px, 12vw, 60px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 25px -10px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+    .translation-button svg path { stroke: var(--translation-color); }
+    body[dir="ltr"] .translation-button { right: auto; left: clamp(20px, 5vw, 30px); }
+    .translation-button:hover {
+      width: auto; padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
+      border-color: var(--translation-color);
+      background: rgba(77, 124, 15, 0.1);
+      transform: translateY(-3px);
+      animation: translate-glow 2.5s infinite alternate;
+    }
+    .translation-button .icon-translate { width: 28px; height: 28px; flex-shrink: 0; transition: transform 0.3s ease; }
+    .translation-button:hover .icon-translate { transform: scale(0.9); }
+    .translation-text {
+      font-size: clamp(0.85rem, 2.2vw, 1rem);
+      font-weight: 600; color: var(--translation-color);
+      white-space: nowrap; display: none; margin-left: 10px;
+    }
+    body[dir="ltr"] .translation-text { margin-left: 0; margin-right: 10px; }
+    .translation-button:hover .translation-text { display: block; }
+    
+    .main-content { max-width: 1200px; margin: 90px auto 0; padding: clamp(20px, 5vw, 40px); }
+    .glassy-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: clamp(20px, 5vw, 30px);
+      margin-bottom: clamp(25px, 5vw, 35px);
+      backdrop-filter: blur(25px);
+      transition: all 0.4s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+    .glassy-card:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(255,255,255,0.7); }
+    h1, h2, h3, h4, h5 { font-weight: 700; text-shadow: 0 2px 8px rgba(255,255,255,0.8); }
+    h1 { font-size: clamp(2rem, 6vw, 3.2rem); text-align: center; margin-bottom: clamp(20px, 4vw, 30px); color: #14532d; }
+    h2 { font-size: clamp(1.5rem, 5vw, 2.5rem); border-bottom: 3px solid rgba(22,163,74,0.3); padding-bottom: clamp(10px, 2vw, 15px); margin-bottom: clamp(20px, 4vw, 30px); color: #166534; }
+    h3 { font-size: clamp(1.2rem, 4vw, 1.8rem); margin-bottom: clamp(15px, 3vw, 20px); color: #15803d; }
+    h4 { font-size: clamp(1.1rem, 3.5vw, 1.4rem); color: var(--highlight-color); margin-bottom: clamp(12px, 2vw, 15px); }
+    h5 { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--practice-color); margin-bottom: clamp(10px, 2vw, 12px); }
+    p, li { color: #475569; margin-bottom: clamp(10px, 2vw, 12px); }
+    strong { color: #14532d; }
+    
+    .formula {
+      background: rgba(255,255,255,0.4);
+      padding: clamp(15px, 3vw, 20px); border-radius: 14px;
+      font-family: monospace; border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px); margin: 20px 0; text-align: center;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+    }
+    ul, ol { padding-right: clamp(20px, 4vw, 25px); margin-bottom: 20px; }
+    body[dir="ltr"] ul, body[dir="ltr"] ol { padding-right: 0; padding-left: clamp(20px, 4vw, 25px); }
+    .case-study { border-right: 4px solid var(--highlight-color); padding-right: 20px; margin: 25px 0; }
+    body[dir="ltr"] .case-study { border-right: none; border-left: 4px solid var(--highlight-color); padding-right: 0; padding-left: 20px; }
+    
+    .practice-question {
+      background: rgba(34,197,94,0.08);
+      border: 2px solid rgba(34,197,94,0.2);
+      border-radius: 18px; padding: 25px; margin-top: 20px;
+      cursor: pointer; position: relative; transition: all 0.4s ease;
+    }
+    .practice-question:hover { transform: translateY(-3px); border-color: var(--practice-color); background: rgba(34,197,94,0.12); }
+    .practice-question.open { border-color: var(--practice-color); background: rgba(34,197,94,0.15); }
+    .practice-question::after {
+      content: "▼"; position: absolute; top: 25px; left: 25px;
+      font-size: 1.2rem; color: var(--practice-color); transition: transform 0.4s ease;
+    }
+    body[dir="ltr"] .practice-question::after { left: auto; right: 25px; }
+    .practice-question.open::after { transform: rotate(180deg); }
+    
+    .solution-card { max-height: 0; overflow: hidden; transition: max-height 1.2s ease-in-out, margin-top 0.5s ease; }
+    .solution-card.show { max-height: 3000px; margin-top: 20px; }
+    .solution-content { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.4); padding: 20px; border-radius: 14px; }
+    .solution-content strong { color: #15803d; }
+    
+    .expandable-example {
+      background: rgba(77,124,15,0.08);
+      border: 2px solid rgba(77,124,15,0.2);
+      border-radius: 16px; padding: 20px; margin: 15px 0;
+      cursor: pointer; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .expandable-example:hover { border-color: var(--translation-color); background: rgba(77,124,15,0.12); transform: translateY(-2px); }
+    .expandable-example.open { background: rgba(77,124,15,0.15); }
+    .example-header { display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--translation-color); }
+    .example-content { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s ease; padding-top: 0; }
+    .example-content.show { max-height: 1000px; padding-top: 15px; }
+    
+    .mcq-container {
+      background: rgba(22,163,74,0.08);
+      border: 2px solid rgba(22,163,74,0.2);
+      border-radius: 16px; padding: 20px; margin: 20px 0;
+    }
+    .mcq-question { font-weight: 600; color: var(--highlight-color); margin-bottom: 15px; }
+    .mcq-options { list-style: none; padding: 0; }
+    .mcq-option { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; padding: 12px 16px; margin: 8px 0; cursor: pointer; transition: all 0.3s ease; }
+    .mcq-option:hover { background: rgba(22,163,74,0.2); transform: translateX(5px); }
+    .mcq-option.selected, .mcq-option.correct { background: var(--practice-color); color: white; border-color: var(--practice-color); }
+    .mcq-option.incorrect { background: #dc2626; color: white; border-color: #dc2626; }
+    
+    .concepts-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; }
+    .concepts-table th, .concepts-table td { padding: 15px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.2); }
+    body[dir="ltr"] .concepts-table th, body[dir="ltr"] .concepts-table td { text-align: left; }
+    .concepts-table th { background: rgba(22,163,74,0.2); font-weight: 600; color: var(--highlight-color); }
+    .concepts-table tr:hover { background: rgba(255,255,255,0.1); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+  <button class="translation-button" id="translationButton">
+    <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="var(--translation-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+  <main class="main-content">
+    <!-- Arabic Content -->
+    <div id="arabicContent">
+      <section class="glassy-card">
+        <h1>تحليل المعاملات المحاسبية (الجزء 2)</h1>
+        <p>رحلتنا التعليمية مع المفاهيم المتقدمة في تحليل المعاملات المحاسبية</p>
+      </section>
+      <!-- Section 1 -->
+      <section class="glassy-card">
+        <h2>1. المعادلة المحاسبية الموسعة</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>المعادلة المحاسبية الموسعة: الأصول = الخصوم + (رأس المال - المسحوبات + الإيرادات - المصروفات). هذا هو المحرك الذي يربط الأداء بالمركز المالي.</p>
+        <h3>التعريف الرسمي</h3>
+        <ul>
+          <li><strong>حقوق الملكية:</strong> تتأثر بأربعة عناصر رئيسية: استثمارات المالك (تزيدها)، الإيرادات (تزيدها)، مسحوبات المالك (تُنقصها)، والمصروفات (تُنقصها)</li>
+          <li><strong>الهدف:</strong> فهم كيف أنشطة التشغيل تؤثر على صافي قيمة الشركة</li>
+          <li><strong>الفكرة:</strong> صافي الدخل أو الخسارة هو الفارق بين إجمالي الإيرادات وإجمالي المصروفات خلال فترة معينة</li>
+        </ul>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال واقعي: تحقيق إيرادات</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>كيف يعمل:</strong></p>
+            <ul>
+              <li>شركة حققت إيرادات بقيمة 10,000 ريال</li>
+              <li>يزيد النقدية (أصل)</li>
+              <li>يزيد حقوق الملكية (عبر بند الإيرادات) بنفس القيمة</li>
+              <li>محافظة على توازن المعادلة</li>
+            </ul>
+            <p><strong>النتيجة:</strong> يوضح كيف تؤثر الإيرادات على المعادلة المحاسبية</p>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">أي من البنود التالية يؤدي إلى تخفيض حقوق الملكية؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) استثمار إضافي من المالك</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) تحقيق إيراد خدمات</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) دفع مصروف الإيجار</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) الحصول على قرض من البنك</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>السيناريو:</strong> إذا كانت بداية حقوق الملكية 50,000، وأضاف المالك استثماراً بـ 10,000، وحققت الشركة إيرادات 20,000 ومصروفات 5,000، وسحب المالك 2,000. كم يصبح رصيد حقوق الملكية في النهاية؟</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>الحل المقترح:</strong></p>
+            <ul>
+              <li><strong>الحساب:</strong> 50,000 + 10,000 + 20,000 - 5,000 - 2,000 = 73,000</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Section 2 -->
+      <section class="glassy-card">
+        <h2>2. تصنيف الأصول والخصوم</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>التصنيف يساعد المستخدمين على فهم سيولة الشركة (قدرتها على سداد الديون قصيرة الأجل) وهيكلها الرأسمالي.</p>
+        <div class="case-study">
+          <h4>1. الأصول المتداولة</h4>
+          <ul>
+            <li><strong>التركيز:</strong> نقدية أو أصول تتحول إلى نقدية أو تُستخدم خلال عام</li>
+            <li><strong>المساهمات:</strong> النقدية، الذمم المدينة، المخزون، اللوازم</li>
+            <li><strong>الهدف:</strong> تدعم العمليات اليومية</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>2. الأصول الثابتة</h4>
+          <ul>
+            <li><strong>التركيز:</strong> ممتلكات تُستخدم في العمليات لأكثر من عام وليس لغرض البيع</li>
+            <li><strong>المساهمات:</strong> أراضٍ، مبانٍ، معدات، سيارات</li>
+            <li><strong>الهدف:</strong> تدعم النمو طويل الأجل</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>3. الخصوم المتداولة</h4>
+          <ul>
+            <li><strong>التركيز:</strong> التزامات يجب سدادها خلال عام</li>
+            <li><strong>المساهمات:</strong> الذمم الدائنة، أوراق الدفع قصيرة الأجل، مصروفات مستحقة</li>
+            <li><strong>الهدف:</strong> التزامات عاجلة</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>4. الخصوم طويلة الأجل</h4>
+          <ul>
+            <li><strong>التركيز:</strong> ديون تستحق السداد بعد أكثر من عام</li>
+            <li><strong>المساهمات:</strong> قروض بنكية طويلة الأجل، سندات</li>
+            <li><strong>الهدف:</strong> جزء من استراتيجية التمويل طويلة المدى</li>
+          </ul>
+        </div>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال تطبيقي: تصنيف عناصر</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>التحدي:</strong> صنف العناصر التالية: سيارة توصيل، فاتورة كهرباء مستحقة، نقدية في الخزينة، قرض بنكي لمدة 5 سنوات</p>
+            <p><strong>الحلول:</strong></p>
+            <ul>
+              <li><strong>سيارة توصيل:</strong> أصل ثابت</li>
+              <li><strong>فاتورة كهرباء مستحقة:</strong> خصم متداول</li>
+              <li><strong>نقدية في الخزينة:</strong> أصل متداول</li>
+              <li><strong>قرض بنكي لمدة 5 سنوات:</strong> خصم طويل الأجل</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">أي من الحسابات التالية يعتبر من الأصول الثابتة؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) المخزون</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) الذمم المدينة</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) المباني</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) النقدية</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Section 3 -->
+      <section class="glassy-card">
+        <h2>3. تحليل أثر المعاملات على المعادلة</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>كل معاملة لها تأثير مزدوج للحفاظ على التوازن. التحليل يتطلب تحديد الحسابات المتأثرة، ونوعها، واتجاه التغير.</p>
+        <div class="formula">
+          الأصول = الخصوم + (رأس المال - المسحوبات + الإيرادات - المصروفات)<br>
+          (المعادلة الموسعة)
+        </div>
+        <h3>المستويات الثلاثة</h3>
+        <ol>
+          <li><strong>التأثير المزدوج:</strong> بعض المعاملات تزيد أو تنقص جانبي المعادلة معاً</li>
+          <li><strong>التغيير داخل جانب واحد:</strong> يغير تركيبة جانب واحد فقط</li>
+          <li><strong>التنبيه:</strong> أولوية السداد للخصوم قبل حقوق الملكين في حالة التصفية</li>
+        </ol>
+        <h3>المكونات الرئيسية</h3>
+        <div class="case-study">
+          <h4>الإيرادات</h4>
+          <ul>
+            <li><strong>المستوى الفردي:</strong> زيادة في حقوق الملكية ناتجة عن بيع سلع أو تقديم خدمات</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>المصروفات</h4>
+          <ul>
+            <li><strong>المستوى الجماعي:</strong> تكلفة الأصول المستهلكة أو الخدمات المستخدمة</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>المسحوبات</h4>
+          <ul>
+            <li><strong>المستوى التنظيمي:</strong> سحب المالك لأصول من الشركة لاستخدامه الشخصي</li>
+          </ul>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">عندما تقوم شركة بتقديم خدمة على الحساب، فإن التأثير المباشر على المعادلة المحاسبية هو:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) زيادة الأصول وزيادة الخصوم</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) زيادة أصل ونقصان أصل آخر</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ج) زيادة الأصول وزيادة حقوق الملكية</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) نقصان الأصول ونقصان الخصوم</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>المشكلة:</strong> حلل أثر معاملة "الحصول على قرض بنكي بقيمة 20,000 ريال تم إيداعه في حساب الشركة".</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>التحليل على المستوى الجماعي:</strong></p>
+            <ul>
+              <li><strong>الأثر:</strong> أصل "النقدية" يزيد بـ 20,000، وخصم "قرض بنكي" يزيد بـ 20,000</li>
+              <li><strong>النتيجة:</strong> جانبا المعادلة زادا بنفس القيمة</li>
+            </ul>
+            <p><strong>الحلول المقترحة:</strong> الحفاظ على التوازن من خلال التسجيل المزدوج</p>
+          </div>
+        </div>
+      </section>
+      <!-- Key Concepts Glossary -->
+      <section class="glassy-card">
+        <h2>4. جدول المصطلحات</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>المصطلح</th>
+              <th>التعريف</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>الأصول المتداولة (Current Assets)</strong></td>
+              <td>أصول نقدية أو يتوقع تحويلها لنقد أو استخدامها خلال عام واحد</td>
+            </tr>
+            <tr>
+              <td><strong>الأصول الثابتة (Fixed Assets)</strong></td>
+              <td>أصول ملموسة تُقتنى للاستخدام في العمليات لأكثر من عام وليس للبيع</td>
+            </tr>
+            <tr>
+              <td><strong>الخصوم المتداولة (Current Liabilities)</strong></td>
+              <td>التزامات يُتوقع سدادها خلال الفترة التشغيلية الحالية أو عام واحد</td>
+            </tr>
+            <tr>
+              <td><strong>الخصوم طويلة الأجل (Long-term Liabilities)</strong></td>
+              <td>ديون والتزامات تستحق السداد بعد أكثر من عام</td>
+            </tr>
+            <tr>
+              <td><strong>الإيرادات (Revenues)</strong></td>
+              <td>زيادة في حقوق الملكية ناتجة عن بيع سلع أو تقديم خدمات للعملاء</td>
+            </tr>
+            <tr>
+              <td><strong>المصروفات (Expenses)</strong></td>
+              <td>تكلفة الأصول المستهلكة أو الخدمات المستخدمة في سبيل تحقيق الإيرادات</td>
+            </tr>
+            <tr>
+              <td><strong>المسحوبات (Drawings/Withdrawals)</strong></td>
+              <td>سحب المالك لأصول (عادة نقدية) من الشركة لاستخدامه الشخصي</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <!-- English Content -->
+    <div id="englishContent" class="hidden">
+      <section class="glassy-card">
+        <h1>Analysis of Accounting Transactions (Part 2)</h1>
+        <p>Our educational journey with advanced concepts in accounting transaction analysis</p>
+      </section>
+      <!-- Section 1 (English) -->
+      <section class="glassy-card">
+        <h2>1. Expanded Accounting Equation</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>The expanded accounting equation: Assets = Liabilities + (Capital - Withdrawals + Revenues - Expenses). This is the engine that links performance to financial position.</p>
+        <h3>Formal Definition</h3>
+        <ul>
+          <li><strong>Owner's Equity:</strong> Affected by four main elements: owner's investments (increases it), revenues (increases it), owner's withdrawals (decreases it), and expenses (decreases it)</li>
+          <li><strong>Goal:</strong> Understand how operating activities affect the net value of the company</li>
+          <li><strong>Concept:</strong> Net income or loss is the difference between total revenues and total expenses during a specific period</li>
+        </ul>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Real Example: Achieving Revenues</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>How it works:</strong></p>
+            <ul>
+              <li>Company achieved revenues of 10,000 riyals</li>
+              <li>Increases cash (asset)</li>
+              <li>Increases owner's equity (through revenues item) by the same value</li>
+              <li>Maintaining the equation's balance</li>
+            </ul>
+            <p><strong>Result:</strong> Shows how revenues affect the accounting equation</p>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">Which of the following items leads to a reduction in owner's equity?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Additional investment from the owner</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Achieving service revenue</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Paying rent expense</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Obtaining a bank loan</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Application Question</h4>
+          <p><strong>Scenario:</strong> If the beginning owner's equity is 50,000, the owner added an investment of 10,000, the company achieved revenues of 20,000 and expenses of 5,000, and the owner withdrew 2,000. What is the ending balance of owner's equity?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Proposed Solution:</strong></p>
+            <ul>
+              <li><strong>Calculation:</strong> 50,000 + 10,000 + 20,000 - 5,000 - 2,000 = 73,000</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Section 2 (English) -->
+      <section class="glassy-card">
+        <h2>2. Classification of Assets and Liabilities</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>Classification helps users understand the company's liquidity (ability to pay short-term debts) and its capital structure.</p>
+        <div class="case-study">
+          <h4>1. Current Assets</h4>
+          <ul>
+            <li><strong>Focus:</strong> Cash or assets expected to be converted to cash or used within one year</li>
+            <li><strong>Contributions:</strong> Cash, accounts receivable, inventory, supplies</li>
+            <li><strong>Goal:</strong> Support daily operations</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>2. Fixed Assets</h4>
+          <ul>
+            <li><strong>Focus:</strong> Tangible assets acquired for use in operations for more than one year and not for sale</li>
+            <li><strong>Contributions:</strong> Land, buildings, equipment, vehicles</li>
+            <li><strong>Goal:</strong> Support long-term growth</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>3. Current Liabilities</h4>
+          <ul>
+            <li><strong>Focus:</strong> Obligations expected to be settled within the current operating period or one year</li>
+            <li><strong>Contributions:</strong> Accounts payable, short-term notes payable, accrued expenses</li>
+            <li><strong>Goal:</strong> Urgent obligations</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>4. Long-term Liabilities</h4>
+          <ul>
+            <li><strong>Focus:</strong> Debts and obligations due after more than one year</li>
+            <li><strong>Contributions:</strong> Long-term bank loans, bonds</li>
+            <li><strong>Goal:</strong> Part of long-term financing strategy</li>
+          </ul>
+        </div>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Practical Example: Classifying Items</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Challenge:</strong> Classify the following items: Delivery vehicle, due electricity bill, cash in safe, 5-year bank loan</p>
+            <p><strong>Solutions:</strong></p>
+            <ul>
+              <li><strong>Delivery Vehicle:</strong> Fixed asset</li>
+              <li><strong>Due Electricity Bill:</strong> Current liability</li>
+              <li><strong>Cash in Safe:</strong> Current asset</li>
+              <li><strong>5-Year Bank Loan:</strong> Long-term liability</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">Which of the following accounts is considered a fixed asset?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Inventory</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Accounts receivable</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Buildings</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Cash</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Section 3 (English) -->
+      <section class="glassy-card">
+        <h2>3. Analysis of Transaction Effects on the Equation</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>Every transaction has a dual effect to maintain balance. The analysis requires identifying the affected accounts, their type, and the direction of change.</p>
+        <div class="formula">
+          Assets = Liabilities + (Capital - Withdrawals + Revenues - Expenses)<br>
+          (Expanded Equation)
+        </div>
+        <h3>The Three Levels</h3>
+        <ol>
+          <li><strong>Dual Effect:</strong> Some transactions increase or decrease both sides of the equation together</li>
+          <li><strong>Change Within One Side:</strong> Changes the composition of one side only</li>
+          <li><strong>Note:</strong> Priority of payment to liabilities before owners' rights in case of liquidation</li>
+        </ol>
+        <h3>Main Components</h3>
+        <div class="case-study">
+          <h4>Revenues</h4>
+          <ul>
+            <li><strong>Individual Level:</strong> Increase in owner's equity resulting from selling goods or providing services to customers</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>Expenses</h4>
+          <ul>
+            <li><strong>Group Level:</strong> Cost of consumed assets or used services to achieve revenues</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>Withdrawals</h4>
+          <ul>
+            <li><strong>Organizational Level:</strong> Owner's withdrawal of assets from the company for personal use</li>
+          </ul>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">When a company provides a service on credit, the direct effect on the accounting equation is:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Increase in assets and increase in liabilities</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Increase in one asset and decrease in another asset</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">c) Increase in assets and increase in owner's equity</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Decrease in assets and decrease in liabilities</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Application Question</h4>
+          <p><strong>Problem:</strong> Analyze the effect of the transaction "Obtaining a bank loan of 20,000 riyals deposited in the company's account."</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Analysis at Group Level:</strong></p>
+            <ul>
+              <li><strong>Effect:</strong> "Cash" asset increases by 20,000, and "Bank Loan" liability increases by 20,000</li>
+              <li><strong>Result:</strong> Both sides of the equation increased by the same value</li>
+            </ul>
+            <p><strong>Proposed Solutions:</strong> Maintain balance through double-entry recording</p>
+          </div>
+        </div>
+      </section>
+      <!-- Key Concepts Glossary (English) -->
+      <section class="glassy-card">
+        <h2>4. Glossary Table</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Current Assets</strong></td>
+              <td>Cash assets or expected to be converted to cash or used within one year</td>
+            </tr>
+            <tr>
+              <td><strong>Fixed Assets</strong></td>
+              <td>Tangible assets acquired for use in operations for more than one year and not for sale</td>
+            </tr>
+            <tr>
+              <td><strong>Current Liabilities</strong></td>
+              <td>Obligations expected to be settled within the current operating period or one year</td>
+            </tr>
+            <tr>
+              <td><strong>Long-term Liabilities</strong></td>
+              <td>Debts and obligations due after more than one year</td>
+            </tr>
+            <tr>
+              <td><strong>Revenues</strong></td>
+              <td>Increase in owner's equity resulting from selling goods or providing services to customers</td>
+            </tr>
+            <tr>
+              <td><strong>Expenses</strong></td>
+              <td>Cost of consumed assets or used services to achieve revenues</td>
+            </tr>
+            <tr>
+              <td><strong>Drawings/Withdrawals</strong></td>
+              <td>Owner's withdrawal of assets (usually cash) from the company for personal use</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+  <script>
+    // Translation functionality
+    const translationButton = document.getElementById('translationButton');
+    const arabicContent = document.getElementById('arabicContent');
+    const englishContent = document.getElementById('englishContent');
+    const html = document.documentElement;
+    const body = document.body;
+    let isArabic = true;
+    function switchLanguage() {
+      isArabic = !isArabic;
+      
+      if (isArabic) {
+        html.setAttribute('lang', 'ar');
+        html.setAttribute('dir', 'rtl');
+        body.setAttribute('dir', 'rtl');
+        arabicContent.classList.remove('hidden');
+        englishContent.classList.add('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'English';
+      } else {
+        html.setAttribute('lang', 'en');
+        html.setAttribute('dir', 'ltr');
+        body.setAttribute('dir', 'ltr');
+        arabicContent.classList.add('hidden');
+        englishContent.classList.remove('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'العربية';
+      }
+    }
+    translationButton.addEventListener('click', switchLanguage);
+    // Expandable examples functionality
+    function toggleExample(element) {
+      const content = element.querySelector('.example-content');
+      const arrow = element.querySelector('.example-header span:last-child');
+      
+      element.classList.toggle('open');
+      content.classList.toggle('show');
+      arrow.style.transform = element.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+    // MCQ functionality
+    function selectMCQ(element, isCorrect) {
+      const options = element.parentNode.querySelectorAll('.mcq-option');
+      
+      options.forEach(option => {
+        option.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      element.classList.add('selected');
+      
+      setTimeout(() => {
+        if (isCorrect) {
+          element.classList.add('correct');
+        } else {
+          element.classList.add('incorrect');
+          options.forEach(option => {
+            if (option !== element) {
+              const onclick = option.getAttribute('onclick');
+              if (onclick && onclick.includes('true')) {
+                option.classList.add('correct');
+              }
+            }
+          });
+        }
+      }, 500);
+    }
+    // Practice question functionality
+    function toggleSolution(element) {
+      const solutionCard = element.nextElementSibling;
+      if (solutionCard && solutionCard.classList.contains('solution-card')) {
+        element.classList.toggle('open');
+        solutionCard.classList.toggle('show');
+      }
+    }
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page initialized successfully');
+    });
+  </script>
+</body>
+</html>
+
