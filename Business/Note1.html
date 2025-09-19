@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أثر - ثيم غابة السكون</title>
+  <style>
+    :root {
+      /* لوحة ألوان غابة السكون */
+      --color-primary: #16a34a;      /* أخضر عشبي للتمييز */
+      --color-primary-dark: #4d7c0f;  /* أخضر زيتوني عميق */
+      --color-primary-medium: #22c55e;/* أخضر زاهي */
+      
+      /* تحديث متغيرات التصميم الرئيسية */
+      --glass-bg: rgba(240, 253, 244, 0.25); /* زجاجي مائل للخضرة */
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --text-color: #0f172a;
+      --highlight-color: var(--color-primary);
+      --practice-color: var(--color-primary-medium);
+      --translation-color: var(--color-primary-dark);
+      --border-radius: 24px;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    @keyframes waveFlow {
+      0%, 100% { transform: translateX(-25%) scaleY(1) scaleX(1); }
+      33%      { transform: translateX(-10%) scaleY(1.1) scaleX(0.9); }
+      66%      { transform: translateX(10%)  scaleY(0.9) scaleX(1.1); }
+    }
+    
+    @keyframes translate-glow {
+      0%, 100% { box-shadow: 0 0 15px -5px rgba(77, 124, 15, 0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 25px 0px rgba(77, 124, 15, 0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0fdf4; /* لون احتياطي أخضر فاتح */
+      color: var(--text-color);
+      line-height: 1.8;
+      overflow-x: hidden;
+      position: relative;
+      direction: rtl;
+      padding: clamp(10px, 3vw, 20px);
+    }
+    body[dir="ltr"] {
+      direction: ltr;
+    }
+    .background-waves {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      background: linear-gradient(135deg,
+        #f0fdf4 0%,
+        #dcfce7 25%,
+        #fefce8 50%,
+        #ecfccb 75%,
+        #f0fdf4 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+    }
+    .wave-layer {
+      position: absolute;
+      bottom: -10%; left: -10%;
+      width: 120%; height: 300px;
+      background: linear-gradient(90deg,
+        rgba(22,163,74,0.08) 0%,
+        rgba(77,124,15,0.08) 50%,
+        rgba(34,197,94,0.08) 100%);
+      border-radius: 60% 40% 0 0;
+      animation: waveFlow 15s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    .wave-layer:nth-child(2) {
+      bottom: -5%; height: 250px; animation-delay: -5s;
+      background: linear-gradient(90deg, rgba(77,124,15,0.06) 0%, rgba(34,197,94,0.06) 100%);
+      border-radius: 40% 60% 0 0;
+    }
+    .wave-layer:nth-child(3) {
+      bottom: 0%; height: 200px; animation-delay: -10s;
+      background: linear-gradient(90deg, rgba(34,197,94,0.04) 0%, rgba(22,163,74,0.04) 100%);
+      border-radius: 80% 20% 0 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .background-waves, .wave-layer { animation: none !important; }
+    }
+    
+    .translation-button {
+      position: fixed;
+      top: clamp(20px, 5vw, 30px);
+      right: clamp(20px, 5vw, 30px);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(25px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
+      padding: clamp(8px, 2vw, 12px);
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(50px, 12vw, 60px);
+      height: clamp(50px, 12vw, 60px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 25px -10px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+    .translation-button svg path { stroke: var(--translation-color); }
+    body[dir="ltr"] .translation-button { right: auto; left: clamp(20px, 5vw, 30px); }
+    .translation-button:hover {
+      width: auto; padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
+      border-color: var(--translation-color);
+      background: rgba(77, 124, 15, 0.1);
+      transform: translateY(-3px);
+      animation: translate-glow 2.5s infinite alternate;
+    }
+    .translation-button .icon-translate { width: 28px; height: 28px; flex-shrink: 0; transition: transform 0.3s ease; }
+    .translation-button:hover .icon-translate { transform: scale(0.9); }
+    .translation-text {
+      font-size: clamp(0.85rem, 2.2vw, 1rem);
+      font-weight: 600; color: var(--translation-color);
+      white-space: nowrap; display: none; margin-left: 10px;
+    }
+    body[dir="ltr"] .translation-text { margin-left: 0; margin-right: 10px; }
+    .translation-button:hover .translation-text { display: block; }
+    
+    .main-content { max-width: 1200px; margin: 90px auto 0; padding: clamp(20px, 5vw, 40px); }
+    .glassy-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: clamp(20px, 5vw, 30px);
+      margin-bottom: clamp(25px, 5vw, 35px);
+      backdrop-filter: blur(25px);
+      transition: all 0.4s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+    .glassy-card:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(255,255,255,0.7); }
+    h1, h2, h3, h4, h5 { font-weight: 700; text-shadow: 0 2px 8px rgba(255,255,255,0.8); }
+    h1 { font-size: clamp(2rem, 6vw, 3.2rem); text-align: center; margin-bottom: clamp(20px, 4vw, 30px); color: #14532d; }
+    h2 { font-size: clamp(1.5rem, 5vw, 2.5rem); border-bottom: 3px solid rgba(22,163,74,0.3); padding-bottom: clamp(10px, 2vw, 15px); margin-bottom: clamp(20px, 4vw, 30px); color: #166534; }
+    h3 { font-size: clamp(1.2rem, 4vw, 1.8rem); margin-bottom: clamp(15px, 3vw, 20px); color: #15803d; }
+    h4 { font-size: clamp(1.1rem, 3.5vw, 1.4rem); color: var(--highlight-color); margin-bottom: clamp(12px, 2vw, 15px); }
+    h5 { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--practice-color); margin-bottom: clamp(10px, 2vw, 12px); }
+    p, li { color: #475569; margin-bottom: clamp(10px, 2vw, 12px); }
+    strong { color: #14532d; }
+    
+    .formula {
+      background: rgba(255,255,255,0.4);
+      padding: clamp(15px, 3vw, 20px); border-radius: 14px;
+      font-family: monospace; border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px); margin: 20px 0; text-align: center;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+    }
+    ul, ol { padding-right: clamp(20px, 4vw, 25px); margin-bottom: 20px; }
+    body[dir="ltr"] ul, body[dir="ltr"] ol { padding-right: 0; padding-left: clamp(20px, 4vw, 25px); }
+    .case-study { border-right: 4px solid var(--highlight-color); padding-right: 20px; margin: 25px 0; }
+    body[dir="ltr"] .case-study { border-right: none; border-left: 4px solid var(--highlight-color); padding-right: 0; padding-left: 20px; }
+    
+    .practice-question {
+      background: rgba(34,197,94,0.08);
+      border: 2px solid rgba(34,197,94,0.2);
+      border-radius: 18px; padding: 25px; margin-top: 20px;
+      cursor: pointer; position: relative; transition: all 0.4s ease;
+    }
+    .practice-question:hover { transform: translateY(-3px); border-color: var(--practice-color); background: rgba(34,197,94,0.12); }
+    .practice-question.open { border-color: var(--practice-color); background: rgba(34,197,94,0.15); }
+    .practice-question::after {
+      content: "▼"; position: absolute; top: 25px; left: 25px;
+      font-size: 1.2rem; color: var(--practice-color); transition: transform 0.4s ease;
+    }
+    body[dir="ltr"] .practice-question::after { left: auto; right: 25px; }
+    .practice-question.open::after { transform: rotate(180deg); }
+    
+    .solution-card { max-height: 0; overflow: hidden; transition: max-height 1.2s ease-in-out, margin-top 0.5s ease; }
+    .solution-card.show { max-height: 3000px; margin-top: 20px; }
+    .solution-content { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.4); padding: 20px; border-radius: 14px; }
+    .solution-content strong { color: #15803d; }
+    
+    .expandable-example {
+      background: rgba(77,124,15,0.08);
+      border: 2px solid rgba(77,124,15,0.2);
+      border-radius: 16px; padding: 20px; margin: 15px 0;
+      cursor: pointer; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .expandable-example:hover { border-color: var(--translation-color); background: rgba(77,124,15,0.12); transform: translateY(-2px); }
+    .expandable-example.open { background: rgba(77,124,15,0.15); }
+    .example-header { display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--translation-color); }
+    .example-content { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s ease; padding-top: 0; }
+    .example-content.show { max-height: 1000px; padding-top: 15px; }
+    
+    .mcq-container {
+      background: rgba(22,163,74,0.08);
+      border: 2px solid rgba(22,163,74,0.2);
+      border-radius: 16px; padding: 20px; margin: 20px 0;
+    }
+    .mcq-question { font-weight: 600; color: var(--highlight-color); margin-bottom: 15px; }
+    .mcq-options { list-style: none; padding: 0; }
+    .mcq-option { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; padding: 12px 16px; margin: 8px 0; cursor: pointer; transition: all 0.3s ease; }
+    .mcq-option:hover { background: rgba(22,163,74,0.2); transform: translateX(5px); }
+    .mcq-option.selected, .mcq-option.correct { background: var(--practice-color); color: white; border-color: var(--practice-color); }
+    .mcq-option.incorrect { background: #dc2626; color: white; border-color: #dc2626; }
+    
+    .concepts-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; }
+    .concepts-table th, .concepts-table td { padding: 15px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.2); }
+    body[dir="ltr"] .concepts-table th, body[dir="ltr"] .concepts-table td { text-align: left; }
+    .concepts-table th { background: rgba(22,163,74,0.2); font-weight: 600; color: var(--highlight-color); }
+    .concepts-table tr:hover { background: rgba(255,255,255,0.1); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+  <button class="translation-button" id="translationButton">
+    <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="var(--translation-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+  <main class="main-content">
+    <!-- Arabic Content -->
+    <div id="arabicContent">
+      <section class="glassy-card">
+        <h1>خريطة أثر للتركيز الذكي: مقدمة في عالم الأعمال</h1>
+        <p>رحلتنا التعليمية مع المفاهيم الأساسية في مقدمة عالم الأعمال</p>
+      </section>
+      <!-- Big Data Section -->
+      <section class="glassy-card">
+        <h2>1. العمل التجاري</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>هو أي نشاط منظم يهدف إلى توفير سلع (منتجات ملموسة) أو خدمات (أنشطة غير ملموسة) للآخرين، بهدف أساسي هو تحقيق الربح. الأعمال التجارية هي محرك الاقتصاد، فهي تلبي احتياجات ورغبات المجتمع.</p>
+        <h3>التعريف الرسمي</h3>
+        <ul>
+          <li><strong>العمل التجاري (Business):</strong> أي نشاط يسعى لتقديم سلع أو خدمات بهدف تحقيق الربح</li>
+          <li><strong>الهدف:</strong> تحقيق الربح</li>
+          <li><strong>الفكرة:</strong> تتمحور المحاضرة حول فكرة أن عالم الأعمال يقوم على معادلة أساسية: المخاطرة المحسوبة مقابل تحقيق الأرباح</li>
+        </ul>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال واقعي: متجر بقالة وصالون حلاقة</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>كيف يعمل:</strong></p>
+            <ul>
+              <li>متجر بقالة يبيع مواد غذائية (سلع)</li>
+              <li>صالون حلاقة يقدم خدمة قص الشعر (خدمة)</li>
+              <li>كلاهما عمل تجاري</li>
+            </ul>
+            <p><strong>النتيجة:</strong> يوضح كيف يقدم العمل التجاري قيمة للمجتمع مع تحقيق الربح</p>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">الشخص الذي يخاطر بوقته وماله لبدء مشروع تجاري يسمى:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) مدير</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ب) موظف</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) صاحب مصلحة</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">د) رائد أعمال</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>السيناريو:</strong> فكر في تطبيق توصيل طعام. هل يقدم سلعة أم خدمة أم كليهما؟ ولماذا؟</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>الحل المقترح:</strong></p>
+            <ul>
+              <li><strong>التحليل:</strong> يقدم خدمة التوصيل مع سلع الطعام، لذا كليهما</li>
+              <li><strong>السبب:</strong> يلبي احتياجات العملاء بشكل متكامل</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Contributing Disciplines Section -->
+      <section class="glassy-card">
+        <h2>2. الربح</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>هو المكافأة المالية التي تحصل عليها الشركة بعد تغطية جميع نفقاتها. المعادلة الأساسية هي: الإيرادات - المصاريف = الربح. إذا كانت المصاريف أكبر من الإيرادات، تكون النتيجة خسارة (Loss). الربح ضروري لاستمرار الشركة ونموها.</p>
+        <div class="case-study">
+          <h4>1. رائد الأعمال</h4>
+          <ul>
+            <li><strong>التركيز:</strong> الشخص الذي يتحمل المخاطرة المالية والوقتية لبدء وإدارة عمل تجاري جديد</li>
+            <li><strong>المساهمات:</strong> مدفوعًا بفرصة تحقيق الربح</li>
+            <li><strong>الهدف:</strong> رواد الأعمال هم مصدر الابتكار وخلق فرص العمل في الاقتصاد</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>2. المخاطرة</h4>
+          <ul>
+            <li><strong>التركيز:</strong> احتمالية خسارة الوقت والمال في مشروع قد لا يكون مربحًا</li>
+            <li><strong>المساهمات:</strong> جوهر ريادة الأعمال</li>
+            <li><strong>الهدف:</strong> المخاطرة المحسوبة مقابل تحقيق الأرباح</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>3. أهداف الأعمال الرئيسية</h4>
+          <ul>
+            <li><strong>التركيز:</strong> البقاء (Survival)، النمو (Growth)، تحقيق الربح (Profit)، والمسؤولية الاجتماعية (Social Responsibility)</li>
+            <li><strong>المساهمات:</strong> الغايات المحددة التي تسعى الشركة لتحقيقها لضمان نجاحها على المدى الطويل</li>
+            <li><strong>الهدف:</strong> توازن بين الجوانب المالية والاجتماعية</li>
+          </ul>
+        </div>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>مثال تطبيقي: حساب الربح في مطعم</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>التحدي:</strong> مطعم حقق إيرادات بقيمة 100,000 ريال في شهر، وكانت تكاليفه (إيجار، رواتب، مواد أولية) 70,000 ريال</p>
+            <p><strong>الحلول:</strong></p>
+            <ul>
+              <li><strong>الحساب:</strong> ربح صافي 30,000 ريال</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">أي مما يلي يصف المعادلة الصحيحة لحساب الربح؟</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) الإيرادات + المصاريف = الربح</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ب) الإيرادات - المصاريف = الربح</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) المصاريف - الإيرادات = الربح</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) الإيرادات × المصاريف = الربح</li>
+          </ul>
+        </div>
+      </section>
+      <!-- OB Model Section -->
+      <section class="glassy-card">
+        <h2>3. أصحاب المصلحة</h2>
+        
+        <h3>أصل الفكرة</h3>
+        <p>جميع الأفراد والجهات التي تتأثر بأنشطة الشركة وسياساتها (مثل الموظفين، العملاء، المستثمرين، والمجتمع).</p>
+        <div class="formula">
+          الإيرادات - المصاريف = الربح<br>
+          (معادلة الربح الأساسية)
+        </div>
+        <h3>المستويات الثلاثة</h3>
+        <ol>
+          <li><strong>مستوى المعيشة:</strong> كمية السلع والخدمات التي يمكن للناس شراؤها بما لديهم من مال</li>
+          <li><strong>جودة الحياة:</strong> الرفاهية العامة في المجتمع (صحة، تعليم، أمان، بيئة نظيفة)</li>
+          <li><strong>الاستعانة بمصادر خارجية:</strong> تكليف شركات أخرى بأداء وظائف معينة لزيادة الكفاءة</li>
+        </ol>
+        <h3>المكونات الرئيسية</h3>
+        <div class="case-study">
+          <h4>المنظمات غير الربحية</h4>
+          <ul>
+            <li><strong>المستوى الفردي:</strong> كيانات تهدف إلى تحقيق أهداف اجتماعية بدلاً من تحقيق ربح شخصي</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>الآثار الإيجابية والسلبية للأعمال</h4>
+          <ul>
+            <li><strong>المستوى الجماعي:</strong> توفير وظائف ودفع ضرائب (إيجابي)، وقد تشمل التلوث أو المخاطر الصحية (سلبي)</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>أهداف الأعمال</h4>
+          <ul>
+            <li><strong>المستوى التنظيمي:</strong> البقاء، النمو، الربح، المسؤولية الاجتماعية</li>
+          </ul>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">جميع الأفراد والجهات التي تتأثر بأنشطة الشركة، مثل العملاء والموظفين والمجتمع، يُطلق عليهم:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">أ) المنافسون</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">ب) أصحاب المصلحة</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">ج) الموردون</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">د) المنظمون</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>سؤال تطبيقي</h4>
+          <p><strong>المشكلة:</strong> كيف يمكن لهدف "المسؤولية الاجتماعية" أن يساهم في تحقيق هدف "الربح" على المدى الطويل؟</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>التحليل:</strong></p>
+            <ul>
+              <li><strong>الرابط:</strong> يبني سمعة إيجابية، يجذب عملاء مخلصين، يقلل المخاطر القانونية</li>
+            </ul>
+            <p><strong>الحلول المقترحة:</strong> دمج المسؤولية في استراتيجية الأعمال لتحقيق نمو مستدام</p>
+          </div>
+        </div>
+      </section>
+      <!-- Key Concepts Glossary -->
+      <section class="glassy-card">
+        <h2>4. جدول المصطلحات</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>المصطلح</th>
+              <th>التعريف</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>العمل التجاري (Business)</strong></td>
+              <td>نشاط توفير السلع والخدمات للآخرين بهدف تحقيق الربح</td>
+            </tr>
+            <tr>
+              <td><strong>الربح (Profit)</strong></td>
+              <td>المبلغ المالي الذي يتبقى من الإيرادات بعد طرح جميع النفقات</td>
+            </tr>
+            <tr>
+              <td><strong>رائد الأعمال (Entrepreneur)</strong></td>
+              <td>شخص يخاطر بوقته وماله لبدء وإدارة عمل تجاري</td>
+            </tr>
+            <tr>
+              <td><strong>الإيرادات (Revenue)</strong></td>
+              <td>إجمالي الأموال التي تحصل عليها الشركة من بيع سلعها وخدماتها</td>
+            </tr>
+            <tr>
+              <td><strong>الخسارة (Loss)</strong></td>
+              <td>تحدث عندما تكون نفقات الشركة أكبر من إيراداتها</td>
+            </tr>
+            <tr>
+              <td><strong>أصحاب المصلحة (Stakeholders)</strong></td>
+              <td>جميع الأفراد والجهات التي تتأثر بأنشطة الشركة وسياساتها</td>
+            </tr>
+            <tr>
+              <td><strong>الاستعانة بمصادر خارجية (Outsourcing)</strong></td>
+              <td>التعاقد مع شركات خارجية للقيام بوظائف معينة داخل الشركة</td>
+            </tr>
+            <tr>
+              <td><strong>منظمة غير ربحية (Non-Profit Org)</strong></td>
+              <td>منظمة غايتها تحقيق أهداف اجتماعية أو خيرية</td>
+            </tr>
+            <tr>
+              <td><strong>مستوى المعيشة (Standard of Living)</strong></td>
+              <td>كمية السلع والخدمات التي يمكن للناس شراؤها بما لديهم من مال</td>
+            </tr>
+            <tr>
+              <td><strong>جودة الحياة (Quality of Life)</strong></td>
+              <td>الرفاهية العامة في المجتمع (صحة، تعليم، أمان، بيئة نظيفة)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <!-- English Content -->
+    <div id="englishContent" class="hidden">
+      <section class="glassy-card">
+        <h1>Impact Map for Smart Focus: Introduction to the Business World</h1>
+        <p>Our educational journey with basic concepts in introduction to the business world</p>
+      </section>
+      <!-- Big Data Section (English) -->
+      <section class="glassy-card">
+        <h2>1. Business</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>It is any organized activity aimed at providing goods (tangible products) or services (intangible activities) to others, with the primary goal of achieving profit. Businesses are the engine of the economy, as they meet the needs and desires of society.</p>
+        <h3>Formal Definition</h3>
+        <ul>
+          <li><strong>Business:</strong> Any activity seeking to provide goods or services with the aim of achieving profit</li>
+          <li><strong>Goal:</strong> Achieving profit</li>
+          <li><strong>Concept:</strong> The lecture revolves around the idea that the business world is based on a basic equation: calculated risk versus achieving profits</li>
+        </ul>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Real Example: Grocery Store and Hair Salon</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>How it works:</strong></p>
+            <ul>
+              <li>Grocery store sells food items (goods)</li>
+              <li>Hair salon provides hair cutting service (service)</li>
+              <li>Both are businesses</li>
+            </ul>
+            <p><strong>Result:</strong> Shows how business provides value to society while achieving profit</p>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">The person who risks their time and money to start a business project is called:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Manager</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">b) Employee</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Stakeholder</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">d) Entrepreneur</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Application Question</h4>
+          <p><strong>Scenario:</strong> Think of a food delivery app. Does it provide a good, a service, or both? And why?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Proposed Solution:</strong></p>
+            <ul>
+              <li><strong>Analysis:</strong> Provides delivery service with food goods, so both</li>
+              <li><strong>Reason:</strong> Meets customer needs in an integrated way</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Contributing Disciplines Section (English) -->
+      <section class="glassy-card">
+        <h2>2. Profit</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>It is the financial reward that the company receives after covering all its expenses. The basic equation is: Revenues - Expenses = Profit. If expenses exceed revenues, the result is a loss. Profit is necessary for the company's continuity and growth.</p>
+        <div class="case-study">
+          <h4>1. Entrepreneur</h4>
+          <ul>
+            <li><strong>Focus:</strong> The person who bears the financial and time risk to start and manage a new business</li>
+            <li><strong>Contributions:</strong> Driven by the opportunity to achieve profit</li>
+            <li><strong>Goal:</strong> Entrepreneurs are the source of innovation and job creation in the economy</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>2. Risk</h4>
+          <ul>
+            <li><strong>Focus:</strong> The possibility of losing time and money in a project that may not be profitable</li>
+            <li><strong>Contributions:</strong> The essence of entrepreneurship</li>
+            <li><strong>Goal:</strong> Calculated risk versus achieving profits</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>3. Main Business Objectives</h4>
+          <ul>
+            <li><strong>Focus:</strong> Survival, Growth, Profit, Social Responsibility</li>
+            <li><strong>Contributions:</strong> The specified goals that the company seeks to achieve for long-term success</li>
+            <li><strong>Goal:</strong> Balance between financial and social aspects</li>
+          </ul>
+        </div>
+        <div class="expandable-example" onclick="toggleExample(this)">
+          <div class="example-header">
+            <span>Practical Example: Calculating Profit in a Restaurant</span>
+            <span>▼</span>
+          </div>
+          <div class="example-content">
+            <p><strong>Challenge:</strong> Restaurant achieved revenues of 100,000 riyals in a month, with costs (rent, salaries, raw materials) of 70,000 riyals</p>
+            <p><strong>Solutions:</strong></p>
+            <ul>
+              <li><strong>Calculation:</strong> Net profit of 30,000 riyals</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">Which of the following describes the correct equation for calculating profit?</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Revenues + Expenses = Profit</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Revenues - Expenses = Profit</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Expenses - Revenues = Profit</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Revenues × Expenses = Profit</li>
+          </ul>
+        </div>
+      </section>
+      <!-- OB Model Section (English) -->
+      <section class="glassy-card">
+        <h2>3. Stakeholders</h2>
+        
+        <h3>Origin of the Idea</h3>
+        <p>All individuals and entities affected by the company's activities and policies (such as employees, customers, investors, and society).</p>
+        <div class="formula">
+          Revenues - Expenses = Profit<br>
+          (Basic Profit Equation)
+        </div>
+        <h3>The Three Levels</h3>
+        <ol>
+          <li><strong>Standard of Living:</strong> The amount of goods and services people can buy with their money</li>
+          <li><strong>Quality of Life:</strong> General well-being in society (health, education, safety, clean environment)</li>
+          <li><strong>Outsourcing:</strong> Contracting other companies to perform certain functions to increase efficiency</li>
+        </ol>
+        <h3>Main Components</h3>
+        <div class="case-study">
+          <h4>Non-Profit Organizations</h4>
+          <ul>
+            <li><strong>Individual Level:</strong> Entities aimed at achieving social goals rather than personal profit</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>Positive and Negative Impacts of Business</h4>
+          <ul>
+            <li><strong>Group Level:</strong> Providing jobs and paying taxes (positive), may include pollution or health risks (negative)</li>
+          </ul>
+        </div>
+        <div class="case-study">
+          <h4>Business Objectives</h4>
+          <ul>
+            <li><strong>Organizational Level:</strong> Survival, growth, profit, social responsibility</li>
+          </ul>
+        </div>
+        <div class="mcq-container">
+          <div class="mcq-question">All individuals and entities affected by the company's activities, such as customers, employees, and society, are called:</div>
+          <ul class="mcq-options">
+            <li class="mcq-option" onclick="selectMCQ(this, false)">a) Competitors</li>
+            <li class="mcq-option" onclick="selectMCQ(this, true)">b) Stakeholders</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">c) Suppliers</li>
+            <li class="mcq-option" onclick="selectMCQ(this, false)">d) Regulators</li>
+          </ul>
+        </div>
+        <div class="practice-question" onclick="toggleSolution(this)">
+          <h4>Application Question</h4>
+          <p><strong>Problem:</strong> How can the "social responsibility" objective contribute to achieving the "profit" objective in the long term?</p>
+        </div>
+        <div class="solution-card">
+          <div class="solution-content">
+            <p><strong>Analysis:</strong></p>
+            <ul>
+              <li><strong>Link:</strong> Builds positive reputation, attracts loyal customers, reduces legal risks</li>
+            </ul>
+            <p><strong>Proposed Solutions:</strong> Integrate responsibility into business strategy for sustainable growth</p>
+          </div>
+        </div>
+      </section>
+      <!-- Key Concepts Glossary (English) -->
+      <section class="glassy-card">
+        <h2>4. Glossary Table</h2>
+        
+        <table class="concepts-table">
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Business</strong></td>
+              <td>Activity of providing goods and services to others with the aim of achieving profit</td>
+            </tr>
+            <tr>
+              <td><strong>Profit</strong></td>
+              <td>The financial amount remaining from revenues after deducting all expenses</td>
+            </tr>
+            <tr>
+              <td><strong>Entrepreneur</strong></td>
+              <td>Person who risks time and money to start and manage a business</td>
+            </tr>
+            <tr>
+              <td><strong>Revenue</strong></td>
+              <td>Total money the company receives from selling its goods and services</td>
+            </tr>
+            <tr>
+              <td><strong>Loss</strong></td>
+              <td>Occurs when the company's expenses exceed its revenues</td>
+            </tr>
+            <tr>
+              <td><strong>Stakeholders</strong></td>
+              <td>All individuals and entities affected by the company's activities and policies</td>
+            </tr>
+            <tr>
+              <td><strong>Outsourcing</strong></td>
+              <td>Contracting external companies to perform certain functions within the company</td>
+            </tr>
+            <tr>
+              <td><strong>Non-Profit Org</strong></td>
+              <td>Organization whose goal is to achieve social or charitable objectives</td>
+            </tr>
+            <tr>
+              <td><strong>Standard of Living</strong></td>
+              <td>The amount of goods and services people can buy with their money</td>
+            </tr>
+            <tr>
+              <td><strong>Quality of Life</strong></td>
+              <td>General well-being in society (health, education, safety, clean environment)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+  <script>
+    // Translation functionality
+    const translationButton = document.getElementById('translationButton');
+    const arabicContent = document.getElementById('arabicContent');
+    const englishContent = document.getElementById('englishContent');
+    const html = document.documentElement;
+    const body = document.body;
+    let isArabic = true;
+    function switchLanguage() {
+      isArabic = !isArabic;
+      
+      if (isArabic) {
+        html.setAttribute('lang', 'ar');
+        html.setAttribute('dir', 'rtl');
+        body.setAttribute('dir', 'rtl');
+        arabicContent.classList.remove('hidden');
+        englishContent.classList.add('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'English';
+      } else {
+        html.setAttribute('lang', 'en');
+        html.setAttribute('dir', 'ltr');
+        body.setAttribute('dir', 'ltr');
+        arabicContent.classList.add('hidden');
+        englishContent.classList.remove('hidden');
+        translationButton.querySelector('.translation-text').textContent = 'العربية';
+      }
+    }
+    translationButton.addEventListener('click', switchLanguage);
+    // Expandable examples functionality
+    function toggleExample(element) {
+      const content = element.querySelector('.example-content');
+      const arrow = element.querySelector('.example-header span:last-child');
+      
+      element.classList.toggle('open');
+      content.classList.toggle('show');
+      arrow.style.transform = element.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+    // MCQ functionality
+    function selectMCQ(element, isCorrect) {
+      const options = element.parentNode.querySelectorAll('.mcq-option');
+      
+      options.forEach(option => {
+        option.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      element.classList.add('selected');
+      
+      setTimeout(() => {
+        if (isCorrect) {
+          element.classList.add('correct');
+        } else {
+          element.classList.add('incorrect');
+          options.forEach(option => {
+            if (option !== element) {
+              const onclick = option.getAttribute('onclick');
+              if (onclick && onclick.includes('true')) {
+                option.classList.add('correct');
+              }
+            }
+          });
+        }
+      }, 500);
+    }
+    // Practice question functionality
+    function toggleSolution(element) {
+      const solutionCard = element.nextElementSibling;
+      if (solutionCard && solutionCard.classList.contains('solution-card')) {
+        element.classList.toggle('open');
+        solutionCard.classList.toggle('show');
+      }
+    }
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page initialized successfully');
+    });
+  </script>
+</body>
+</html>
+
