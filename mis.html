@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موجز عملي متكامل: مفاهيم عصر المعلومات ونظم المعلومات</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255,255,255,0.18);
+            --glass-border: rgba(255,255,255,0.4);
+            --text-color: #1e293b;
+            --highlight-color: #0ea5e9;
+            --practice-color: #16a34a;
+            --translation-color: #8b5cf6;
+            --correct-color: #10b981;
+            --wrong-color: #ef4444;
+            --border-radius: 24px;
+        }
+        
+        @keyframes gradientAnimation { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes floatSphere1 { 0%,100%{transform:translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateY(-30px) rotate(180deg) scale(1.05)} }
+        @keyframes floatSphere2 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(25px) translateY(-25px) rotate(-180deg) scale(0.95)} }
+        @keyframes floatSphere3 { 0%,100%{transform:translateX(0px) translateY(0px) rotate(0deg) scale(1)} 50%{transform:translateX(-20px) translateY(35px) rotate(120deg) scale(1.08)} }
+        @keyframes translate-glow { 0%,100%{box-shadow:0 0 15px -5px rgba(139,92,246,0.4),inset 0 2px 0 rgba(255,255,255,0.4);} 50%{box-shadow:0 0 25px 0px rgba(139,92,246,0.6),inset 0 2px 0 rgba(255,255,255,0.6);} }
+        @keyframes slideDown { 0%{max-height:0;opacity:0;transform:translateY(-10px);} 100%{max-height:1000px;opacity:1;transform:translateY(0);} }
+        @keyframes correctPulse { 0%{transform:scale(1);} 50%{transform:scale(1.05);} 100%{transform:scale(1);} }
+
+        * { box-sizing:border-box; margin:0; padding:0; }
+        html { font-size:16px; scroll-behavior:smooth; }
+        body {
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            background-color:#e0f2fe; color:var(--text-color); line-height:1.8;
+            overflow-x:hidden; position:relative; direction:rtl;
+            font-size:clamp(0.9rem,2.5vw,1.05rem); padding:20px clamp(10px,3vw,20px);
+        }
+        body[dir="ltr"] { direction:ltr; }
+        
+        .background-gradient, .floating-spheres { position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2; }
+        .background-gradient { background:linear-gradient(135deg,#e0f2fe 0%,#bae6fd 25%,#fce7f3 75%,#fdf2f8 100%);background-size:400% 400%;animation:gradientAnimation 40s ease infinite;}
+        .floating-spheres {z-index:-1;pointer-events:none;}
+        .sphere {position:absolute;border-radius:50%;backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.3);box-shadow:0 20px 60px rgba(14,165,233,0.3),inset 0 4px 0 rgba(255,255,255,0.4);}
+        .sphere.large {width:clamp(120px,20vw,220px);height:clamp(120px,20vw,220px);top:8%;right:12%;background:radial-gradient(circle,#3b82f6,#1e3a8a);animation:floatSphere1 12s ease-in-out infinite;}
+        .sphere.medium {width:clamp(80px,15vw,140px);height:clamp(80px,15vw,140px);bottom:20%;left:8%;background:radial-gradient(circle,#0ea5e9,#0369a1);animation:floatSphere2 9s ease-in-out infinite;}
+        .sphere.small-1 {width:clamp(60px,12vw,95px);height:clamp(60px,12vw,95px);top:50%;right:8%;background:radial-gradient(circle,#06b6d4,#0e7490);animation:floatSphere3 6s ease-in-out infinite;}
+
+        .translation-button {
+            position:fixed;top:clamp(20px,5vw,30px);right:clamp(20px,5vw,30px);
+            background:rgba(255,255,255,0.1);backdrop-filter:blur(25px);
+            border:2px solid var(--glass-border);border-radius:50px;
+            padding:clamp(8px,2vw,12px);cursor:pointer;z-index:1000;display:flex;align-items:center;justify-content:center;
+            width:clamp(50px,12vw,60px);height:clamp(50px,12vw,60px);
+            transition:all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+            box-shadow:0 8px 25px -10px rgba(0,0,0,0.2),inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        body[dir="ltr"] .translation-button {right:auto;left:clamp(20px,5vw,30px);}
+        .translation-button:hover {
+            width:auto;padding:clamp(8px,2vw,12px) clamp(16px,4vw,22px);
+            border-color:var(--translation-color);background:rgba(139,92,246,0.1);transform:translateY(-3px);
+            animation:translate-glow 2.5s infinite alternate;
+        }
+        .translation-button .icon-translate {width:28px;height:28px;flex-shrink:0;transition:transform 0.3s ease;}
+        .translation-button:hover .icon-translate {transform:scale(0.9);}
+        .translation-text {font-size:clamp(0.85rem,2.2vw,1rem);font-weight:600;color:var(--translation-color);white-space:nowrap;display:none;margin-left:10px;}
+        body[dir="ltr"] .translation-text {margin-left:0;margin-right:10px;}
+        .translation-button:hover .translation-text {display:block;}
+
+        .main-content {max-width:1200px;margin:90px auto 0;padding:clamp(20px,5vw,40px);}
+        .glassy-card {
+            background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:var(--border-radius);
+            padding:clamp(20px,5vw,30px);margin-bottom:clamp(25px,5vw,35px);backdrop-filter:blur(25px);
+            transition:all 0.4s ease;box-shadow:0 20px 50px rgba(0,0,0,0.1),inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        .glassy-card:hover {transform:translateY(-5px) scale(1.01);border-color:rgba(255,255,255,0.7);}
+        
+        h1,h2,h3,h4,h5 { color:#0f172a;text-shadow:0 2px 8px rgba(255,255,255,0.8);font-weight:700;}
+        h1 { font-size:clamp(2rem,6vw,3.2rem);text-align:center;margin-bottom:clamp(20px,4vw,30px);color:#0c4a6e; }
+        h2 { font-size:clamp(1.5rem,5vw,2.5rem);border-bottom:3px solid rgba(14,165,233,0.3);padding-bottom:clamp(10px,2vw,15px);margin-bottom:clamp(20px,4vw,30px);}
+        h3 { font-size:clamp(1.2rem,4vw,1.8rem);margin-bottom:clamp(15px,3vw,20px);}
+        h4 { font-size:clamp(1.1rem,3.5vw,1.4rem);color:var(--highlight-color);margin-bottom:clamp(12px,2vw,15px);}
+        h5 { font-size:clamp(1rem,3vw,1.2rem);color:var(--practice-color);margin-bottom:clamp(10px,2vw,12px);}
+        p,li { color:#475569;margin-bottom:clamp(10px,2vw,12px);}
+        strong {color:#1e3a8a;}
+        
+        .formula { background:rgba(255,255,255,0.4); padding:clamp(15px,3vw,20px);border-radius:14px;font-family:monospace;border:1px solid rgba(255,255,255,0.3);backdrop-filter:blur(10px);margin:20px 0;text-align:center;font-size:clamp(1rem,3vw,1.3rem);}
+        ul,ol { padding-right:clamp(20px,4vw,25px);margin-bottom:20px;}
+        body[dir="ltr"] ul,body[dir="ltr"] ol {padding-right:0;padding-left:clamp(20px,4vw,25px);}
+        
+        .case-study { border-right:4px solid var(--highlight-color);padding-right:20px;margin:25px 0;}
+        body[dir="ltr"] .case-study {border-right:none;border-left:4px solid var(--highlight-color);padding-right:0;padding-left:20px;}
+        
+        /* Interactive MCQ Styles */
+        .mcq-question {
+            background:rgba(14,165,233,0.08);border:2px solid rgba(14,165,233,0.2);
+            border-radius:18px;padding:20px;margin:15px 0;position:relative;
+            backdrop-filter:blur(15px);transition:all 0.5s cubic-bezier(0.25,0.8,0.25,1);
+            box-shadow:0 8px 25px rgba(14,165,233,0.15),inset 0 2px 0 rgba(255,255,255,0.3);
+        }
+        .mcq-question:hover {transform:translateY(-2px);box-shadow:0 12px 30px rgba(14,165,233,0.2);}
+        
+        .mcq-option {
+            display:block;margin:12px 0;cursor:pointer;padding:10px 15px;border-radius:10px;
+            transition:all 0.3s ease;position:relative;
+            background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+            backdrop-filter:blur(10px);
+        }
+        .mcq-option:hover {background:rgba(14,165,233,0.1);border-color:var(--highlight-color);transform:translateX(5px);}
+        .mcq-option input[type="radio"] {margin-left:10px;transform:scale(1.2);}
+        .mcq-option.correct {background:rgba(16,185,129,0.15);border-color:var(--correct-color);animation:correctPulse 1s ease;}
+        .mcq-option.wrong {background:rgba(239,68,68,0.15);border-color:var(--wrong-color);}
+        
+        .mcq-button {
+            background:linear-gradient(135deg,var(--highlight-color),#0369a1);color:white;border:none;
+            padding:12px 24px;border-radius:12px;cursor:pointer;margin-top:15px;
+            transition:all 0.3s ease;font-weight:600;
+            box-shadow:0 4px 15px rgba(14,165,233,0.3);
+            backdrop-filter:blur(10px);
+        }
+        .mcq-button:hover {transform:translateY(-2px);box-shadow:0 6px 20px rgba(14,165,233,0.4);}
+        .mcq-button:active {transform:translateY(0);}
+        
+        .mcq-answer {
+            max-height:0;opacity:0;overflow:hidden;margin-top:15px;
+            transition:all 0.8s cubic-bezier(0.25,0.8,0.25,1);
+            background:rgba(255,255,255,0.2);border-radius:12px;
+            backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.3);
+        }
+        .mcq-answer.show {
+            max-height:500px;opacity:1;padding:15px;
+            animation:slideDown 0.8s cubic-bezier(0.25,0.8,0.25,1);
+        }
+        .mcq-answer.correct {border-color:var(--correct-color);background:rgba(16,185,129,0.1);}
+        .mcq-answer.wrong {border-color:var(--wrong-color);background:rgba(239,68,68,0.1);}
+
+        /* Essay Questions */
+        .essay-question {
+            background:rgba(139,92,246,0.08);border:2px solid rgba(139,92,246,0.2);
+            border-radius:18px;padding:20px;margin:15px 0;cursor:pointer;
+            position:relative;backdrop-filter:blur(15px);
+            transition:all 0.5s cubic-bezier(0.25,0.8,0.25,1);
+            box-shadow:0 8px 25px rgba(139,92,246,0.15),inset 0 2px 0 rgba(255,255,255,0.3);
+        }
+        .essay-question:hover {transform:translateY(-2px);box-shadow:0 12px 30px rgba(139,92,246,0.2);}
+        .essay-question::after {content:'⏷';position:absolute;top:20px;left:20px;font-size:1.2rem;color:var(--translation-color);transition:transform 0.5s ease;}
+        body[dir="ltr"] .essay-question::after {left:auto;right:20px;}
+        .essay-question.open::after {transform:rotate(180deg);}
+        
+        .essay-answer {
+            max-height:0;opacity:0;overflow:hidden;margin-top:15px;
+            transition:all 0.8s cubic-bezier(0.25,0.8,0.25,1);
+            background:rgba(255,255,255,0.2);border-radius:12px;
+            backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.3);
+        }
+        .essay-answer.show {
+            max-height:1000px;opacity:1;padding:20px;
+            animation:slideDown 0.8s cubic-bezier(0.25,0.8,0.25,1);
+        }
+
+        .practice-question {
+            background:rgba(22,163,74,0.08); border:2px solid rgba(22,163,74,0.2);
+            border-radius:18px; padding:25px; margin-top:20px;
+            cursor:pointer; position:relative;
+            transition:all 0.5s cubic-bezier(0.25,0.8,0.25,1);
+            backdrop-filter:blur(15px);
+            box-shadow:0 8px 25px rgba(22,163,74,0.15),inset 0 2px 0 rgba(255,255,255,0.3);
+        }
+        .practice-question:hover {transform: translateY(-3px);border-color: var(--practice-color);background:rgba(22,163,74,0.12);}
+        .practice-question.open {border-color: var(--practice-color);background:rgba(22,163,74,0.15);}
+        .practice-question::after {content:'⏷';position:absolute;top:25px;left:25px;font-size:1.2rem;color:var(--practice-color);transition:transform 0.5s ease;}
+        body[dir="ltr"] .practice-question::after {left:auto;right:25px;}
+        .practice-question.open::after {transform: rotate(180deg);}
+        
+        .solution-card { 
+            max-height:0; overflow:hidden; 
+            transition:all 0.8s cubic-bezier(0.25,0.8,0.25,1);
+            margin-top:0;opacity:0;
+        }
+        .solution-card.show { 
+            max-height:3000px;margin-top:20px;opacity:1;
+            animation:slideDown 0.8s cubic-bezier(0.25,0.8,0.25,1);
+        }
+        .solution-content { 
+            background:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.4); 
+            padding:20px; border-radius:14px; backdrop-filter:blur(15px);
+        }
+        .solution-content strong { color:#15803d;}
+
+        /* Table styles */
+        .accounting-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .accounting-table th,
+        .accounting-table td {
+            padding: clamp(6px, 1.5vw, 10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+        }
+        .accounting-table th {
+            background: rgba(14,165,233,0.2);
+            font-weight: 700;
+            color: #0c4a6e;
+        }
+        .accounting-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .hidden { display:none !important; }
+    </style>
+</head>
+<body>
+    <div class="background-gradient"></div>
+    <div class="floating-spheres">
+        <div class="sphere large"></div>
+        <div class="sphere medium"></div>
+        <div class="sphere small-1"></div>
+    </div>
+    
+    <button class="translation-button" id="translationButton">
+        <svg class="icon-translate" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="translation-text">ترجمة</span>
+    </button>
+
+    <main class="main-content">
+        <!-- Arabic Content -->
+        <div id="arabicContent">
+            <section class="glassy-card">
+                <h1>موجز عملي متكامل: مفاهيم عصر المعلومات ونظم المعلومات</h1>
+            </section>
+
+            <section class="glassy-card">
+                <h2>بطاقات الشرح النظري المتكامل</h2>
+                
+                <div class="case-study">
+                    <h3>شرح مفهوم: عصر المعلومات (Information Age)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>القوة في العالم كانت زمان في يد من يملك الأرض الزراعية، ثم أصبحت في يد من يملك المصانع.</li>
+                        <li>اليوم، القوة الحقيقية في يد من يملك <strong>المعلومة</strong> ويسيطر عليها.</li>
+                        <li>عصر المعلومات هو الفترة التي نعيشها، حيث يقوم الاقتصاد على إنتاج المعلومات، توزيعها، والتحكم فيها.</li>
+                        <li>لم تعد المصانع المحرك الأساسي، بل البيانات والأفكار.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>شركة "أوبر" أو "كريم" لا تملك سيارة واحدة، لكنها تملك المعلومة: من يريد الذهاب إلى مكان ما، ومن هو السائق الأقرب.</li>
+                        <li>قيمتها تأتي من سيطرتها على هذه المعلومات وتنسيقها.</li>
+                        <li>هذا جوهر اقتصاد عصر المعلومات.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> أي من التالي يصف "عصر المعلومات" بشكل أفضل؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1" value="a"> أ) فترة تميزت بالثورة الصناعية.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1" value="b"> ب) فترة يكون فيها إنتاج وتوزيع المعلومات هو المحرك الأساسي للاقتصاد.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1" value="c"> ج) فترة اعتمدت فيها المجتمعات على الزراعة.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1" value="d"> د) فترة اختراع المحرك البخاري.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq1', 'b', 'الإجابة الصحيحة هي ب، لأن عصر المعلومات يركز على المعلومات كمحرك اقتصادي رئيسي.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> اشرح كيف غيّر "عصر المعلومات" طبيعة القوة الاقتصادية، مع ذكر مثال لشركة حديثة تجسد هذا المفهوم.</p>
+                        <div class="essay-answer">
+                            <p>في عصر المعلومات، انتقلت القوة الاقتصادية من الاعتماد على الموارد المادية مثل الأرض أو المصانع إلى السيطرة على المعلومات والبيانات. أصبحت الشركات التي تجمع وتحلل البيانات هي الأقوى، مثل "غوغل" التي تستخدم بيانات البحث لتوفير إعلانات مستهدفة، مما يجعلها واحدة من أغنى الشركات دون إنتاج منتجات مادية.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: الثورة الرقمية (Digital Revolution)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>التحول من الأجهزة التناظرية (مثل التليفونات القديمة) إلى الرقمية (التي تعمل بـ0 و1).</li>
+                        <li>بدأت في السبعينيات، مما سمح بظهور الكمبيوتر والإنترنت.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>من شريط كاسيت (جودة تقل مع الاستخدام) إلى يوتيوب (جودة ثابتة ومشاركة فورية).</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> ما هو التعريف الأفضل للثورة الرقمية؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2" value="a"> أ) التحول من الزراعة إلى الصناعة.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2" value="b"> ب) التحول من الأجهزة الميكانيكية والتناظرية إلى الأجهزة الرقمية.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2" value="c"> ج) زيادة سرعة الإنترنت بشكل كبير.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2" value="d"> د) اختراع أول جهاز كمبيوتر.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq2', 'b', 'الإجابة الصحيحة هي ب، لأنها تلخص التحول الأساسي من التناظري إلى الرقمي.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> كيف أثرت الثورة الرقمية على حياة الأفراد والشركات؟ قدم مثالاً واحداً لكل منهما.</p>
+                        <div class="essay-answer">
+                            <p>على الأفراد: سهلت التواصل عبر الإنترنت، مثل استخدام زووم للاجتماعات البعيدة. على الشركات: سمحت بالتجارة الإلكترونية، مثل أمازون التي تبيع عالميًا دون متاجر فيزيائية.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: قانون بيل (Bell's Law)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>كل 10 سنوات، يظهر نوع جديد من أجهزة الكمبيوتر الأصغر والأرخص.</li>
+                        <li>يغير هذا كل شيء بإنشاء صناعات جديدة.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>الثمانينيات: PCs غيرت المكاتب.</li>
+                        <li>التسعينيات: الإنترنت والهواتف المحمولة.</li>
+                        <li>2010+: الطابعات 3D والدرونز.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> وفقًا لقانون بيل، ماذا يحدث تقريبًا كل عقد من الزمان؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3" value="a"> أ) تتضاعف سرعة المعالجات.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3" value="b"> ب) تظهر فئة جديدة من الأجهزة الرقمية التي تمكّن من ظهور صناعات جديدة.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3" value="c"> ج) تزداد سعة التخزين بشكل كبير.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3" value="d"> د) تزداد سرعة اتصال الشبكة بنسبة 50%.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq3', 'b', 'الإجابة الصحيحة هي ب، لأن القانون يتنبأ بفئات أجهزة جديدة كل عقد.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> طبق قانون بيل على التطور من الحواسيب الشخصية (PCs) إلى الهواتف الذكية. اشرح كيف أدت هذه النقلة إلى ظهور صناعات جديدة لم تكن ممكنة من قبل.</p>
+                        <div class="essay-answer">
+                            <p>من PCs (ثمانينيات) إلى الهواتف الذكية (2000s): أدى إلى صناعات مثل التطبيقات المحمولة والتجارة الإلكترونية، مثل أوبر، التي لم تكن ممكنة بدون أجهزة محمولة متصلة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: قانون مور (Moore's Law)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>عدد الترانزستورات في الرقاقة يتضاعف كل 18 شهرًا.</li>
+                        <li>يؤدي إلى أجهزة أسرع وأرخص، وتكلفة معالجة تقترب من الصفر.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>هاتف ذكي اليوم أقوى من كمبيوترات السبعينيات التي أرسلت الإنسان إلى القمر.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> ما هو التأثير الرئيسي لقانون مور؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4" value="a"> أ) زيادة قيمة الشبكات الاجتماعية.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4" value="b"> ب) انخفاض تكلفة معالجة البيانات بشكل كبير مع زيادة سرعة أجهزة الكمبيوتر.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4" value="c"> ج) زيادة سرعات اتصال الإنترنت.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4" value="d"> د) انخفاض تكلفة تخزين البيانات.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq4', 'b', 'الإجابة الصحيحة هي ب، لأن القانون يؤدي إلى تطور سريع في الأداء وانخفاض التكاليف.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> اشرح قانون مور، ووضح كيف أثر هذا القانون على سعر وأداء أجهزة الكمبيوتر التي نستخدمها يوميًا.</p>
+                        <div class="essay-answer">
+                            <p>قانون مور: تضاعف عدد الترانزستورات كل 18 شهرًا. أثر على الأداء: أجهزة أسرع مثل الهواتف الذكية. على السعر: أصبحت التكنولوجيا رخيصة، مما سمح بتوافرها للجميع.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: قانون ميتكالف (Metcalfe's Law)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>قيمة الشبكة = مربع عدد مستخدميها.</li>
+                        <li>تزداد القيمة أسيًا مع زيادة المستخدمين.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>فيسبوك قيم بسبب مليارات المستخدمين، كل مستخدم جديد يزيد القيمة للجميع.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> إذا زاد عدد مستخدمي شبكة اجتماعية من 10 إلى 100، كيف تتغير قيمتها وفقًا لقانون ميتكالف؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5" value="a"> أ) تزداد 10 مرات.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5" value="b"> ب) تزداد 100 مرة (من 10²=100 إلى 100²=10,000).
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5" value="c"> ج) تزداد مرتين.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5" value="d"> د) لا تتغير.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq5', 'b', 'الإجابة الصحيحة هي ب، لأن القيمة = مربع العدد.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> قارن بين قانون سارنوف (Sarnoff's Law) وقانون ميتكالف (Metcalfe's Law) من حيث كيفية قياس قيمة الشبكة.</p>
+                        <div class="essay-answer">
+                            <p>سارنوف: قيمة = عدد المستخدمين (خطي، للإذاعة). ميتكالف: قيمة = مربع العدد (أسي، للشبكات مثل الإنترنت).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: قانون نيلسن (Nielsen's Law)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>سرعة الإنترنت للمستخدمين المتميزين تزداد 50% سنويًا.</li>
+                        <li>يفتح أبوابًا لتقنيات جديدة.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>يوتيوب نجح بفضل زيادة السرعات، مما سمح ببث HD ونتفليكس.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> أي من الشركات التالية يعتبر مثالاً جيداً على الفرص التي أتاحها قانون نيلسن؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6" value="a"> أ) شركة تصنيع سيارات.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6" value="b"> ب) يوتيوب.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6" value="c"> ج) بنك تقليدي.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6" value="d"> د) شركة زراعية.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq6', 'b', 'الإجابة الصحيحة هي ب، لأن يوتيوب يعتمد على سرعات إنترنت عالية.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> اشرح كيف أن زيادة سرعات الشبكة (قانون نيلسن) ضرورية لنجاح نماذج الأعمال الجديدة مثل "الحوسبة السحابية" و "بث الفيديو".</p>
+                        <div class="essay-answer">
+                            <p>الحوسبة السحابية تحتاج سرعات عالية لنقل البيانات. بث الفيديو يتطلب تدفق مستمر لتجنب التقطيع، مما جعل خدمات مثل جوجل كلاود ونتفليكس ممكنة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: قانون كرايدر (Kryder's Law)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>كثافة التخزين تزداد أسيًا، مما يقلل تكلفة التخزين إلى الصفر تقريبًا.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>من 128 ميجابايت في 2005 إلى 128 جيجابايت في 2014 في نفس الحجم.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> ماذا يصف قانون كرايدر؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7" value="a"> أ) تضاعف عدد الترانزستورات.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7" value="b"> ب) زيادة قيمة الشبكة.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7" value="c"> ج) زيادة كثافة التخزين.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7" value="d"> د) زيادة سرعة الشبكة.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq7', 'c', 'الإجابة الصحيحة هي ج، لأن القانون يتعلق بتخزين البيانات.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> كيف أثر قانون كرايدر على سلوك المستخدمين والشركات فيما يتعلق بإنشاء وحفظ البيانات؟</p>
+                        <div class="essay-answer">
+                            <p>المستخدمون: أصبحوا يحفظون المزيد من الصور والفيديوهات دون قلق. الشركات: استثمرت في بيانات كبيرة للتحليل، مثل أمازون في التخزين السحابي.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: المهارات المعرفية غير الروتينية (Nonroutine Cognitive Skills)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>مهارات لا يمكن أتمتتها بسهولة، مثل التفكير المجرد والتعاون.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>في التسويق: ابتكار حملات جديدة وتحليل بيانات.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> أي من المهارات التالية لا يعتبر من المهارات المعرفية غير الروتينية؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8" value="a"> أ) التفكير المجرد.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8" value="b"> ب) إدخال البيانات.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8" value="c"> ج) التعاون.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8" value="d"> د) التفكير النظمي.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq8', 'b', 'الإجابة الصحيحة هي ب، لأن إدخال البيانات مهمة روتينية.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> اختر اثنتين من المهارات المعرفية غير الروتينية الأربع، واشرح كيف يمكن لطالب في المالية الاستفادة منهما.</p>
+                        <div class="essay-answer">
+                            <p>التفكير المجرد: يساعد في نمذجة السيناريوهات المالية. التعاون: يعزز العمل الجماعي في التحليلات المالية.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>الحالة العملية (1): مشكلة جينيفر في شركة فالكون للأمن</h3>
+                    <h4>1. تشريح المثال:</h4>
+                    <p><strong>المسألة الأصلية:</strong> جينيفر تواجه صعوبات في تطبيق تقنية الطباعة 3D.</p>
+                    <h5>تفكيك الحل:</h5>
+                    <ul>
+                        <li>نقص في التفكير المجرد، النظمي، التعاون، والتجربة.</li>
+                    </ul>
+
+                    <div class="practice-question" onclick="togglePractice(this)">
+                        <h4>ساحة التدريب:</h4>
+                        <p><strong>تمرين محاكاة:</strong> مدير تسويق يفتقر إلى مهارات غير روتينية في استخدام AI.</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p>يفتقر إلى التفكير المجرد، التعاون، والتجربة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: الوظيفة القابلة للتداول (Tradable Job)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>وظيفة يمكن القيام بها من أي مكان، عرضة للـoutsourcing.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>مصمم جرافيك مقابل مصفف شعر.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> أي وظيفة قابلة للتداول؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9" value="a"> أ) سباك.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9" value="b"> ب) مطور برامج.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9" value="c"> ج) نادل.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9" value="d"> د) سائق.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq9', 'b', 'الإجابة الصحيحة هي ب، لأنها يمكن القيام بها عن بعد.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> لماذا الوظائف في IS ذات طلب مرتفع ومعرضة للـoutsourcing؟</p>
+                        <div class="essay-answer">
+                            <p>طلب مرتفع بسبب التحول الرقمي؛ عرضة للـoutsourcing لأنها قابلة للعمل عن بعد.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: نظم المعلومات الإدارية (MIS)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>جسر بين الأعمال والتكنولوجيا لتحقيق الاستراتيجيات.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>نظام في كارفور لتحليل مشتريات العملاء وإرسال عروض مخصصة.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> ما هو التعريف الأفضل لـ MIS؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10" value="a"> أ) برمجة الكمبيوتر.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10" value="b"> ب) إدارة نظم المعلومات لتحقيق الاستراتيجيات.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10" value="c"> ج) بيع أجهزة.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10" value="d"> د) إصلاح الشبكات.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq10', 'b', 'الإجابة الصحيحة هي ب، لأن MIS يربط بين التكنولوجيا والأعمال.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> اشرح الفرق بين IS، IT، وMIS.</p>
+                        <div class="essay-answer">
+                            <p>IS: نظم المعلومات عمومًا. IT: الجانب التقني. MIS: استخدام IS لأغراض إدارية.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: نظام المعلومات ومكوناته (Information System & Its Components)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>مجموعة متكاملة من 5 مكونات: الأجهزة، البرامج، البيانات، الإجراءات، الأشخاص.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>نظام ATM: أجهزة (الماكينة)، برامج (البرنامج)، بيانات (الحساب)، إجراءات (الخطوات)، أشخاص (العميل والموظفين).</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> أي مكونين يقعان في "الجانب البشري"؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11" value="a"> أ) الأجهزة والبرامج.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11" value="b"> ب) البيانات والإجراءات.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11" value="c"> ج) الإجراءات والأشخاص.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11" value="d"> د) الأجهزة والأشخاص.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq11', 'c', 'الإجابة الصحيحة هي ج، لأن الإجراءات والأشخاص يمثلان الجانب البشري.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> صف نظام حجز تذاكر السينما عبر الإنترنت باستخدام المكونات الخمسة.</p>
+                        <div class="essay-answer">
+                            <p>أجهزة: الهاتف أو الكمبيوتر. برامج: التطبيق. بيانات: التذاكر المتاحة. إجراءات: خطوات الحجز. أشخاص: المستخدم والمسؤولين.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>الحالة العملية (2): خطأ استراتيجي في استخدام فيسبوك</h3>
+                    <h4>1. تشريح المثال:</h4>
+                    <p><strong>المسألة الأصلية:</strong> شركة تنشئ صفحة فيسبوك بدون هدف واضح.</p>
+                    <h5>تفكيك الحل:</h5>
+                    <ul>
+                        <li>يجب طرح أسئلة استراتيجية: الغرض، القيمة، السياسات، التعامل مع السلبيات، التكاليف مقابل الفوائد.</li>
+                    </ul>
+
+                    <div class="practice-question" onclick="togglePractice(this)">
+                        <h4>ساحة التدريب:</h4>
+                        <p><strong>تمرين محاكاة:</strong> جامعة تشتري نظام تعليم إلكتروني بدون تخطيط. ما الأسئلة الاستراتيجية الخمسة؟</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p>1. الغرض؟ 2. القيمة؟ 3. السياسات؟ 4. التعامل مع المشكلات؟ 5. التكاليف مقابل الفوائد؟</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>شرح مفهوم: مبادئ أخلاقيات البيانات (Principles of Data Ethics)</h3>
+                    <h4>1. أصل الفكرة:</h4>
+                    <ul>
+                        <li>مبادئ لاستخدام البيانات بشكل مسؤول: الملكية، الشفافية، الخصوصية، النية.</li>
+                    </ul>
+                    <h4>2. مثال واقعي:</h4>
+                    <ul>
+                        <li>تطبيق صحي: ملكية البيانات لك، شفافية في الاستخدام، خصوصية لحمايتها، نية للغرض المحدد.</li>
+                    </ul>
+                    <h4>3. كيف تأتي في الامتحان؟</h4>
+                    <div class="mcq-question">
+                        <p><strong>سؤال MCQ محتمل:</strong> عندما تستخدم شركة بيانات لغرض آخر دون إذن، تنتهك أي مبدأ؟</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12" value="a"> أ) الملكية.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12" value="b"> ب) الشفافية.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12" value="c"> ج) الخصوصية.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12" value="d"> د) النية.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq12', 'd', 'الإجابة الصحيحة هي د، لأن النية تتعلق بالاستخدام المقصود.')">تحقق الإجابة</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>سؤال مقالي محتمل (15%):</strong> اشرح مبدأ "الشفافية" في أخلاقيات البيانات، ووضح أهميته لبناء الثقة.</p>
+                        <div class="essay-answer">
+                            <p>الشفافية: إخبار المستخدمين كيف تُجمع وتُستخدم بياناتهم. أهميتها: تبني الثقة وتمنع الشكوك، مما يشجع على مشاركة البيانات.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>جدول المفاهيم الأساسية (Key Concepts Glossary)</h2>
+                <div class="table-container">
+                    <table class="accounting-table">
+                        <thead>
+                            <tr>
+                                <th>المفهوم</th>
+                                <th>Concept</th>
+                                <th>التعريف الرسمي</th>
+                                <th>Official Definition</th>
+                                <th>الخلاصة بكلمتين</th>
+                                <th>The Gist</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>عصر المعلومات</td>
+                                <td>Information Age</td>
+                                <td>فترة تاريخية يكون فيها إنتاج وتوزيع والتحكم في المعلومات هو المحرك الأساسي للاقتصاد</td>
+                                <td>A historical period where the production, distribution, and control of information is the primary driver of the economy</td>
+                                <td>القوة في المعلومة</td>
+                                <td>Power in Information</td>
+                            </tr>
+                            <tr>
+                                <td>الثورة الرقمية</td>
+                                <td>Digital Revolution</td>
+                                <td>التحول من الأجهزة الميكانيكية والتناظرية إلى الأجهزة الرقمية</td>
+                                <td>The transition from mechanical and analog devices to digital devices</td>
+                                <td>من التناظري للرقمي</td>
+                                <td>From Analog to Digital</td>
+                            </tr>
+                            <tr>
+                                <td>قانون بيل</td>
+                                <td>Bell's Law</td>
+                                <td>كل 10 سنوات تقريبًا، تظهر فئة جديدة من الحواسيب تمكّن من ظهور صناعات جديدة</td>
+                                <td>Every decade or so, a new class of computers emerges, enabling new industries</td>
+                                <td>كل عقد شيء جديد</td>
+                                <td>New Every Decade</td>
+                            </tr>
+                            <tr>
+                                <td>قانون مور</td>
+                                <td>Moore's Law</td>
+                                <td>عدد الترانزستورات على الرقاقة يتضاعف كل 18 شهرًا، مما يجعل تكلفة المعالجة تقترب من الصفر</td>
+                                <td>The number of transistors on a chip doubles every 18 months, making processing costs approach zero</td>
+                                <td>أسرع وأرخص</td>
+                                <td>Faster and Cheaper</td>
+                            </tr>
+                            <tr>
+                                <td>قانون ميتكالف</td>
+                                <td>Metcalfe's Law</td>
+                                <td>قيمة الشبكة تساوي مربع عدد مستخدميها</td>
+                                <td>The value of a network equals the square of its users</td>
+                                <td>القيمة في العدد</td>
+                                <td>Value in Numbers</td>
+                            </tr>
+                            <tr>
+                                <td>قانون نيلسن</td>
+                                <td>Nielsen's Law</td>
+                                <td>سرعات اتصال الشبكة للمستخدمين المتميزين تزداد بنسبة 50٪ سنويًا</td>
+                                <td>Network connection speeds for high-end users increase by 50% annually</td>
+                                <td>إنترنت أسرع</td>
+                                <td>Faster Internet</td>
+                            </tr>
+                            <tr>
+                                <td>قانون كرايدر</td>
+                                <td>Kryder's Law</td>
+                                <td>كثافة تخزين البيانات تزداد بشكل هائل، مما يجعل تكلفة التخزين تقترب من الصفر</td>
+                                <td>Data storage density increases exponentially, making storage costs approach zero</td>
+                                <td>تخزين أرخص</td>
+                                <td>Cheaper Storage</td>
+                            </tr>
+                            <tr>
+                                <td>مهارات غير روتينية</td>
+                                <td>Nonroutine Skills</td>
+                                <td>مهارات معرفية لا يمكن أتمتتها بسهولة، مثل التفكير المجرد، والتفكير النظمي، والتعاون، والتجربة</td>
+                                <td>Cognitive skills that cannot be easily automated, such as abstract thinking, systems thinking, collaboration, and experimentation</td>
+                                <td>مهارات التفكير العليا</td>
+                                <td>Higher Thinking Skills</td>
+                            </tr>
+                            <tr>
+                                <td>نظم المعلومات الإدارية (MIS)</td>
+                                <td>Management Information Systems (MIS)</td>
+                                <td>إدارة واستخدام نظم المعلومات لمساعدة المنظمات على تحقيق استراتيجياتها</td>
+                                <td>Managing and using information systems to help organizations achieve their strategies</td>
+                                <td>ربط التكنولوجيا بالعمل</td>
+                                <td>Linking Tech to Business</td>
+                            </tr>
+                            <tr>
+                                <td>نظام المعلومات (IS)</td>
+                                <td>Information System (IS)</td>
+                                <td>مجموعة من الأجهزة، والبرامج، والبيانات، والإجراءات، والأشخاص تنتج معلومات</td>
+                                <td>A set of hardware, software, data, procedures, and people that produce information</td>
+                                <td>المكونات الخمسة</td>
+                                <td>Five Components</td>
+                            </tr>
+                            <tr>
+                                <td>أخلاقيات البيانات</td>
+                                <td>Data Ethics</td>
+                                <td>المبادئ التي توجه الاستخدام المسؤول لبيانات الأفراد (الملكية، الشفافية، الخصوصية، النية)</td>
+                                <td>Principles guiding responsible use of individuals' data (ownership, transparency, privacy, intention)</td>
+                                <td>استخدام عادل للبيانات</td>
+                                <td>Fair Data Use</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- English Content -->
+        <div id="englishContent" class="hidden">
+            <section class="glassy-card">
+                <h1>Comprehensive Practical Summary: Concepts of the Information Age and Information Systems</h1>
+            </section>
+
+            <section class="glassy-card">
+                <h2>Integrated Theoretical Explanation Cards</h2>
+                
+                <div class="case-study">
+                    <h3>Concept Explanation: Information Age</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Power in the world used to be with those who owned agricultural land, then factories.</li>
+                        <li>Today, real power is with those who own and control <strong>information</strong>.</li>
+                        <li>The Information Age is the period we live in, where the economy is based on producing, distributing, and controlling information.</li>
+                        <li>Factories are no longer the main driver, but data and ideas are.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>Companies like "Uber" or "Careem" own no cars but information on who wants to go where and the closest driver.</li>
+                        <li>Their value comes from controlling and coordinating this information.</li>
+                        <li>This is the essence of the Information Age economy.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> Which of the following best describes the "Information Age"?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1_en" value="a"> A) Period marked by the Industrial Revolution.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1_en" value="b"> B) Period where production and distribution of information is the main economic driver.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1_en" value="c"> C) Period where societies relied on agriculture.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq1_en" value="d"> D) Period of steam engine invention.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq1_en', 'b', 'The correct answer is B, because the Information Age focuses on information as the main economic driver.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Explain how the "Information Age" changed the nature of economic power, with an example of a modern company that embodies this concept.</p>
+                        <div class="essay-answer">
+                            <p>In the Information Age, economic power shifted from physical resources like land or factories to control over information and data. Companies that collect and analyze data are the strongest, like "Google" which uses search data to provide targeted ads, making it one of the richest companies without producing physical products.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Digital Revolution</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>The transition from analog devices (like old telephones) to digital ones (working with 0s and 1s).</li>
+                        <li>It started in the 1970s, enabling computers and the internet.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>From cassette tapes (quality decreases with use) to YouTube (constant quality and instant sharing).</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> What is the best definition of the Digital Revolution?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2_en" value="a"> A) Shift from agriculture to industry.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2_en" value="b"> B) Shift from mechanical and analog devices to digital devices.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2_en" value="c"> C) Significant increase in internet speed.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq2_en" value="d"> D) Invention of the first computer.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq2_en', 'b', 'The correct answer is B, as it summarizes the core shift from analog to digital.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> How did the Digital Revolution affect individuals' lives and companies? Provide one example for each.</p>
+                        <div class="essay-answer">
+                            <p>On individuals: Facilitated communication via internet, like using Zoom for remote meetings. On companies: Enabled e-commerce, like Amazon selling globally without physical stores.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Bell's Law</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Every 10 years, a new type of smaller and cheaper computer appears.</li>
+                        <li>This changes everything by creating new industries.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>1980s: PCs changed offices.</li>
+                        <li>1990s: Internet and mobile phones.</li>
+                        <li>2010+: 3D printers and drones.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> According to Bell's Law, what happens approximately every decade?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3_en" value="a"> A) Processor speeds double.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3_en" value="b"> B) A new class of digital devices emerges, enabling new industries.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3_en" value="c"> C) Storage capacity increases significantly.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq3_en" value="d"> D) Network connection speed increases by 50%.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq3_en', 'b', 'The correct answer is B, as the law predicts new device classes every decade.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Apply Bell's Law to the evolution from personal computers (PCs) to smartphones. Explain how this shift led to new industries that were not possible before.</p>
+                        <div class="essay-answer">
+                            <p>From PCs (1980s) to smartphones (2000s): Led to industries like mobile apps and e-commerce, like Uber, impossible without connected mobile devices.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Moore's Law</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>The number of transistors on a chip doubles every 18 months.</li>
+                        <li>Leads to faster, cheaper devices, with processing costs approaching zero.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>Today's smartphone is stronger than 1970s computers that sent man to the moon.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> What is the main impact of Moore's Law?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4_en" value="a"> A) Increasing social networks' value.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4_en" value="b"> B) Significantly reducing data processing costs with increased computer speed.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4_en" value="c"> C) Increasing internet connection speeds.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq4_en" value="d"> D) Reducing data storage costs.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq4_en', 'b', 'The correct answer is B, as the law leads to rapid performance evolution and cost reduction.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Explain Moore's Law and how it affected the price and performance of computers we use daily.</p>
+                        <div class="essay-answer">
+                            <p>Moore's Law: Transistors double every 18 months. Impact on performance: Faster devices like smartphones. On price: Technology became cheap, making it available to everyone.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Metcalfe's Law</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Network value = square of number of users.</li>
+                        <li>Value increases exponentially with more users.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>Facebook is valuable due to billions of users; each new user increases value for all.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> If a social network's users increase from 10 to 100, how does its value change according to Metcalfe's Law?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5_en" value="a"> A) Increases 10 times.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5_en" value="b"> B) Increases 100 times (from 10²=100 to 100²=10,000).
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5_en" value="c"> C) Increases twice.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq5_en" value="d"> D) Doesn't change.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq5_en', 'b', 'The correct answer is B, as value = square of the number.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Compare Sarnoff's Law and Metcalfe's Law in terms of measuring network value.</p>
+                        <div class="essay-answer">
+                            <p>Sarnoff: Value = number of users (linear, for broadcasting). Metcalfe: Value = square of number (exponential, for networks like internet).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Nielsen's Law</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Internet speed for high-end users increases 50% annually.</li>
+                        <li>Opens doors for new technologies.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>YouTube succeeded thanks to speed increases, enabling HD streaming and Netflix.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> Which company is a good example of opportunities enabled by Nielsen's Law?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6_en" value="a"> A) Car manufacturing company.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6_en" value="b"> B) YouTube.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6_en" value="c"> C) Traditional bank.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq6_en" value="d"> D) Agricultural company.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq6_en', 'b', 'The correct answer is B, as YouTube relies on high internet speeds.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Explain how increasing network speeds (Nielsen's Law) is essential for the success of new business models like "Cloud Computing" and "Video Streaming".</p>
+                        <div class="essay-answer">
+                            <p>Cloud Computing needs high speeds for data transfer. Video Streaming requires constant flow to avoid buffering, making services like Google Cloud and Netflix possible.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Kryder's Law</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Storage density increases exponentially, reducing storage costs to nearly zero.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>From 128 MB in 2005 to 128 GB in 2014 in the same size.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> What does Kryder's Law describe?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7_en" value="a"> A) Doubling of transistors.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7_en" value="b"> B) Increasing network value.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7_en" value="c"> C) Increasing storage density.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq7_en" value="d"> D) Increasing network speed.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq7_en', 'c', 'The correct answer is C, as the law concerns data storage.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> How did Kryder's Law affect users' and companies' behavior regarding creating and saving data?</p>
+                        <div class="essay-answer">
+                            <p>Users: Started saving more photos and videos without worry. Companies: Invested in big data for analysis, like Amazon in cloud storage.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Nonroutine Cognitive Skills</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Skills not easily automated, like abstract thinking and collaboration.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>In marketing: Innovating new campaigns and analyzing data.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> Which of the following is not a nonroutine cognitive skill?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8_en" value="a"> A) Abstract thinking.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8_en" value="b"> B) Data entry.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8_en" value="c"> C) Collaboration.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq8_en" value="d"> D) Systems thinking.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq8_en', 'b', 'The correct answer is B, as data entry is a routine task.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Choose two of the four nonroutine cognitive skills and explain how a finance student can benefit from them.</p>
+                        <div class="essay-answer">
+                            <p>Abstract thinking: Helps in modeling financial scenarios. Collaboration: Enhances team work in financial analyses.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Practical Case (1): Jennifer's Problem at Falcon Security</h3>
+                    <h4>1. Example Breakdown:</h4>
+                    <p><strong>Original Problem:</strong> Jennifer faces difficulties in applying 3D printing technology.</p>
+                    <h5>Solution Breakdown:</h5>
+                    <ul>
+                        <li>Lack of abstract thinking, systems thinking, collaboration, and experimentation.</li>
+                    </ul>
+
+                    <div class="practice-question" onclick="togglePractice(this)">
+                        <h4>Practice Arena:</h4>
+                        <p><strong>Simulation Drill:</strong> A marketing manager lacks nonroutine skills in using AI.</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p>Lacks abstract thinking, collaboration, and experimentation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Tradable Job</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Job that can be done from anywhere, prone to outsourcing.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>Graphic designer vs. hairdresser.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> Which job is tradable?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9_en" value="a"> A) Plumber.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9_en" value="b"> B) Software developer.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9_en" value="c"> C) Waiter.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq9_en" value="d"> D) Driver.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq9_en', 'b', 'The correct answer is B, as it can be done remotely.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Why are IS jobs in high demand and exposed to outsourcing?</p>
+                        <div class="essay-answer">
+                            <p>High demand due to digital transformation; exposed to outsourcing because they can be done remotely.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Management Information Systems (MIS)</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Bridge between business and technology to achieve strategies.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>System in Carrefour to analyze customer purchases and send personalized offers.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> What is the best definition of MIS?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10_en" value="a"> A) Computer programming.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10_en" value="b"> B) Managing information systems to achieve strategies.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10_en" value="c"> C) Selling devices.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq10_en" value="d"> D) Fixing networks.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq10_en', 'b', 'The correct answer is B, as MIS links technology to business.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Explain the difference between IS, IT, and MIS.</p>
+                        <div class="essay-answer">
+                            <p>IS: General information systems. IT: Technical aspect. MIS: Using IS for management purposes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Information System & Its Components</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Integrated set of 5 components: Hardware, Software, Data, Procedures, People.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>ATM system: Hardware (machine), Software (program), Data (account), Procedures (steps), People (customer and staff).</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> Which two components fall under the "Human Side"?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11_en" value="a"> A) Hardware and Software.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11_en" value="b"> B) Data and Procedures.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11_en" value="c"> C) Procedures and People.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq11_en" value="d"> D) Hardware and People.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq11_en', 'c', 'The correct answer is C, as procedures and people represent the human side.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Describe an online cinema ticket booking system using the five components.</p>
+                        <div class="essay-answer">
+                            <p>Hardware: Phone or computer. Software: App. Data: Available tickets. Procedures: Booking steps. People: User and admins.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Practical Case (2): Strategic Mistake in Using Facebook</h3>
+                    <h4>1. Example Breakdown:</h4>
+                    <p><strong>Original Problem:</strong> Company creates Facebook page without clear goal.</p>
+                    <h5>Solution Breakdown:</h5>
+                    <ul>
+                        <li>Ask strategic questions: Purpose, value, policies, handling negatives, costs vs benefits.</li>
+                    </ul>
+
+                    <div class="practice-question" onclick="togglePractice(this)">
+                        <h4>Practice Arena:</h4>
+                        <p><strong>Simulation Drill:</strong> University buys e-learning system without planning. What are the five strategic questions?</p>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <p>1. Purpose? 2. Value? 3. Policies? 4. Handling issues? 5. Costs vs benefits?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h3>Concept Explanation: Principles of Data Ethics</h3>
+                    <h4>1. Core Idea:</h4>
+                    <ul>
+                        <li>Principles for responsible data use: Ownership, Transparency, Privacy, Intention.</li>
+                    </ul>
+                    <h4>2. Real-World Example:</h4>
+                    <ul>
+                        <li>Health app: Data ownership yours, transparency in use, privacy protection, intention for specified purpose.</li>
+                    </ul>
+                    <h4>3. How It Might Appear in Exams?</h4>
+                    <div class="mcq-question">
+                        <p><strong>Potential MCQ:</strong> When a company uses data for another purpose without permission, it violates which principle?</p>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12_en" value="a"> A) Ownership.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12_en" value="b"> B) Transparency.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12_en" value="c"> C) Privacy.
+                        </label>
+                        <label class="mcq-option">
+                            <input type="radio" name="mcq12_en" value="d"> D) Intention.
+                        </label>
+                        <button class="mcq-button" onclick="showMCQAnswer(this, 'mcq12_en', 'd', 'The correct answer is D, as intention concerns the intended use.')">Check Answer</button>
+                        <div class="mcq-answer"></div>
+                    </div>
+
+                    <div class="essay-question" onclick="toggleEssay(this)">
+                        <p><strong>Potential Essay Question (15%):</strong> Explain the "Transparency" principle in data ethics and why it's important for building trust.</p>
+                        <div class="essay-answer">
+                            <p>Transparency: Informing users how their data is collected and used. Importance: Builds trust and prevents suspicions, encouraging data sharing.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glassy-card">
+                <h2>Key Concepts Glossary Table</h2>
+                <div class="table-container">
+                    <table class="accounting-table">
+                        <thead>
+                            <tr>
+                                <th>المفهوم</th>
+                                <th>Concept</th>
+                                <th>التعريف الرسمي</th>
+                                <th>Official Definition</th>
+                                <th>الخلاصة بكلمتين</th>
+                                <th>The Gist</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>عصر المعلومات</td>
+                                <td>Information Age</td>
+                                <td>فترة تاريخية يكون فيها إنتاج وتوزيع والتحكم في المعلومات هو المحرك الأساسي للاقتصاد</td>
+                                <td>A historical period where the production, distribution, and control of information is the primary driver of the economy</td>
+                                <td>القوة في المعلومة</td>
+                                <td>Power in Information</td>
+                            </tr>
+                            <tr>
+                                <td>الثورة الرقمية</td>
+                                <td>Digital Revolution</td>
+                                <td>التحول من الأجهزة الميكانيكية والتناظرية إلى الأجهزة الرقمية</td>
+                                <td>The transition from mechanical and analog devices to digital devices</td>
+                                <td>من التناظري للرقمي</td>
+                                <td>From Analog to Digital</td>
+                            </tr>
+                            <tr>
+                                <td>قانون بيل</td>
+                                <td>Bell's Law</td>
+                                <td>كل 10 سنوات تقريبًا، تظهر فئة جديدة من الحواسيب تمكّن من ظهور صناعات جديدة</td>
+                                <td>Every decade or so, a new class of computers emerges, enabling new industries</td>
+                                <td>كل عقد شيء جديد</td>
+                                <td>New Every Decade</td>
+                            </tr>
+                            <tr>
+                                <td>قانون مور</td>
+                                <td>Moore's Law</td>
+                                <td>عدد الترانزستورات على الرقاقة يتضاعف كل 18 شهرًا، مما يجعل تكلفة المعالجة تقترب من الصفر</td>
+                                <td>The number of transistors on a chip doubles every 18 months, making processing costs approach zero</td>
+                                <td>أسرع وأرخص</td>
+                                <td>Faster and Cheaper</td>
+                            </tr>
+                            <tr>
+                                <td>قانون ميتكالف</td>
+                                <td>Metcalfe's Law</td>
+                                <td>قيمة الشبكة تساوي مربع عدد مستخدميها</td>
+                                <td>The value of a network equals the square of its users</td>
+                                <td>القيمة في العدد</td>
+                                <td>Value in Numbers</td>
+                            </tr>
+                            <tr>
+                                <td>قانون نيلسن</td>
+                                <td>Nielsen's Law</td>
+                                <td>سرعات اتصال الشبكة للمستخدمين المتميزين تزداد بنسبة 50٪ سنويًا</td>
+                                <td>Network connection speeds for high-end users increase by 50% annually</td>
+                                <td>إنترنت أسرع</td>
+                                <td>Faster Internet</td>
+                            </tr>
+                            <tr>
+                                <td>قانون كرايدر</td>
+                                <td>Kryder's Law</td>
+                                <td>كثافة تخزين البيانات تزداد بشكل هائل، مما يجعل تكلفة التخزين تقترب من الصفر</td>
+                                <td>Data storage density increases exponentially, making storage costs approach zero</td>
+                                <td>تخزين أرخص</td>
+                                <td>Cheaper Storage</td>
+                            </tr>
+                            <tr>
+                                <td>مهارات غير روتينية</td>
+                                <td>Nonroutine Skills</td>
+                                <td>مهارات معرفية لا يمكن أتمتتها بسهولة، مثل التفكير المجرد، والتفكير النظمي، والتعاون، والتجربة</td>
+                                <td>Cognitive skills that cannot be easily automated, such as abstract thinking, systems thinking, collaboration, and experimentation</td>
+                                <td>مهارات التفكير العليا</td>
+                                <td>Higher Thinking Skills</td>
+                            </tr>
+                            <tr>
+                                <td>نظم المعلومات الإدارية (MIS)</td>
+                                <td>Management Information Systems (MIS)</td>
+                                <td>إدارة واستخدام نظم المعلومات لمساعدة المنظمات على تحقيق استراتيجياتها</td>
+                                <td>Managing and using information systems to help organizations achieve their strategies</td>
+                                <td>ربط التكنولوجيا بالعمل</td>
+                                <td>Linking Tech to Business</td>
+                            </tr>
+                            <tr>
+                                <td>نظام المعلومات (IS)</td>
+                                <td>Information System (IS)</td>
+                                <td>مجموعة من الأجهزة، والبرامج، والبيانات، والإجراءات، والأشخاص تنتج معلومات</td>
+                                <td>A set of hardware, software, data, procedures, and people that produce information</td>
+                                <td>المكونات الخمسة</td>
+                                <td>Five Components</td>
+                            </tr>
+                            <tr>
+                                <td>أخلاقيات البيانات</td>
+                                <td>Data Ethics</td>
+                                <td>المبادئ التي توجه الاستخدام المسؤول لبيانات الأفراد (الملكية، الشفافية، الخصوصية، النية)</td>
+                                <td>Principles guiding responsible use of individuals' data (ownership, transparency, privacy, intention)</td>
+                                <td>استخدام عادل للبيانات</td>
+                                <td>Fair Data Use</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Translation functionality
+            const translationButton = document.getElementById('translationButton');
+            const translationText = translationButton.querySelector('.translation-text');
+            const arabicContent = document.getElementById('arabicContent');
+            const englishContent = document.getElementById('englishContent');
+            const html = document.documentElement;
+            const body = document.body;
+            let isArabic = true;
+
+            function switchLanguage() {
+                isArabic = !isArabic;
+                
+                if (isArabic) {
+                    html.setAttribute('lang', 'ar');
+                    html.setAttribute('dir', 'rtl');
+                    body.setAttribute('dir', 'rtl');
+                    arabicContent.classList.remove('hidden');
+                    englishContent.classList.add('hidden');
+                    translationText.textContent = 'ترجمة';
+                } else {
+                    html.setAttribute('lang', 'en');
+                    html.setAttribute('dir', 'ltr');
+                    body.setAttribute('dir', 'ltr');
+                    arabicContent.classList.add('hidden');
+                    englishContent.classList.remove('hidden');
+                    translationText.textContent = 'Translate';
+                }
+                
+                translationButton.style.transform = 'translateY(-3px) scale(1.05)';
+                setTimeout(() => {
+                    translationButton.style.transform = '';
+                }, 300);
+            }
+
+            translationButton.addEventListener('click', switchLanguage);
+
+            // MCQ Answer functionality
+            window.showMCQAnswer = function(button, questionName, correct, explanation) {
+                const answerDiv = button.nextElementSibling;
+                const mcqQuestion = button.closest('.mcq-question');
+                const radios = mcqQuestion.querySelectorAll('input[type="radio"][name="' + questionName + '"]');
+                let selected = null;
+                
+                radios.forEach(radio => {
+                    if (radio.checked) selected = radio.value;
+                });
+                
+                if (selected) {
+                    const isCorrect = selected === correct;
+                    
+                    // Style the options
+                    radios.forEach(radio => {
+                        const label = radio.closest('.mcq-option');
+                        if (radio.value === correct) {
+                            label.classList.add('correct');
+                        } else if (radio.checked && radio.value !== correct) {
+                            label.classList.add('wrong');
+                        }
+                    });
+                    
+                    // Show answer
+                    answerDiv.innerHTML = isCorrect ? 
+                        '✅ ' + explanation : 
+                        '❌ ' + explanation;
+                    answerDiv.classList.add('show');
+                    answerDiv.classList.add(isCorrect ? 'correct' : 'wrong');
+                    
+                    // Disable button
+                    button.disabled = true;
+                    button.textContent = isArabic ? 'تم الإجابة' : 'Answered';
+                } else {
+                    const alertDiv = document.createElement('div');
+                    alertDiv.textContent = isArabic ? 'اختر إجابة أولاً!' : 'Select an answer first!';
+                    alertDiv.style.cssText = `
+                        position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+                        background: rgba(239,68,68,0.9); color: white; padding: 15px 25px;
+                        border-radius: 12px; backdrop-filter: blur(10px); z-index: 9999;
+                        animation: slideDown 0.5s ease;
+                    `;
+                    document.body.appendChild(alertDiv);
+                    setTimeout(() => alertDiv.remove(), 3000);
+                }
+            };
+
+            // Essay toggle
+            const essayQuestions = document.querySelectorAll('.essay-question');
+            essayQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    const answer = this.querySelector('.essay-answer');
+                    answer.classList.toggle('show');
+                });
+            });
+
+            // Practice toggle
+            const practiceQuestions = document.querySelectorAll('.practice-question');
+            practiceQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    const solution = this.nextElementSibling;
+                    solution.classList.toggle('show');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
