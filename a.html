@@ -3,34 +3,589 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>اختبار مشغل الفيديو - منصة أثر</title>
+  <title>علم الإحصاء - منصة أثر التعليمية</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Marked.js for Markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0fdf4;
-      padding: 20px;
+    :root {
+      --color-primary: #16a34a;
+      --color-primary-dark: #4d7c0f;
+      --color-primary-medium: #22c55e;
+      --color-ai: #f59e0b;
+      --glass-bg: rgba(240, 253, 244, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --text-color: #0f172a;
+      --border-radius: 24px;
+      --font-arabic: 'IBM Plex Sans Arabic', 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-english: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
+    /* Animations */
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
+    @keyframes waveFlow {
+      0%, 100% { transform: translateX(-25%) scaleY(1) scaleX(1); }
+      33% { transform: translateX(-10%) scaleY(1.1) scaleX(0.9); }
+      66% { transform: translateX(10%) scaleY(0.9) scaleX(1.1); }
+    }
+    @keyframes translate-glow {
+      0%, 100% { box-shadow: 0 0 15px -5px rgba(77, 124, 15, 0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 25px 0px rgba(77, 124, 15, 0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
+    }
+    @keyframes ai-glow {
+      0%, 100% { box-shadow: 0 0 15px -5px rgba(245, 158, 11, 0.4), inset 0 2px 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 25px 0px rgba(245, 158, 11, 0.6), inset 0 2px 0 rgba(255,255,255,0.6); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes typing {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    @keyframes typingDots {
+      0%, 20% { opacity: 0; }
+      40% { opacity: 1; }
+      60%, 100% { opacity: 0; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { 
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem); 
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      font-family: var(--font-arabic);
+      background: #f0fdf4;
+      color: var(--text-color);
+      line-height: 1.8;
+      overflow-x: hidden;
+      direction: rtl;
+      padding: clamp(10px, 3vw, 20px);
+      font-weight: 400;
+    }
+    body[dir="ltr"] { 
+      direction: ltr; 
+      font-family: var(--font-english);
+    }
+
+    /* Background Waves */
+    .background-waves {
+      position: fixed; inset: 0; z-index: -2;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 25%, #fefce8 50%, #ecfccb 75%, #f0fdf4 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+    }
+    .wave-layer {
+      position: absolute; bottom: -10%; left: -10%; width: 120%; height: 300px;
+      background: linear-gradient(90deg, rgba(22,163,74,0.08), rgba(77,124,15,0.08), rgba(34,197,94,0.08));
+      border-radius: 60% 40% 0 0;
+      animation: waveFlow 15s ease-in-out infinite;
+    }
+    .wave-layer:nth-child(2) {
+      bottom: -5%; height: 250px; animation-delay: -5s;
+      background: linear-gradient(90deg, rgba(77,124,15,0.06), rgba(34,197,94,0.06));
+      border-radius: 40% 60% 0 0;
+    }
+    .wave-layer:nth-child(3) {
+      bottom: 0%; height: 200px; animation-delay: -10s;
+      background: linear-gradient(90deg, rgba(34,197,94,0.04), rgba(22,163,74,0.04));
+      border-radius: 80% 20% 0 0;
+    }
+
+    /* Translation Button */
+    .translation-button {
+      position: fixed; top: clamp(20px, 5vw, 30px); right: clamp(20px, 5vw, 30px);
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
+      border: 2px solid var(--glass-border); border-radius: 50px;
+      padding: clamp(8px, 2vw, 12px); cursor: pointer; z-index: 1000;
+      width: clamp(50px, 12vw, 60px); height: clamp(50px, 12vw, 60px);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 25px -10px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.6);
+    }
+    .translation-button svg { width: 28px; height: 28px; flex-shrink: 0; transition: transform 0.3s ease; }
+    .translation-button svg path, .translation-button svg circle { stroke: var(--color-primary-dark); }
+    body[dir="ltr"] .translation-button { right: auto; left: clamp(20px, 5vw, 30px); }
+    .translation-button:hover {
+      width: auto; padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
+      border-color: var(--color-primary-dark);
+      background: rgba(77, 124, 15, 0.15);
+      transform: translateY(-3px);
+      animation: translate-glow 2.5s infinite alternate;
+    }
+    .translation-button:hover svg { transform: scale(0.9); }
+    .translation-text {
+      font-size: clamp(0.85rem, 2.2vw, 1rem); 
+      font-weight: 600;
+      color: var(--color-primary-dark); 
+      white-space: nowrap;
+      display: none; 
+      margin-left: 10px;
+    }
+    body[dir="ltr"] .translation-text { margin-left: 0; margin-right: 10px; }
+    .translation-button:hover .translation-text { display: block; }
+
+    /* AI FAB Button */
+    .ai-fab-button {
+      position: fixed; bottom: clamp(20px, 5vw, 30px); right: clamp(20px, 5vw, 30px);
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
+      border: 2px solid var(--glass-border); border-radius: 50px;
+      padding: clamp(10px, 2.5vw, 14px); cursor: pointer; z-index: 1000;
+      width: clamp(56px, 14vw, 70px); height: clamp(56px, 14vw, 70px);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 25px -10px rgba(245, 158, 11, 0.3), inset 0 2px 0 rgba(255,255,255,0.6);
+    }
+    body[dir="ltr"] .ai-fab-button { right: auto; left: clamp(20px, 5vw, 30px); }
+    .ai-fab-button:hover {
+      width: auto; padding: clamp(10px, 2.5vw, 14px) clamp(18px, 4.5vw, 24px);
+      border-color: var(--color-ai);
+      background: rgba(245, 158, 11, 0.15);
+      transform: translateY(-3px);
+      animation: ai-glow 2.5s infinite alternate;
+    }
+    .ai-fab-button svg { 
+      width: clamp(28px, 7vw, 36px); 
+      height: clamp(28px, 7vw, 36px); 
+      flex-shrink: 0; 
+      transition: transform 0.3s ease; 
+    }
+    .ai-fab-button:hover svg { transform: scale(0.9) rotate(5deg); }
+    .ai-fab-text {
+      font-size: clamp(0.85rem, 2.2vw, 1rem); 
+      font-weight: 600;
+      color: var(--color-ai); 
+      white-space: nowrap;
+      display: none; 
+      margin-left: 10px;
+    }
+    body[dir="ltr"] .ai-fab-text { margin-left: 0; margin-right: 10px; }
+    .ai-fab-button:hover .ai-fab-text { display: block; }
+
+    /* AI Chat Modal */
+    .ai-chat-modal {
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000; padding: 20px;
+    }
+    .ai-chat-modal.visible { display: flex; animation: fadeIn 0.3s ease; }
+    
+    .ai-chat-container {
+      background: var(--glass-bg); 
+      border: 2px solid var(--glass-border); 
+      border-radius: var(--border-radius);
+      width: 90%; max-width: 600px; height: 80%; max-height: 700px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column;
+      transform: scale(0.95); transition: transform 0.3s ease;
+      backdrop-filter: blur(25px);
+      overflow: hidden;
+    }
+    .ai-chat-modal.visible .ai-chat-container { transform: scale(1); }
+    
+    .ai-chat-header {
+      padding: 15px 20px;
+      border-bottom: 2px solid var(--glass-border);
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
+    }
+    .ai-chat-header h3 {
+      color: var(--color-primary);
+      margin: 0;
+      font-size: clamp(1.1rem, 4vw, 1.3rem);
+      font-weight: 700;
+    }
+    .ai-chat-close-btn {
+      background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      color: #64748b;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-chat-close-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(220, 38, 38, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .ai-chat-close-btn:hover::before {
+      opacity: 1;
+    }
+    .ai-chat-close-btn:hover {
+      border-color: rgba(220, 38, 38, 0.4);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(220, 38, 38, 0.25), inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+    .ai-chat-close-btn svg {
+      width: 18px;
+      height: 18px;
+      color: #64748b;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .ai-chat-close-btn:hover svg {
+      color: #dc2626;
+      transform: rotate(90deg) scale(1.1);
+    }
+    
+    .ai-chat-messages {
+      flex: 1; overflow-y: auto; padding: 20px;
+      display: flex; flex-direction: column; gap: 15px;
+    }
+    .ai-chat-messages::-webkit-scrollbar { width: 10px; }
+    .ai-chat-messages::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+    }
+    .ai-chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(22, 163, 74, 0.4);
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    .ai-chat-messages::-webkit-scrollbar-thumb:hover {
+      background: rgba(22, 163, 74, 0.6);
+      background-clip: padding-box;
+    }
+    
+    .chat-message {
+      max-width: 85%;
+      padding: 10px 15px;
+      border-radius: 18px;
+      line-height: 1.6;
+      animation: slideUp 0.3s ease;
+    }
+    .user-message {
+      background: rgba(22,163,74,0.2);
+      color: #14532d;
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+    }
+    body[dir="ltr"] .user-message {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 18px;
+      align-self: flex-start;
+    }
+    .ai-message {
+      background: rgba(245,158,11,0.15);
+      color: #78350f;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+    }
+    body[dir="ltr"] .ai-message {
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 18px;
+      align-self: flex-end;
+    }
+    
+    .chat-message strong { color: #1e3a8a; font-weight: 700; }
+    .chat-message ul { margin: 8px 0; padding-right: 20px; }
+    body[dir="ltr"] .chat-message ul { padding-right: 0; padding-left: 20px; }
+    .chat-message li { margin-bottom: 4px; color: inherit; }
+    
+    .typing-indicator {
+      background: rgba(245,158,11,0.15) !important;
+      color: #9ca3af !important;
+      font-style: italic;
+    }
+    .dot {
+      animation: typingDots 1.5s infinite;
+      font-size: 1.2em;
+      color: var(--color-ai) !important;
+    }
+    .dot:nth-child(2) { animation-delay: 0.3s; }
+    .dot:nth-child(3) { animation-delay: 0.6s; }
+    
+    .ai-chat-input-area {
+      padding: 15px 20px;
+      border-top: 2px solid var(--glass-border);
+      display: flex; gap: 10px;
+      background: linear-gradient(0deg, rgba(255,255,255,0.4), transparent);
+    }
+    #ai-chat-input {
+      flex-grow: 1;
+      border: 2px solid var(--glass-border);
+      background: rgba(255,255,255,0.3);
+      border-radius: 50px;
+      padding: 10px 18px;
+      font-size: 1rem;
+      color: var(--text-color);
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      font-family: inherit;
+    }
+    #ai-chat-input:focus {
+      border-color: var(--color-ai);
+      box-shadow: 0 0 10px rgba(245,158,11,0.3);
+    }
+    #ai-chat-input:disabled { opacity: 0.6; cursor: not-allowed; }
+    
+    #ai-chat-send-btn {
+      background-color: var(--color-ai);
+      border: none; border-radius: 50%;
+      width: 48px; height: 48px; flex-shrink: 0;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
+    }
+    #ai-chat-send-btn:hover:not(:disabled) {
+      background-color: #fbbf24;
+      transform: scale(1.05);
+    }
+    #ai-chat-send-btn:disabled {
+      opacity: 0.6; cursor: not-allowed; transform: none;
+    }
+    #ai-chat-send-btn svg { width: 24px; height: 24px; color: white; }
+
+    /* Main Content */
+    .main-content { max-width: 1200px; margin: 90px auto 0; padding: clamp(20px, 5vw, 40px); }
+    .glassy-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: clamp(20px, 5vw, 30px);
+      margin-bottom: clamp(25px, 5vw, 35px);
+      backdrop-filter: blur(25px);
+      transition: all 0.4s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.5);
+    }
+    .glassy-card:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(255,255,255,0.7); }
+
+    /* Typography */
+    h1, h2, h3, h4, h5 { 
+      font-weight: 700; 
+      text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+      letter-spacing: -0.02em;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      text-align: center;
+      margin-bottom: clamp(20px, 4vw, 30px);
+      color: #14532d;
+      font-weight: 800;
+    }
+    h2 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      border-bottom: 3px solid rgba(22,163,74,0.3);
+      padding-bottom: clamp(10px, 2vw, 15px);
+      margin-bottom: clamp(20px, 4vw, 30px);
+      color: #166534;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      margin-bottom: clamp(15px, 3vw, 20px);
+      color: #15803d;
+      font-weight: 600;
+    }
+    h4 {
+      font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+      color: var(--color-primary);
+      margin-bottom: clamp(12px, 2vw, 15px);
+      font-weight: 600;
+    }
+    p, li { 
+      color: #475569; 
+      margin-bottom: clamp(10px, 2vw, 12px);
+      line-height: 1.85;
+    }
+    strong { color: #14532d; font-weight: 600; }
+    ul, ol { padding-right: clamp(20px, 4vw, 25px); margin-bottom: 20px; }
+    body[dir="ltr"] ul, body[dir="ltr"] ol { padding-right: 0; padding-left: clamp(20px, 4vw, 25px); }
+
+    /* Highlighters */
+    mark {
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-weight: 500;
+      border: none;
+    }
+    .highlight-green { background: rgba(22,163,74,0.2); color: #14532d; }
+    .highlight-blue { background: rgba(59,130,246,0.2); color: #1e3a8a; }
+    .highlight-yellow { background: rgba(234,179,8,0.2); color: #713f12; }
+    .highlight-orange { background: rgba(249,115,22,0.2); color: #7c2d12; }
+    .highlight-pink { background: rgba(236,72,153,0.2); color: #831843; }
+
+    /* Interactive Questions */
+    .question-container {
+      background: rgba(22,163,74,0.08);
+      border: 2px solid rgba(22,163,74,0.2);
+      border-radius: 18px;
+      padding: 25px;
+      margin: 20px 0;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+    .question-container:hover {
+      transform: translateY(-3px);
+      border-color: var(--color-primary-medium);
+      background: rgba(22,163,74,0.12);
+    }
+    .question-container.open {
+      border-color: var(--color-primary-medium);
+      background: rgba(22,163,74,0.15);
+    }
+    .question-container::after {
+      content: "";
+      position: absolute;
+      top: 28px;
+      left: 28px;
+      width: 20px;
+      height: 20px;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2316a34a" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>') center/contain no-repeat;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body[dir="ltr"] .question-container::after { left: auto; right: 28px; }
+    .question-container.open::after { transform: rotate(180deg); }
+
+    .question-header {
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 0;
+      font-size: 1.05rem;
+      padding-left: 45px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    body[dir="ltr"] .question-header { padding-left: 0; padding-right: 45px; }
+
+    .question-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .question-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s ease;
+    }
+    .question-content.show { max-height: 3000px; margin-top: 20px; }
+
+    .mcq-options { list-style: none; padding: 0; margin-top: 15px; }
+    .mcq-option {
+      background: rgba(255,255,255,0.3);
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+    }
+    .mcq-option:hover {
+      background: rgba(22,163,74,0.15);
+      transform: translateX(-5px);
+      border-color: var(--color-primary);
+    }
+    body[dir="ltr"] .mcq-option:hover { transform: translateX(5px); }
+    .mcq-option.selected {
+      background: rgba(22,163,74,0.2);
+      border-color: var(--color-primary);
+      transform: scale(1.02);
+    }
+    .mcq-option.correct {
+      background: linear-gradient(135deg, rgba(34,197,94,0.3), rgba(22,163,74,0.2));
+      border-color: var(--color-primary-medium);
+      color: #14532d;
+      font-weight: 600;
+    }
+    .mcq-option.incorrect {
+      background: linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2));
+      border-color: #dc2626;
+      color: #7f1d1d;
+      animation: shake 0.5s ease;
+    }
+
+    .solution-content {
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      padding: 20px;
+      border-radius: 14px;
+      animation: slideUp 0.6s ease;
+    }
+    .solution-content strong { color: #15803d; }
+
+    /* Tables */
+    .table-container { overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+    .concepts-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(15px);
+    }
+    .concepts-table th, .concepts-table td {
+      padding: clamp(8px, 2vw, 12px);
+      border: 1px solid rgba(255,255,255,0.3);
+      text-align: right;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      vertical-align: top;
+    }
+    body[dir="ltr"] .concepts-table th,
+    body[dir="ltr"] .concepts-table td { text-align: left; }
+    .concepts-table th {
+      background: rgba(22,163,74,0.2);
+      font-weight: 700;
+      color: var(--color-primary);
+      text-align: center;
+    }
+    .concepts-table tr:hover { background: rgba(255,255,255,0.1); }
 
     /* Custom Video Player Styles */
     .video-container-custom {
-      background: rgba(240, 253, 244, 0.5);
-      border: 2px solid rgba(22,163,74,0.3);
-      border-radius: 24px;
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--border-radius);
       overflow: hidden;
+      backdrop-filter: blur(25px);
       box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-      margin: 40px 0;
+      margin: 20px 0;
     }
 
     .video-wrapper {
       position: relative;
-      padding-bottom: 56.25%; /* 16:9 */
+      padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
       background: #000;
@@ -45,15 +600,16 @@
     }
 
     .video-controls-custom {
-      background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.2));
-      padding: 15px 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(255,255,255,0.15));
+      backdrop-filter: blur(15px);
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       gap: 15px;
-      border-top: 2px solid rgba(22,163,74,0.2);
+      border-top: 1px solid var(--glass-border);
     }
 
-    .control-btn {
+    .play-pause-btn, .volume-btn, .fullscreen-btn {
       background: rgba(22,163,74,0.2);
       border: 1px solid rgba(22,163,74,0.3);
       border-radius: 8px;
@@ -66,15 +622,15 @@
       transition: all 0.3s ease;
     }
 
-    .control-btn:hover {
+    .play-pause-btn:hover, .volume-btn:hover, .fullscreen-btn:hover {
       background: rgba(22,163,74,0.4);
       transform: scale(1.1);
     }
 
-    .control-btn svg {
+    .play-pause-btn svg, .volume-btn svg, .fullscreen-btn svg {
       width: 20px;
       height: 20px;
-      color: #16a34a;
+      color: var(--color-primary);
     }
 
     .time-display {
@@ -82,7 +638,6 @@
       color: #475569;
       font-weight: 600;
       white-space: nowrap;
-      min-width: 100px;
     }
 
     .seek-bar {
@@ -99,9 +654,14 @@
       -webkit-appearance: none;
       width: 16px;
       height: 16px;
-      background: #16a34a;
+      background: var(--color-primary);
       border-radius: 50%;
       cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .seek-bar::-webkit-slider-thumb:hover {
+      transform: scale(1.3);
     }
 
     .volume-control {
@@ -124,89 +684,180 @@
       -webkit-appearance: none;
       width: 12px;
       height: 12px;
-      background: #16a34a;
+      background: var(--color-primary);
       border-radius: 50%;
       cursor: pointer;
     }
 
-    h1 {
-      text-align: center;
-      color: #16a34a;
-      margin-bottom: 30px;
+    @media (max-width: 768px) {
+      .video-controls-custom {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      .volume-control {
+        display: none;
+      }
     }
 
-    @media (max-width: 768px) {
-      .volume-control { display: none; }
+    /* Footer */
+    .footer-info {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-top: 40px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
+    .footer-brand {
+      font-size: 0.95rem;
+      color: var(--color-primary-dark);
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .footer-brand svg { width: 20px; height: 20px; }
+    .footer-divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+      margin: 12px auto;
+    }
+    .footer-disclaimer {
+      font-size: 0.85rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>مشغل فيديو يوتيوب مخصص</h1>
+  <!-- Background -->
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
 
-    <!-- Video Player -->
-    <div class="video-container-custom">
-      <div class="video-wrapper">
-        <div id="player"></div>
-      </div>
-      
-      <div class="video-controls-custom">
-        <button class="control-btn" id="playPauseBtn" onclick="togglePlayPause()">
-          <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <svg id="pauseIcon" style="display:none;" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+  <!-- Translation Button -->
+  <button class="translation-button" id="translationButton" aria-label="تبديل اللغة">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+
+  <!-- AI FAB Button -->
+  <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
+    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+      <path d="M12 8V4H8"></path>
+      <rect x="4" y="12" width="16" height="8" rx="2"></rect>
+      <path d="M2 14h2"></path>
+      <path d="M20 14h2"></path>
+      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
+    </svg>
+    <span class="ai-fab-text" id="aiFabText">أثر AI</span>
+  </button>
+
+  <!-- AI Chat Modal -->
+  <div class="ai-chat-modal" id="aiChatModal">
+    <div class="ai-chat-container">
+      <div class="ai-chat-header">
+        <h3 id="ai-chat-title">اسأل أثر AI</h3>
+        <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        
-        <div class="time-display">
-          <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
-        </div>
-        
-        <input type="range" class="seek-bar" id="seekBar" value="0" min="0" max="100" onchange="seekVideo(this.value)">
-        
-        <div class="volume-control">
-          <button class="control-btn" id="volumeBtn" onclick="toggleMute()">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-            </svg>
-          </button>
-          <input type="range" class="volume-bar" id="volumeBar" value="50" min="0" max="100" onchange="changeVolume(this.value)">
-        </div>
-        
-        <button class="control-btn" id="fullscreenBtn" onclick="goFullscreen()">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+      </div>
+      <div class="ai-chat-messages" id="aiChatMessages"></div>
+      <div class="ai-chat-input-area">
+        <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
+        <button id="ai-chat-send-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- YouTube IFrame API -->
-  <script>
-    var player;
-    var updateInterval;
+  <!-- Main Content -->
+  <main class="main-content">
+    <div id="arabicContent">
+      <!-- المحتوى العربي - ضع المحتوى الذي أرسلته سابقاً هنا -->
+    <div class="glassy-card">
+  <h2>شرح بالفيديو</h2>
+  
+  <div class="video-container-custom">
+    <div class="video-wrapper">
+      <iframe id="MLgVNKRkhdw" 
+        src="https://www.youtube.com/embed/DYbb4nSBDSI?enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+    
+    <div class="video-controls-custom">
+      <button class="play-pause-btn" id="playPauseBtn" aria-label="Play/Pause">
+        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <svg class="pause-icon" style="display:none;" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+        </svg>
+      </button>
+      
+      <div class="time-display">
+        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+      </div>
+      
+      <input type="range" class="seek-bar" id="seekBar" value="0" min="0" max="100">
+      
+      <div class="volume-control">
+        <button class="volume-btn" id="volumeBtn" aria-label="Mute/Unmute">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+          </svg>
+        </button>
+        <input type="range" class="volume-bar" id="volumeBar" value="50" min="0" max="100">
+      </div>
+      
+      <button class="fullscreen-btn" id="fullscreenBtn" aria-label="Fullscreen">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
 
-    // Load YouTube IFrame API
+    </div>
+
+    <div id="englishContent" class="hidden">
+      <!-- المحتوى الإنجليزي - ضع الترجمة هنا -->
+    </div>
+  </main>
+
+  <script>
+    // YouTube IFrame API
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // Called when API is ready
+    var player;
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('player', {
-        height: '100%',
-        width: '100%',
-        videoId: 'MLgVNKRkhdw', // غير ده للـ ID بتاع الفيديو بتاعك
-        playerVars: {
-          'controls': 0,
-          'modestbranding': 1,
-          'rel': 0,
-          'showinfo': 0
-        },
+      player = new YT.Player('ytplayer', {
         events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
@@ -215,21 +866,65 @@
     }
 
     function onPlayerReady(event) {
-      // Set duration
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const seekBar = document.getElementById('seekBar');
+      const volumeBar = document.getElementById('volumeBar');
+      const volumeBtn = document.getElementById('volumeBtn');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const currentTimeEl = document.getElementById('currentTime');
+      const durationEl = document.getElementById('duration');
+      
+      // Duration
       const duration = player.getDuration();
-      document.getElementById('duration').textContent = formatTime(duration);
-      document.getElementById('seekBar').max = duration;
+      durationEl.textContent = formatTime(duration);
+      seekBar.max = duration;
       
-      // Set initial volume
-      player.setVolume(50);
+      // Play/Pause
+      playPauseBtn.addEventListener('click', function() {
+        if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+          player.pauseVideo();
+        } else {
+          player.playVideo();
+        }
+      });
       
-      // Update time every second
-      updateInterval = setInterval(updateTime, 1000);
+      // Seek
+      seekBar.addEventListener('input', function() {
+        player.seekTo(this.value);
+      });
+      
+      // Volume
+      volumeBar.addEventListener('input', function() {
+        player.setVolume(this.value);
+      });
+      
+      volumeBtn.addEventListener('click', function() {
+        if (player.isMuted()) {
+          player.unMute();
+        } else {
+          player.mute();
+        }
+      });
+      
+      // Fullscreen
+      fullscreenBtn.addEventListener('click', function() {
+        const iframe = document.getElementById('ytplayer');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        }
+      });
+      
+      // Update time
+      setInterval(function() {
+        const currentTime = player.getCurrentTime();
+        currentTimeEl.textContent = formatTime(currentTime);
+        seekBar.value = currentTime;
+      }, 1000);
     }
 
     function onPlayerStateChange(event) {
-      const playIcon = document.getElementById('playIcon');
-      const pauseIcon = document.getElementById('pauseIcon');
+      const playIcon = document.querySelector('.play-icon');
+      const pauseIcon = document.querySelector('.pause-icon');
       
       if (event.data === YT.PlayerState.PLAYING) {
         playIcon.style.display = 'none';
@@ -240,61 +935,207 @@
       }
     }
 
-    function togglePlayPause() {
-      if (!player) return;
-      
-      if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-      } else {
-        player.playVideo();
-      }
-    }
-
-    function seekVideo(value) {
-      if (!player) return;
-      player.seekTo(value);
-    }
-
-    function changeVolume(value) {
-      if (!player) return;
-      player.setVolume(value);
-    }
-
-    function toggleMute() {
-      if (!player) return;
-      
-      if (player.isMuted()) {
-        player.unMute();
-      } else {
-        player.mute();
-      }
-    }
-
-    function goFullscreen() {
-      const videoWrapper = document.querySelector('.video-wrapper');
-      if (videoWrapper.requestFullscreen) {
-        videoWrapper.requestFullscreen();
-      } else if (videoWrapper.webkitRequestFullscreen) {
-        videoWrapper.webkitRequestFullscreen();
-      } else if (videoWrapper.mozRequestFullScreen) {
-        videoWrapper.mozRequestFullScreen();
-      }
-    }
-
-    function updateTime() {
-      if (!player || typeof player.getCurrentTime !== 'function') return;
-      
-      const currentTime = player.getCurrentTime();
-      document.getElementById('currentTime').textContent = formatTime(currentTime);
-      document.getElementById('seekBar').value = currentTime;
-    }
-
     function formatTime(seconds) {
-      if (isNaN(seconds)) return '0:00';
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
       return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const translationButton = document.getElementById('translationButton');
+      const translationText = document.querySelector('.translation-text');
+      const arabicContent = document.getElementById('arabicContent');
+      const englishContent = document.getElementById('englishContent');
+      const html = document.documentElement;
+      const body = document.body;
+      
+      const aiChatButton = document.getElementById('aiChatButton');
+      const aiChatModal = document.getElementById('aiChatModal');
+      const aiChatCloseBtn = document.getElementById('aiChatCloseBtn');
+      const aiChatMessages = document.getElementById('aiChatMessages');
+      const aiChatInput = document.getElementById('ai-chat-input');
+      const aiChatSendBtn = document.getElementById('ai-chat-send-btn');
+      const aiChatTitle = document.getElementById('ai-chat-title');
+      const aiChatButtonText = document.getElementById('aiFabText');
+      
+      let isArabic = true;
+      let isFirstMessage = true;
+      let conversationHistory = [];
+
+      function showTypingIndicator(show) {
+        const existingIndicator = aiChatMessages.querySelector('.typing-indicator');
+        if (existingIndicator) existingIndicator.remove();
+        
+        if (show) {
+          const indicatorElement = document.createElement('div');
+          indicatorElement.classList.add('chat-message', 'ai-message', 'typing-indicator');
+          indicatorElement.innerHTML = '<span>أثر AI يكتب الآن</span><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+          aiChatMessages.appendChild(indicatorElement);
+          aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        }
+      }
+
+      function addMessage(text, sender) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', `${sender}-message`);
+        messageElement.innerHTML = marked.parse(text);
+        aiChatMessages.appendChild(messageElement);
+        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+      }
+      
+      function applyLanguage(arabic) {
+        isArabic = arabic;
+        const lang = isArabic ? 'ar' : 'en';
+        const dir = isArabic ? 'rtl' : 'ltr';
+        
+        html.setAttribute('lang', lang);
+        html.setAttribute('dir', dir);
+        body.setAttribute('dir', dir);
+        
+        arabicContent.classList.toggle('hidden', !isArabic);
+        englishContent.classList.toggle('hidden', isArabic);
+        
+        translationText.textContent = isArabic ? 'English' : 'العربية';
+        document.title = isArabic ? 'علم الإحصاء - منصة أثر التعليمية' : 'Statistics - Athr Educational Platform';
+        
+        aiChatTitle.textContent = isArabic ? 'اسأل أثر AI' : 'Ask Athr AI';
+        aiChatInput.placeholder = isArabic ? 'اكتب سؤالك هنا...' : 'Type your question here...';
+        aiChatButtonText.textContent = isArabic ? 'أثر AI' : 'Athr AI';
+      }
+      
+      translationButton.addEventListener('click', function() {
+        applyLanguage(!isArabic);
+      });
+
+      aiChatButton.addEventListener('click', function() {
+        aiChatModal.classList.add('visible');
+        
+        if (isFirstMessage) {
+          const welcomeMsg = isArabic 
+            ? "مرحباً! أنا **أثر AI**، مساعدك الدراسي الذكي. سأساعدك في فهم محتوى هذا الدرس بطريقة سهلة وممتعة. اسألني أي شيء عن المحتوى!"
+            : "Hello! I'm **Athr AI**, your intelligent study assistant. I'll help you understand this lesson content in an easy and fun way. Ask me anything about the content!";
+          addMessage(welcomeMsg, 'ai');
+          isFirstMessage = false;
+        }
+        
+        aiChatInput.focus();
+      });
+
+      aiChatCloseBtn.addEventListener('click', function() {
+        aiChatModal.classList.remove('visible');
+      });
+
+      aiChatModal.addEventListener('click', function(e) {
+        if (e.target === aiChatModal) {
+          aiChatModal.classList.remove('visible');
+        }
+      });
+
+      async function sendMessage() {
+        const userMessage = aiChatInput.value.trim();
+        if (!userMessage) return;
+
+        addMessage(userMessage, 'user');
+        conversationHistory.push({ role: 'user', content: userMessage });
+        
+        aiChatInput.value = '';
+        aiChatInput.disabled = true;
+        aiChatSendBtn.disabled = true;
+        
+        showTypingIndicator(true);
+
+        try {
+          const lectureContext = arabicContent.innerText || '';
+          
+          const response = await fetch('/askAI', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              conversationHistory: conversationHistory,
+              context: lectureContext
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          showTypingIndicator(false);
+
+          if (data.reply) {
+            addMessage(data.reply, 'ai');
+            conversationHistory.push({ role: 'assistant', content: data.reply });
+          } else {
+            throw new Error('No reply from AI');
+          }
+
+        } catch (error) {
+          console.error('Error:', error);
+          showTypingIndicator(false);
+          
+          const errorMsg = isArabic
+            ? "عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى."
+            : "Sorry, a connection error occurred. Please try again.";
+          addMessage(errorMsg, 'ai');
+        } finally {
+          aiChatInput.disabled = false;
+          aiChatSendBtn.disabled = false;
+          aiChatInput.focus();
+        }
+      }
+
+      aiChatSendBtn.addEventListener('click', sendMessage);
+      aiChatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Question Toggle Function
+      window.toggleQuestion = function(element) {
+        const content = element.querySelector('.question-content');
+        element.classList.toggle('open');
+        content.classList.toggle('show');
+        
+        if (content.classList.contains('show')) {
+          setTimeout(() => {
+            content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 300);
+        }
+      };
+
+      // MCQ Selection Function
+      window.selectMCQ = function(element, isCorrect) {
+        const options = element.parentNode.querySelectorAll('.mcq-option');
+        
+        options.forEach(option => {
+          option.style.pointerEvents = 'none';
+          option.classList.remove('selected', 'correct', 'incorrect');
+        });
+        
+        element.classList.add('selected');
+        
+        setTimeout(() => {
+          if (isCorrect) {
+            element.classList.add('correct');
+            element.innerHTML += ' ✓';
+          } else {
+            element.classList.add('incorrect');
+            element.innerHTML += ' ✗';
+            
+            options.forEach(option => {
+              const onclick = option.getAttribute('onclick');
+              if (onclick && onclick.includes('true')) {
+                option.classList.add('correct');
+                option.innerHTML += ' ✓';
+              }
+            });
+          }
+        }, 500);
+      };
+    });
   </script>
 </body>
 </html>
